@@ -1,11 +1,11 @@
 {
   "name": "oneself_h5",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "oneself-后台",
   "author": "zwping <1101558280@qq.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --hot --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js"
@@ -15,6 +15,7 @@
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
+    "ant-design-vue": "^1.4.10",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.1",
