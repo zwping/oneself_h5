@@ -1,7 +1,7 @@
 <template>
   <div>
     <img alt="" src="../assets/bbg.jpg" width="100%" height="100%"/>
-    <lgpop></lgpop>
+    <lgpop class="lgpop"></lgpop>
   </div>
 </template>
 
@@ -19,7 +19,12 @@
 <style scoped>
   img {
     position: absolute;
-    left: 0;
     top: 0;
+    left: 0;
+    float: left;
+  }
+
+  .lgpop {
+    position: absolute;
   }
 </style>
