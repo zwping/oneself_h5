@@ -2,7 +2,8 @@
   <div>
     <div>hello
       <div class="">
-        <lgbg></lgbg>
+        <lgbg v-if="token == null"></lgbg>
+        <div v-else> 登录成功</div>
       </div>
     </div>
   </div>
@@ -10,10 +11,21 @@
 
 <script>
   import loginBg from './LoginBg'
+  import Cookies from 'js-cookie'
 
   export default {
+    data() {
+      return {
+        token: Cookies.get('token')
+      }
+    },
     components: {
       'lgbg': loginBg
+    },
+    computed: {
+      nullToken() {
+        return Cookies.get('token')
+      }
     }
   }
 </script>
@@ -27,6 +39,7 @@
     width: 100%;
     height: 100%;
   }
+
   .big_bg {
     position: relative;
     display: block;

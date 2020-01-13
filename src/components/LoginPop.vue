@@ -14,13 +14,15 @@
 
 <script>
   import axios from 'axios'
+  import qs from 'Qs'
+  import Cookies from 'js-cookie'
 
   export default {
     data() {
       return {
         w: 600,
         h: 400,
-        account: 'zwping',
+        account: 'zwp',
         pwd: '123',
         conn_txt: '1101558280@qq.com',
         httpState: false
@@ -30,10 +32,17 @@
     methods: {
       login() {
         this.httpState = true
-        axios.get('http://zwping.win:5001/hello')
+        axios.post('http://localhost:5001/account/login', qs.stringify({'account': this.account, 'pwd': this.pwd}))
           .then(r => {
             this.httpState = false
-            this.account = r.data
+            // this.account = r.data
+            if (r.data.code === 200) {
+              this.$message.success('欢迎回来 ' + r.data.result.nickname)
+              Cookies.set('token', r.data.result.token)
+              console.log(Cookies.get('token'))
+            } else {
+              this.$message.error(r.data.msg)
+            }
           })
           .catch(r => {
             this.httpState = false
