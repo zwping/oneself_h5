@@ -2,7 +2,8 @@
   <div>
     <div>hello
       <div class="">
-        <lgbg v-if="token == null"></lgbg>
+        <lgbg v-if="nullToken"></lgbg>
+        <div v-else-if="false">校验token</div>
         <div v-else> 登录成功</div>
       </div>
     </div>
@@ -12,20 +13,23 @@
 <script>
   import loginBg from './LoginBg'
   import Cookies from 'js-cookie'
+  import {mapState} from 'vuex'
+  import {isEmpty} from '../libs/Empty'
 
   export default {
     data() {
-      return {
-        token: Cookies.get('token')
-      }
+      return {}
     },
     components: {
       'lgbg': loginBg
     },
     computed: {
       nullToken() {
-        return Cookies.get('token')
+        return isEmpty(this.$store.state.token.token)
       }
+    },
+    created() {
+      this.$store.state.token.token = Cookies.get('token')
     }
   }
 </script>

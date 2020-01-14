@@ -5,15 +5,15 @@ import App from './App'
 import router from './router'
 import ant from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
-import axios from 'axios'
+import store from './store'
 
 Vue.use(ant)
-Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: {App},
   template: '<App/>'

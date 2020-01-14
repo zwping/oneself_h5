@@ -5,17 +5,20 @@
     <a-input-password v-model="pwd" class="top1" placeholder="密码" allowClear/>
     <a-button @click="login" id="log_btn" class="top2" type="primary" block :loading="httpState" :disabled="!dis">登录
     </a-button>
-    <a-popconfirm placement="bottom" :title="conn_txt">
-      <a-icon slot="icon" type="check-circle" style="color: green"/>
-      <a class="conn_service" href="#">联系管理员</a>
-    </a-popconfirm>
+    <a-popover placement="bottom" trigger="click" style="float:right;margin-top: 10px">
+      <template slot="content">
+        <p>{{conn_txt}}</p>
+      </template>
+      <a-button type="link" style="padding: 0">联系管理员</a-button>
+    </a-popover>
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
-  import qs from 'Qs'
   import Cookies from 'js-cookie'
+  import {login} from '../config'
+  import {post} from '../libs/HTTP'
+  import {mapState} from 'vuex'
 
   export default {
     data() {
@@ -32,14 +35,13 @@
     methods: {
       login() {
         this.httpState = true
-        axios.post('http://localhost:5001/account/login', qs.stringify({'account': this.account, 'pwd': this.pwd}))
+        post(login, {'account': this.account, 'pwd': this.pwd})
           .then(r => {
             this.httpState = false
-            // this.account = r.data
             if (r.data.code === 200) {
               this.$message.success('欢迎回来 ' + r.data.result.nickname)
               Cookies.set('token', r.data.result.token)
-              console.log(Cookies.get('token'))
+              this.$store.state.token.token = r.data.result.token
             } else {
               this.$message.error(r.data.msg)
             }
@@ -54,7 +56,12 @@
     computed: {
       dis() {
         return this.account !== '' && this.pwd !== ''
-      }
+      },
+      ...mapState({
+        token: state => state.token.token
+      })
+    },
+    created() {
     }
   }
 </script>
