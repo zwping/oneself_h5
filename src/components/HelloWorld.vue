@@ -2,9 +2,9 @@
   <div>
     <div>hello
       <div class="">
-        <lgbg v-if="nullToken"></lgbg>
-        <div v-else-if="false">校验token</div>
-        <div v-else> 登录成功</div>
+        <lgbg v-if="nullToken">登录窗口</lgbg>
+        <loading v-if="`${nullToken && !tokenAble}`">校验token</loading>
+        <div v-if="`${!nullToken && tokenAble}`"> 登录成功</div>
       </div>
     </div>
   </div>
@@ -12,8 +12,9 @@
 
 <script>
   import loginBg from './LoginBg'
+  import loading from './Loading'
   import Cookies from 'js-cookie'
-  import {mapState} from 'vuex'
+  import {mapState, mapActions} from 'vuex'
   import {isEmpty} from '../libs/Empty'
 
   export default {
@@ -21,11 +22,20 @@
       return {}
     },
     components: {
-      'lgbg': loginBg
+      'lgbg': loginBg,
+      'loading': loading
     },
     computed: {
       nullToken() {
         return isEmpty(this.$store.state.token.token)
+      },
+      tokenAble() {
+        const able = this.$store.state.token.token_able
+        console.log(able)
+        if (!able) {
+          this.$store.dispatch('token/verify_token')
+        }
+        return able
       }
     },
     created() {
@@ -36,18 +46,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .content {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .big_bg {
-    position: relative;
-    display: block;
-    left: 300px;
-    top: 0;
-  }
 </style>
