@@ -1,7 +1,8 @@
 function isEmpty(o) {
-  if (o === undefined) {
+  let type = typeof o
+  if (type === 'undefined') {
     return true
-  } else if (o instanceof String) {
+  } else if (type === 'string') {
     return o === true || o === '' || o === null
   } else return false
 }

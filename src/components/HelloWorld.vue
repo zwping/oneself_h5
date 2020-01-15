@@ -3,9 +3,12 @@
     <div>hello
       <div class="">
         <lgbg v-if="nullToken">登录窗口</lgbg>
-        <loading v-if="`${nullToken && !tokenAble}`">校验token</loading>
-        <div v-if="`${!nullToken && tokenAble}`"> 登录成功</div>
+        <loading v-if="token_v_ing">校验token</loading>
+        <div v-if="token_v_suc"> 登录成功</div>
       </div>
+      {{nullToken}}
+      {{token_v_ing}}
+      {{token_v_suc}}
     </div>
   </div>
 </template>
@@ -14,8 +17,8 @@
   import loginBg from './LoginBg'
   import loading from './Loading'
   import Cookies from 'js-cookie'
-  import {mapState, mapActions} from 'vuex'
   import {isEmpty} from '../libs/Empty'
+  import {subscribe} from '../libs/Bus'
 
   export default {
     data() {
@@ -27,17 +30,24 @@
     },
     computed: {
       nullToken() {
+        console.log(this.$store.state.token.token)
+        console.log(typeof this.$store.state.token.token)
+        console.log(isEmpty(this.$store.state.token.token))
         return isEmpty(this.$store.state.token.token)
       },
-      tokenAble() {
-        const able = this.$store.state.token.token_able
-        console.log(able)
-        if (!able) {
+      token_v_ing() {
+        const ing = this.$store.state.token.token_verify_ing
+        if (!ing) {
           this.$store.dispatch('token/verify_token')
         }
-        return able
+        return ing
+      },
+      token_v_suc() {
+        return this.$store.state.token.token_verify_suc
       }
     },
+    methods: {},
+    watch: {},
     created() {
       this.$store.state.token.token = Cookies.get('token')
     }

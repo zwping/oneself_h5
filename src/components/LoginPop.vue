@@ -19,6 +19,7 @@
   import {login} from '../config'
   import {post} from '../libs/HTTP'
   import {mapState} from 'vuex'
+  import {emit} from '../libs/Bus'
 
   export default {
     data() {
