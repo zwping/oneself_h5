@@ -3,7 +3,7 @@
     <div>hello
       <div class="">
         <lgbg v-if="nullToken">登录窗口</lgbg>
-        <loading v-if="`${nullToken && !tokenAble}`">校验token</loading>
+        <loading v-if="`${nullToken && !tokenAble}` ">校验token</loading>
         <div v-if="`${!nullToken && tokenAble}`"> 登录成功</div>
       </div>
     </div>
