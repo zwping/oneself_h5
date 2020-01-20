@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img alt="" src="../assets/bbg.jpg" width="100%" height="100%"/>
+    <img alt="" src="../../assets/bbg.jpg" width="100%" height="100%"/>
     <lgpop class="lgpop"></lgpop>
   </div>
 </template>

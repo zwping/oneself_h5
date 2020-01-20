@@ -16,10 +16,10 @@
 
 <script>
   import Cookies from 'js-cookie'
-  import {login} from '../config'
-  import {post} from '../libs/HTTP'
+  import {login} from '../../config'
+  import {post} from '../../libs/HTTP'
   import {mapState} from 'vuex'
-  import {emit} from '../libs/Bus'
+  import {emit} from '../../libs/Bus'
 
   export default {
     data() {
@@ -42,7 +42,7 @@
             if (r.data.code === 200) {
               this.$message.success('欢迎回来 ' + r.data.result.nickname)
               Cookies.set('token', r.data.result.token)
-              this.$store.state.token.token = r.data.result.token
+              this.$store.state.tokenx.token = r.data.result.token
             } else {
               this.$message.error(r.data.msg)
             }
