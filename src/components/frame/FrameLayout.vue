@@ -1,26 +1,21 @@
 <template>
   <a-layout class="top_level" id="components-layout-demo-side" style="min-height: 100vh">
     <a-layout-sider collapsible v-model="collapsed">
-      <div class="logo"/>
+      <div class="logo"></div>
       <a-menu theme="dark" :defaultSelectedKeys="['1']" mode="inline">
         <a-menu-item key="1">
           <a-icon type="pie-chart"/>
-          <span>Option 1</span>
+          <span>统计</span>
         </a-menu-item>
         <a-menu-item key="2">
           <a-icon type="desktop"/>
-          <span>Option 2</span>
+          <span>配置</span>
         </a-menu-item>
         <a-sub-menu key="sub1">
-          <span slot="title"><a-icon type="user"/><span>User</span></span>
+          <span slot="title"><a-icon type="user"/><span>账号</span></span>
           <a-menu-item key="3">Tom</a-menu-item>
           <a-menu-item key="4">Bill</a-menu-item>
           <a-menu-item key="5">Alex</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub2">
-          <span slot="title"><a-icon type="team"/><span>Team</span></span>
-          <a-menu-item key="6">Team 1</a-menu-item>
-          <a-menu-item key="8">Team 2</a-menu-item>
         </a-sub-menu>
         <a-menu-item key="9">
           <a-icon type="file"/>
@@ -40,7 +35,7 @@
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
-        Ant Design ©2018 Created by Ant UED
+        Oneself管理系统 ©2020 by zwping
       </a-layout-footer>
     </a-layout>
   </a-layout>
