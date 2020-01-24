@@ -7,7 +7,7 @@
           <a-icon type="pie-chart"/>
           <span>统计</span>
         </a-menu-item>
-        <a-menu-item key="2">
+        <a-menu-item key="2" @click="c1">
           <a-icon type="desktop"/>
           <span>配置</span>
         </a-menu-item>
@@ -31,7 +31,7 @@
           <a-breadcrumb-item>Bill</a-breadcrumb-item>
         </a-breadcrumb>
         <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-          Bill is a cat.
+          <fcontent></fcontent>
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -41,12 +41,22 @@
   </a-layout>
 </template>
 <script>
+  import fcontent from './FrameContent'
+
   export default {
     data() {
       return {
         collapsed: false,
       };
     },
+    components: {
+      'fcontent': fcontent
+    },
+    methods: {
+      c1: (item, key, keypath) => {
+        alert(item + key + keypath)
+      }
+    }
   };
 </script>
 

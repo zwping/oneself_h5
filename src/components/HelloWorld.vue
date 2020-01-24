@@ -1,10 +1,11 @@
 <template>
   <div>
-    <div>hello
+    <div>
       <div class="">
         <lgbg v-if="nullToken">登录窗口</lgbg>
         <loading v-if="tokenVerifyIng">校验token</loading>
         <frameLayout v-if="tokenVerifySuc">登录成功</frameLayout>
+        <rate-progress></rate-progress>
       </div>
     </div>
   </div>
@@ -14,6 +15,7 @@
   import loginBg from './login/LoginBg'
   import loading from './Loading'
   import frameLayout from './frame/FrameLayout'
+  import rateProgress from './frame/RateProgress'
   import Cookies from 'js-cookie'
   import {isEmpty} from '../libs/Empty'
   import {subscribe} from '../libs/Bus'
@@ -26,7 +28,8 @@
     components: {
       'lgbg': loginBg,
       'loading': loading,
-      'frameLayout': frameLayout
+      'frameLayout': frameLayout,
+      'rateProgress': rateProgress
     },
     computed: {
       ...mapGetters('tokenx', {

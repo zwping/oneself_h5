@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <img alt="" src="../../assets/bbg.jpg" width="100%" height="100%"/>
+  <div id="bg">
+<!--    <img alt="" src="../../assets/bbg.jpg" width="100%" height="100%"/>-->
     <lgpop class="lgpop"></lgpop>
   </div>
 </template>
@@ -17,11 +17,12 @@
 </script>
 
 <style scoped>
-  img {
+  #bg{
     position: absolute;
-    top: 0;
-    left: 0;
-    float: left;
+    background: url("../../assets/bbg.jpg") no-repeat center center;
+    min-height: 100vh;
+    width:100%;
+    background-size:cover;
   }
 
   .lgpop {

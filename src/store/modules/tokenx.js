@@ -29,7 +29,7 @@ const actions = {
   // 逻辑bug 如果token失效？
   verifyToken({commit}) {
     commit('setTokenVerifyIng')
-    if (state.token_verify_suc || isEmpty(state.token)) return
+    // if (state.token_verify_suc || isEmpty(state.token)) return
     post(vtoken, {'token': state.token})
       .then(it => {
         if (it.data.code === 200) {
@@ -37,7 +37,6 @@ const actions = {
         } else commit('emptyToken')
       })
       .catch(it => {
-        console.log('err')
         commit('emptyToken')
       })
   }
