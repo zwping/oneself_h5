@@ -35,22 +35,19 @@
     components: {},
     methods: {
       login() {
-        this.httpState = true
-        post(login, {'account': this.account, 'pwd': this.pwd})
-          .then(r => {
-            this.httpState = false
-            if (r.data.code === 200) {
-              this.$message.success('欢迎回来 ' + r.data.result.nickname)
-              Cookies.set('token', r.data.result.token)
-              this.$store.state.tokenx.token = r.data.result.token
-            } else {
-              this.$message.error(r.data.msg)
-            }
-          })
-          .catch(r => {
-            this.httpState = false
-            this.$message.error('登录失败')
-          })
+        post(login,
+          r => {
+            this.$message.success('欢迎回来 ' + r.result.nickname)
+            Cookies.set('token', r.result.token)
+            this.$store.state.tokenx.token = r.result.token
+          },
+          it => {
+            this.httpState = it
+          },
+          {'account': this.account, 'pwd': this.pwd},
+          it => {
+            this.$message.error(it.msg)
+          }, true)
       }
     },
     watch: {},

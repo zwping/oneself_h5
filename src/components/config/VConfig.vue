@@ -4,9 +4,8 @@
       <div>
         <a-textarea
           style="width: 80%;float:left"
-          :value="cookie"
+          v-model="cookie"
           placeholder="请前往jd获取网络请求的Cookie"
-          autosize="true"
         />
         <a-button type="primary" :loading="editLoading" class="box_1" @click="c1">修改</a-button>
         <a-button type="danger" :loading="testLoading" class="box_1" @click="c2">测试</a-button>
@@ -16,8 +15,8 @@
 </template>
 
 <script>
-  import {post} from '../../libs/HTTP'
-  import {setJdCookie, jdCookie} from '../../config'
+  import {post, get} from '../../libs/HTTP'
+  import {setJdCookie, jdCookie, testJdCookie} from '../../config'
 
   export default {
     name: "Config",
@@ -30,34 +29,32 @@
     },
     methods: {
       c1() {
-        this.editLoading = true
-        post(setJdCookie, {'cookie': this.cookie})
-          .then(it => {
-            this.editLoading = false
-            console.log(it.data)
-            if (it.data.code === 200) {
-
-            } else {
-
-            }
-          })
-          .catch(it => {
-            this.editLoading = false
-          })
+        post(setJdCookie,
+          suc => {
+            this.$message.success('修改成功')
+          },
+          it => {
+            this.editLoading = it
+          },
+          {'cookie': this.cookie}
+        )
       },
       c2() {
-
+        get(testJdCookie,
+          suc => {
+            this.$message.success(suc.result)
+          },
+          it => {
+            this.testLoading = it
+          })
       }
     },
     created() {
-      post(jdCookie)
-        .then(it => {
+      post(jdCookie,
+        suc => {
           this.$nextTick(function () {
-            this.cookie = it.data.result
+            this.cookie = suc.result
           })
-        })
-        .catch(it => {
-          console.log(it)
         })
     }
   }

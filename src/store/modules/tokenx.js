@@ -29,14 +29,12 @@ const actions = {
   // 逻辑bug 如果token失效？
   verifyToken({commit}) {
     commit('setTokenVerifyIng')
-    // if (state.token_verify_suc || isEmpty(state.token)) return
-    post(vtoken, {'token': state.token})
-      .then(it => {
-        if (it.data.code === 200) {
-          commit('setTokenVerifySuc')
-        } else commit('emptyToken')
-      })
-      .catch(it => {
+    if (state.token_verify_suc || isEmpty(state.token)) return
+    post(vtoken, it => {
+        commit('setTokenVerifySuc')
+      }, it => {
+      }, {'token': Cookies.get('token')},
+      it => {
         commit('emptyToken')
       })
   }
