@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-progress :percent="progress" strokeWidth="3" status="active" :showInfo="false"/>
+    <a-progress :percent="progress" status="active" :showInfo="false"/>
   </div>
 </template>
 

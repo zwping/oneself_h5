@@ -13,8 +13,8 @@ axiosInstance.interceptors.request.use(
   config => {
     let token = Cookies.get('token')
     if (token) {
-      console.log(config)
-      // config.data.push({'token': token})
+      // console.log(config.data)
+      // config.data = {'token': token}
     }
     return config
   },
