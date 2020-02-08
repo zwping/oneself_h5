@@ -24,7 +24,9 @@
       </a-menu>
     </a-layout-sider>
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 0"/>
+      <a-layout-header style="background: #fff; padding: 0">
+        <hcontent></hcontent>
+      </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
           <a-breadcrumb-item>User</a-breadcrumb-item>
@@ -42,6 +44,7 @@
 </template>
 <script>
   import fcontent from './FrameContent'
+  import hcontnet from './HeaderContent'
 
   export default {
     data() {
@@ -50,7 +53,8 @@
       };
     },
     components: {
-      'fcontent': fcontent
+      'fcontent': fcontent,
+      'hcontent': hcontnet
     },
     methods: {
       c1: (item, key, keypath) => {

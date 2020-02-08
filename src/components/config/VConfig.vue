@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>Cookie
+    <div>JD Cookie
       <div>
         <a-textarea
           style="width: 80%;float:left"

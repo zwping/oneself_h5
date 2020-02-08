@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span>加载中</span>
+    <span>校验Token中</span>
     <a-spin></a-spin>
   </div>
 </template>
