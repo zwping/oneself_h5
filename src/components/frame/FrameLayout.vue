@@ -1,44 +1,62 @@
 <template>
-  <a-layout class="top_level" id="components-layout-demo-side" style="min-height: 100vh">
-    <a-layout-sider collapsible v-model="collapsed">
-      <div class="logo"></div>
-      <a-menu theme="dark" :defaultSelectedKeys="['1']" mode="inline">
-        <a-menu-item key="1">
-          <a-icon type="pie-chart"/>
-          <span>统计</span>
-        </a-menu-item>
-        <a-menu-item key="2" @click="c1">
-          <a-icon type="desktop"/>
-          <span>配置</span>
-        </a-menu-item>
-        <a-sub-menu key="sub1">
-          <span slot="title"><a-icon type="user"/><span>账号</span></span>
-          <a-menu-item key="3">Tom</a-menu-item>
-          <a-menu-item key="4">Bill</a-menu-item>
-          <a-menu-item key="5">Alex</a-menu-item>
-        </a-sub-menu>
-        <a-menu-item key="9">
-          <a-icon type="file"/>
-          <span>File</span>
-        </a-menu-item>
-      </a-menu>
-    </a-layout-sider>
+  <a-layout id="components-layout-demo-top-side-2">
+    <a-layout-header class="header">
+      <!--      <div class="logo"/>-->
+      <!--      <a-menu-->
+      <!--        theme="dark"-->
+      <!--        mode="horizontal"-->
+      <!--        :defaultSelectedKeys="['2']"-->
+      <!--        :style="{ lineHeight: '64px' }"-->
+      <!--      >-->
+      <!--        <a-menu-item key="1">nav 1</a-menu-item>-->
+      <!--        <a-menu-item key="2">nav 2</a-menu-item>-->
+      <!--        <a-menu-item key="3">nav 3</a-menu-item>-->
+      <!--      </a-menu>-->
+      <hcontent></hcontent>
+    </a-layout-header>
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 0">
-        <hcontent></hcontent>
-      </a-layout-header>
-      <a-layout-content style="margin: 0 16px">
+      <a-layout-sider width="200" style="background: #fff">
+        <a-menu
+          mode="inline"
+          :defaultSelectedKeys="['1']"
+          :defaultOpenKeys="['sub1']"
+          :style="{ height: '100%', borderRight: 0 }"
+        >
+          <a-sub-menu key="sub1">
+            <span slot="title"><a-icon type="user"/>subnav 1</span>
+            <a-menu-item key="1">option1</a-menu-item>
+            <a-menu-item key="2">option2</a-menu-item>
+            <a-menu-item key="3">option3</a-menu-item>
+            <a-menu-item key="4">option4</a-menu-item>
+          </a-sub-menu>
+          <a-sub-menu key="sub2">
+            <span slot="title"><a-icon type="laptop"/>subnav 2</span>
+            <a-menu-item key="5">option5</a-menu-item>
+            <a-menu-item key="6">option6</a-menu-item>
+            <a-menu-item key="7">option7</a-menu-item>
+            <a-menu-item key="8">option8</a-menu-item>
+          </a-sub-menu>
+          <a-sub-menu key="sub3">
+            <span slot="title"><a-icon type="notification"/>subnav 3</span>
+            <a-menu-item key="9">option9</a-menu-item>
+            <a-menu-item key="10">option10</a-menu-item>
+            <a-menu-item key="11">option11</a-menu-item>
+            <a-menu-item key="12">option12</a-menu-item>
+          </a-sub-menu>
+        </a-menu>
+      </a-layout-sider>
+      <a-layout style="padding: 0 24px 24px">
         <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item>User</a-breadcrumb-item>
-          <a-breadcrumb-item>Bill</a-breadcrumb-item>
+          <a-breadcrumb-item>Home</a-breadcrumb-item>
+          <a-breadcrumb-item>List</a-breadcrumb-item>
+          <a-breadcrumb-item>App</a-breadcrumb-item>
         </a-breadcrumb>
-        <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
+        <a-layout-content
+          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
+        >
           <fcontent></fcontent>
-        </div>
-      </a-layout-content>
-      <a-layout-footer style="text-align: center">
-        Oneself管理系统 ©2020 by zwping
-      </a-layout-footer>
+        </a-layout-content>
+      </a-layout>
     </a-layout>
   </a-layout>
 </template>
@@ -56,26 +74,15 @@
       'fcontent': fcontent,
       'hcontent': hcontnet
     },
-    methods: {
-      c1: (item, key, keypath) => {
-        alert(item + key + keypath)
-      }
-    }
   };
 </script>
 
 <style>
-  .top_level {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  #components-layout-demo-side .logo {
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px;
-  }
+  /*#components-layout-demo-top-side-2 .logo {*/
+  /*  width: 120px;*/
+  /*  height: 31px;*/
+  /*  background: rgba(255, 255, 255, 0.2);*/
+  /*  margin: 16px 28px 16px 0;*/
+  /*  float: left;*/
+  /*}*/
 </style>

@@ -1,8 +1,10 @@
 <template>
   <div class="radius_bg" :style="{ width:`${w}px`,height:`${h}px`,marginLeft:`-${w/2}px`,marginTop:`-${h/2}px` }">
     <h3>Sign in</h3>
-    <a-input v-model="account" class="top1" placeholder="账号" allowClear/>
-    <a-input-password v-model="pwd" class="top1" placeholder="密码" allowClear/>
+    <a-input v-model="account" class="top1" placeholder="账号"
+             @keyup.enter.native="login_key" allowClear/>
+    <a-input-password v-model="pwd" class="top1" placeholder="密码"
+                      @keyup.enter.native="login_key" allowClear/>
     <a-button @click="login" id="log_btn" class="top2" type="primary" block :loading="httpState" :disabled="!dis">登录
     </a-button>
     <a-popover placement="bottom" trigger="click" style="float:right;margin-top: 10px">
@@ -19,7 +21,7 @@
   import {login} from '../../config'
   import {post} from '../../libs/HTTP'
   import {mapState} from 'vuex'
-  import {emit} from '../../libs/Bus'
+  import {isEmpty} from "../../libs/Empty";
 
   export default {
     data() {
@@ -35,6 +37,9 @@
     components: {},
     methods: {
       login() {
+        if (this.httpState) {
+          return
+        }
         post(login,
           r => {
             this.$message.success('欢迎回来 ' + r.result.nickname)
@@ -48,6 +53,15 @@
           it => {
             this.$message.error(it.msg)
           }, true)
+      },
+      login_key() {
+        if (isEmpty(this.account)) {
+          this.$message.warning('请输入账号')
+        } else if (isEmpty(this.pwd)) {
+          this.$message.warning("请输入密码")
+        } else {
+          this.login()
+        }
       }
     },
     watch: {},

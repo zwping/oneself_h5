@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>JD Cookie
+    <div>JD Cookie <a target="_blank" href="https://quan.jd.com/user_quan.action?tab=&couponType=-1&sort=3&page=1">优惠卷页面</a>
       <div>
         <a-textarea
           style="width: 80%;float:left"

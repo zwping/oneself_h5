@@ -66,12 +66,12 @@ function commCallback(request, sucCallback, errorCallback, loadingCallback, shie
     })
 }
 
-function post(url, success, loading = CommCallback, params = {}, error = CommCallback, shieldMeeage = false) {
-  commCallback(axiosInstance.post(url, qs.stringify(params)), success, error, loading, shieldMeeage)
+function post(url, success, loading = CommCallback, params = {}, error = CommCallback, shieldMessage = false) {
+  commCallback(axiosInstance.post(url, qs.stringify(params)), success, error, loading, shieldMessage)
 }
 
-function get(url, success, loading = CommCallback, params = {}, error = CommCallback, shieldMeeage = false) {
-  commCallback(axiosInstance.get(url), success, error, loading, shieldMeeage)
+function get(url, success, loading = CommCallback, params = {}, error = CommCallback, shieldMessage = false) {
+  commCallback(axiosInstance.get(url), success, error, loading, shieldMessage)
 }
 
 export {post, get}
