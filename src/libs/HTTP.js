@@ -47,6 +47,7 @@ function commCallback(request, sucCallback, errorCallback, loadingCallback, shie
   loadingCallback(true)
   request
     .then(it => {
+      console.log(it)
       if (it.data.code === 200) {
         sucCallback(it.data)
       } else {
@@ -58,6 +59,7 @@ function commCallback(request, sucCallback, errorCallback, loadingCallback, shie
       loadingCallback(false)
     })
     .catch(it => {
+      console.log(it)
       if (!shieldMessage) {
         vue.$message.error(it.message)
       }
