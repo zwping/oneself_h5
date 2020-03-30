@@ -21,11 +21,13 @@
   import {login} from '../../config'
   import {post} from '../../libs/HTTP'
   import {mapState} from 'vuex'
-  import {isEmpty} from "../../libs/Empty";
+  import {isEmpty} from '../../libs/Empty'
+  import {Button, Input, Popover} from 'ant-design-vue'
 
   export default {
     data() {
       return {
+        type: 'password',
         w: 600,
         h: 400,
         account: 'zwp',
@@ -34,7 +36,12 @@
         httpState: false
       }
     },
-    components: {},
+    components: {
+      [Button.name]: Button,
+      [Input.name]: Input,
+      [Input.Password.name]: Input,
+      [Popover.name]: Popover
+    },
     methods: {
       login() {
         if (this.httpState) {
@@ -74,6 +81,7 @@
       })
     },
     created() {
+      console.log(Input.Password.name)
     }
   }
 </script>
