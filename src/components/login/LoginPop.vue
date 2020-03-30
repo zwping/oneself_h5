@@ -39,7 +39,7 @@
     components: {
       [Button.name]: Button,
       [Input.name]: Input,
-      [Input.Password.name]: Input,
+      [Input.Password.name]: Input.Password,
       [Popover.name]: Popover
     },
     methods: {

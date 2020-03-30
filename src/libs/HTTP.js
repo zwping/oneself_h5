@@ -2,6 +2,7 @@ import axios from 'axios'
 import qs from 'Qs'
 import Cookies from 'js-cookie'
 import Vue from 'vue'
+import {isEmpty} from "./Empty"
 
 const vue = new Vue()
 
@@ -59,11 +60,11 @@ function commCallback(request, sucCallback, errorCallback, loadingCallback, shie
       loadingCallback(false)
     })
     .catch(it => {
-      console.log(it)
+      console.log('网络请求崩溃:' + it)
       if (!shieldMessage) {
         vue.$message.error(it.message)
       }
-      errorCallback(it)
+      // errorCallback(it)
       loadingCallback(false)
     })
 }
