@@ -9,8 +9,14 @@
 </template>
 
 <script>
+  import {Badge, Avatar} from 'ant-design-vue'
+
   export default {
-    name: "TopContent"
+    name: "TopContent",
+    components: {
+      [Badge.name]: Badge,
+      [Avatar.name]: Avatar
+    }
   }
 </script>
 

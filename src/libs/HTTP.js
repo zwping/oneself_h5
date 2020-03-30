@@ -64,7 +64,7 @@ function commCallback(request, sucCallback, errorCallback, loadingCallback, shie
       if (!shieldMessage) {
         vue.$message.error(it.message)
       }
-      // errorCallback(it)
+      errorCallback(it)
       loadingCallback(false)
     })
 }

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div>JD Cookie <a target="_blank" href="https://quan.jd.com/user_quan.action?tab=&couponType=-1&sort=3&page=1">优惠卷页面</a>
+    <div>JD Cookie <a target="_blank"
+                      href="https://quan.jd.com/user_quan.action?tab=&couponType=-1&sort=3&page=1">优惠卷页面</a>
       <div>
         <a-textarea
           style="width: 80%;float:left"
@@ -17,6 +18,7 @@
 <script>
   import {post, get} from '../../libs/HTTP'
   import {setJdCookie, jdCookie, testJdCookie} from '../../config'
+  import {Button, Input} from 'ant-design-vue'
 
   export default {
     name: "Config",
@@ -26,6 +28,10 @@
         editLoading: false,
         testLoading: false
       }
+    },
+    components: {
+      [Button.name]: Button,
+      [Input.TextArea.name]: Input.TextArea
     },
     methods: {
       c1() {

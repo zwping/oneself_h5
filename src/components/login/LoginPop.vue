@@ -58,7 +58,7 @@
           },
           {'account': this.account, 'pwd': this.pwd},
           it => {
-            this.$message.error(it.msg)
+            this.$message.error(isEmpty(it.msg) ? 'Network Error' : it.msg)
           }, true)
       },
       login_key() {

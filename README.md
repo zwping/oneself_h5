@@ -16,6 +16,12 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
+
+# scp上传文件
+scp -r dist/ root@47.110.68.119:/home/oneself_ms/dist
+
+# 本地运行dist
+
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

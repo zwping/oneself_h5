@@ -63,18 +63,29 @@
 <script>
   import fcontent from './FrameContent'
   import hcontnet from './HeaderContent'
+  import {Layout, Menu, Breadcrumb, Icon} from 'ant-design-vue'
 
   export default {
     data() {
       return {
         collapsed: false,
-      };
+      }
     },
     components: {
       'fcontent': fcontent,
-      'hcontent': hcontnet
-    },
-  };
+      'hcontent': hcontnet,
+      [Layout.name]: Layout,
+      [Layout.Header.name]: Layout.Header,
+      [Layout.Sider.name]: Layout.Sider,
+      [Layout.Content.name]: Layout.Content,
+      [Menu.name]: Menu,
+      [Menu.SubMenu.name]: Menu.SubMenu,
+      [Menu.Item.name]: Menu.Item,
+      [Breadcrumb.name]: Breadcrumb,
+      [Breadcrumb.Item.name]: Breadcrumb.Item,
+      [Icon.name]: Icon
+    }
+  }
 </script>
 
 <style>

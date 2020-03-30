@@ -5,12 +5,17 @@
 </template>
 
 <script>
+  import {Progress} from 'ant-design-vue'
+
   export default {
     name: "RateProgress",
     data() {
       return {
         progress: 99
       }
+    },
+    components: {
+      [Progress.name]: Progress
     }
   }
 </script>
