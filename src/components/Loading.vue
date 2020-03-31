@@ -6,7 +6,12 @@
 </template>
 
 <script>
+  import {Spin} from 'ant-design-vue'
+
   export default {
+    components: {
+      [Spin.name]: Spin
+    },
     created() {
 
     }

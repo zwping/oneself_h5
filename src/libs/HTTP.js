@@ -41,14 +41,13 @@ function CommCallback(it) {
  * @param request 请求
  * @param sucCallback 成功回执
  * @param errorCallback 错误回执
- * @param loadingCallback 请求中回值
+ * @param loading 请求中的状态值
  * @param shieldMessage 屏蔽底层消息通知
  */
-function commCallback(request, sucCallback, errorCallback, loadingCallback, shieldMessage = false) {
-  loadingCallback(true)
+function commCallback(request, sucCallback, errorCallback, loading = LOADING, shieldMessage = false) {
+  loading.loading = true
   request
     .then(it => {
-      console.log(it)
       if (it.data.code === 200) {
         sucCallback(it.data)
       } else {
@@ -57,7 +56,7 @@ function commCallback(request, sucCallback, errorCallback, loadingCallback, shie
         }
         errorCallback(it.data)
       }
-      loadingCallback(false)
+      loading.loading = false
     })
     .catch(it => {
       console.log('网络请求崩溃:' + it)
@@ -65,16 +64,24 @@ function commCallback(request, sucCallback, errorCallback, loadingCallback, shie
         vue.$message.error(it.message)
       }
       errorCallback(it)
-      loadingCallback(false)
+      loading.loading = false
     })
 }
 
-function post(url, success, loading = CommCallback, params = {}, error = CommCallback, shieldMessage = false) {
+function post(url, success, loading = LOADING, params = {}, error = CommCallback, shieldMessage = false) {
   commCallback(axiosInstance.post(url, qs.stringify(params)), success, error, loading, shieldMessage)
 }
 
-function get(url, success, loading = CommCallback, params = {}, error = CommCallback, shieldMessage = false) {
+function get(url, success, loading = LOADING, params = {}, error = CommCallback, shieldMessage = false) {
   commCallback(axiosInstance.get(url), success, error, loading, shieldMessage)
 }
 
-export {post, get}
+/**
+ * 加载状态 对象
+ * @constructor loading
+ */
+function LOADING() {
+  this.loading = false
+}
+
+export {post, get, LOADING}

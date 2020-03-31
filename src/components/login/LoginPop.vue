@@ -5,7 +5,7 @@
              @keyup.enter.native="login_key" allowClear/>
     <a-input-password v-model="pwd" class="top1" placeholder="密码"
                       @keyup.enter.native="login_key" allowClear/>
-    <a-button @click="login" id="log_btn" class="top2" type="primary" block :loading="httpState" :disabled="!dis">登录
+    <a-button @click="login" id="log_btn" class="top2" type="primary" block :loading="httpState.loading" :disabled="!dis">登录
     </a-button>
     <a-popover placement="bottom" trigger="click" style="float:right;margin-top: 10px">
       <template slot="content">
@@ -19,7 +19,7 @@
 <script>
   import Cookies from 'js-cookie'
   import {login} from '../../config'
-  import {post} from '../../libs/HTTP'
+  import {LOADING, post} from '../../libs/HTTP'
   import {mapState} from 'vuex'
   import {isEmpty} from '../../libs/Empty'
   import {Button, Input, Popover} from 'ant-design-vue'
@@ -33,7 +33,7 @@
         account: 'zwp',
         pwd: '123',
         conn_txt: '1101558280@qq.com',
-        httpState: false
+        httpState: new LOADING()
       }
     },
     components: {
@@ -44,18 +44,13 @@
     },
     methods: {
       login() {
-        if (this.httpState) {
-          return
-        }
         post(login,
           r => {
             this.$message.success('欢迎回来 ' + r.result.nickname)
             Cookies.set('token', r.result.token)
             this.$store.state.tokenx.token = r.result.token
           },
-          it => {
-            this.httpState = it
-          },
+          this.httpState,
           {'account': this.account, 'pwd': this.pwd},
           it => {
             this.$message.error(isEmpty(it.msg) ? 'Network Error' : it.msg)

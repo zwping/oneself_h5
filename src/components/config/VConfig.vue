@@ -8,15 +8,15 @@
           v-model="cookie"
           placeholder="请前往jd获取网络请求的Cookie"
         />
-        <a-button type="primary" :loading="editLoading" class="box_1" @click="c1">修改</a-button>
-        <a-button type="danger" :loading="testLoading" class="box_1" @click="c2">测试</a-button>
+        <a-button type="primary" :loading="editLoading.loading" class="box_1" @click="c1">修改</a-button>
+        <a-button type="danger" :loading="testLoading.loading" class="box_1" @click="c2">测试</a-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import {post, get} from '../../libs/HTTP'
+  import {post, get, LOADING} from '../../libs/HTTP'
   import {setJdCookie, jdCookie, testJdCookie} from '../../config'
   import {Button, Input} from 'ant-design-vue'
 
@@ -25,8 +25,8 @@
     data() {
       return {
         cookie: '',
-        editLoading: false,
-        testLoading: false
+        editLoading: new LOADING(),
+        testLoading: new LOADING()
       }
     },
     components: {
@@ -39,9 +39,7 @@
           suc => {
             this.$message.success('修改成功')
           },
-          it => {
-            this.editLoading = it
-          },
+          this.editLoading,
           {'cookie': this.cookie}
         )
       },
@@ -50,9 +48,7 @@
           suc => {
             this.$message.success(suc.result)
           },
-          it => {
-            this.testLoading = it
-          })
+          this.testLoading)
       }
     },
     created() {

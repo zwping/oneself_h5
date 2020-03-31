@@ -1,6 +1,7 @@
 <template>
-  <div style="display: flex; justify-content: flex-end; align-items: center">
+  <div id="root">
     <div>
+      <span>Oneself - 管理系统</span>
       <a-badge dot>
         <a-avatar shape="square" icon="user"/>
       </a-badge>
@@ -21,5 +22,12 @@
 </script>
 
 <style scoped>
+  #root {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center
+  }
 
+  span {
+  }
 </style>
