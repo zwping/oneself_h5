@@ -1,12 +1,11 @@
 <template>
   <div>
-    <vconfig v-if="vconfig"></vconfig>
+    <vconfig v-if="vconfig"/>
   </div>
 </template>
 
 <script>
   import vconfig from '../config/VConfig'
-  import subscribe from '../../libs/Bus'
 
   export default {
     name: "FrameContent",

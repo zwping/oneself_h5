@@ -5,7 +5,8 @@
              @keyup.enter.native="login_key" allowClear/>
     <a-input-password v-model="pwd" class="top1" placeholder="密码"
                       @keyup.enter.native="login_key" allowClear/>
-    <a-button @click="login" id="log_btn" class="top2" type="primary" block :loading="httpState.loading" :disabled="!dis">登录
+    <a-button @click="login" id="log_btn" class="top2" type="primary" block :loading="httpState.loading"
+              :disabled="!dis">登录
     </a-button>
     <a-popover placement="bottom" trigger="click" style="float:right;margin-top: 10px">
       <template slot="content">
@@ -76,7 +77,7 @@
       })
     },
     created() {
-      console.log(Input.Password.name)
+      // console.log(Input.Password.name)
     }
   }
 </script>

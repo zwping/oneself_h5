@@ -1,10 +1,10 @@
 import axios from 'axios'
 import qs from 'Qs'
 import Cookies from 'js-cookie'
+import {message} from "ant-design-vue"
 import Vue from 'vue'
-import {isEmpty} from "./Empty"
 
-const vue = new Vue()
+Vue.prototype.$message = message // 按需加载message
 
 let axiosInstance = axios.create({
   timeout: 5000
@@ -44,27 +44,27 @@ function CommCallback(it) {
  * @param loading 请求中的状态值
  * @param shieldMessage 屏蔽底层消息通知
  */
-function commCallback(request, sucCallback, errorCallback, loading = LOADING, shieldMessage = false) {
-  loading.loading = true
+function commCallback(request, sucCallback, errorCallback, loading = null, shieldMessage = false) {
+  __setLoading(loading, true)
   request
     .then(it => {
       if (it.data.code === 200) {
         sucCallback(it.data)
       } else {
         if (!shieldMessage) {
-          vue.$message.error(it.data.msg)
+          message.error(it.data.msg)
         }
         errorCallback(it.data)
       }
-      loading.loading = false
+      __setLoading(loading, false)
     })
     .catch(it => {
       console.log('网络请求崩溃:' + it)
       if (!shieldMessage) {
-        vue.$message.error(it.message)
+        message.error(it.message)
       }
       errorCallback(it)
-      loading.loading = false
+      __setLoading(loading, false)
     })
 }
 
@@ -74,6 +74,13 @@ function post(url, success, loading = LOADING, params = {}, error = CommCallback
 
 function get(url, success, loading = LOADING, params = {}, error = CommCallback, shieldMessage = false) {
   commCallback(axiosInstance.get(url), success, error, loading, shieldMessage)
+}
+
+function __setLoading(loading, value) {
+  if (loading === null) return
+  if (loading instanceof LOADING) {
+    loading.loading = value
+  }
 }
 
 /**

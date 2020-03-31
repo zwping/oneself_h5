@@ -1,7 +1,7 @@
 <template>
   <div id="root">
-    <div>
-      <span>Oneself - 管理系统</span>
+    <span class="title">Oneself - 管理系统</span>
+    <div class="portrait">
       <a-badge dot>
         <a-avatar shape="square" icon="user"/>
       </a-badge>
@@ -24,10 +24,19 @@
 <style scoped>
   #root {
     display: flex;
-    justify-content: flex-end;
-    align-items: center
+    display: -webkit-flex;
+    justify-content: space-between;
   }
 
-  span {
+  .title {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: "Arial Black";
   }
+
+  .portrait {
+    align-content: center;
+  }
+
 </style>

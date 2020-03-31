@@ -18,7 +18,10 @@ npm run build
 npm run build --report
 
 # scp上传文件
-scp -r dist/ root@47.110.68.119:/home/oneself_ms/dist
+scp -r dist root@47.110.68.119:/home/oneself_ms
+
+#
+nginx -s reload
 
 # 本地运行dist
 

@@ -4,9 +4,6 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import {message} from 'ant-design-vue'
-
-Vue.prototype.$message = message
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */
