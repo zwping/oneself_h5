@@ -19,6 +19,7 @@
   import {post, get, LOADING} from '../../libs/HTTP'
   import {setJdCookie, jdCookie, testJdCookie} from '../../config'
   import {Button, Input} from 'ant-design-vue'
+  import {msg} from '../../libs/Antdv'
 
   export default {
     name: "Config",
@@ -37,7 +38,7 @@
       c1() {
         post(setJdCookie,
           suc => {
-            this.$message.success('修改成功')
+            msg.success('修改成功')
           },
           this.editLoading,
           {'cookie': this.cookie}
@@ -46,7 +47,7 @@
       c2() {
         get(testJdCookie,
           suc => {
-            this.$message.success(suc.result)
+            msg.success(suc.result)
           },
           this.testLoading)
       }

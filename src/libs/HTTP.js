@@ -1,10 +1,7 @@
 import axios from 'axios'
 import qs from 'Qs'
 import Cookies from 'js-cookie'
-import {message} from "ant-design-vue"
-import Vue from 'vue'
-
-Vue.prototype.$message = message // 按需加载message
+import {msg} from './Antdv'
 
 let axiosInstance = axios.create({
   timeout: 5000
@@ -52,7 +49,7 @@ function commCallback(request, sucCallback, errorCallback, loading = null, shiel
         sucCallback(it.data)
       } else {
         if (!shieldMessage) {
-          message.error(it.data.msg)
+          msg.error(it.data.msg)
         }
         errorCallback(it.data)
       }
@@ -61,7 +58,7 @@ function commCallback(request, sucCallback, errorCallback, loading = null, shiel
     .catch(it => {
       console.log('网络请求崩溃:' + it)
       if (!shieldMessage) {
-        message.error(it.message)
+        msg.error(it.message)
       }
       errorCallback(it)
       __setLoading(loading, false)

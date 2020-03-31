@@ -24,6 +24,7 @@
   import {mapState} from 'vuex'
   import {isEmpty} from '../../libs/Empty'
   import {Button, Input, Popover} from 'ant-design-vue'
+  import {msg} from '../../libs/Antdv'
 
   export default {
     data() {
@@ -47,21 +48,21 @@
       login() {
         post(login,
           r => {
-            this.$message.success('欢迎回来 ' + r.result.nickname)
+            msg.success('欢迎回来 ' + r.result.nickname)
             Cookies.set('token', r.result.token)
             this.$store.state.tokenx.token = r.result.token
           },
           this.httpState,
           {'account': this.account, 'pwd': this.pwd},
           it => {
-            this.$message.error(isEmpty(it.msg) ? 'Network Error' : it.msg)
+            msg.error(isEmpty(it.msg) ? 'Network Error' : it.msg)
           }, true)
       },
       login_key() {
         if (isEmpty(this.account)) {
-          this.$message.warning('请输入账号')
+          msg.warning('请输入账号')
         } else if (isEmpty(this.pwd)) {
-          this.$message.warning("请输入密码")
+          msg.warning("请输入密码")
         } else {
           this.login()
         }
