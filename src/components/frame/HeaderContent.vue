@@ -5,24 +5,27 @@
       <div class="portrait">
         <a-avatar shape="square" icon="user"/>
       </div>
+
       <div @mouseover="setting_anim" class="setting">
-        <a-badge :dot="setting_dot">
-          <a-icon :spin="setting_icon_spin" theme="filled" class="icon1" type="setting"/>
-        </a-badge>
+        <a @click="signOut" style="color:white">Sign out</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import {Badge, Avatar, Icon} from 'ant-design-vue'
+  import Cookies from 'js-cookie'
+  import {Badge, Avatar, Icon, Dropdown, Menu, message} from 'ant-design-vue'
 
   export default {
     name: "TopContent",
     components: {
       [Badge.name]: Badge,
       [Avatar.name]: Avatar,
-      [Icon.name]: Icon
+      [Icon.name]: Icon,
+      [Dropdown.name]: Dropdown,
+      [Menu.name]: Menu,
+      [Menu.Item.name]: Menu.Item
     },
     data() {
       return {
@@ -37,6 +40,11 @@
           this.setting_icon_spin = false
         }, 500)
       },
+      signOut() {
+        Cookies.remove('token')
+        message.success('成功登出 !')
+        this.$store.dispatch('tokenx/verifyToken')
+      }
     }
   }
 </script>
@@ -66,9 +74,9 @@
 
   .setting {
     align-items: center;
-    width: 38px;
     display: -webkit-flex;
     display: flex;
+    padding: 0 0 0 10px;
     justify-content: center;
   }
 
