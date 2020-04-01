@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'Qs'
 import Cookies from 'js-cookie'
-import {msg} from './Antdv'
+import {message} from "ant-design-vue"
 
 let axiosInstance = axios.create({
   timeout: 5000
@@ -11,8 +11,8 @@ axiosInstance.interceptors.request.use(
   config => {
     let token = Cookies.get('token')
     if (token) {
-      // console.log(config.data)
-      // config.data = {'token': token}
+      // console.log(configure.data)
+      // configure.data = {'token': token}
     }
     return config
   },
@@ -49,7 +49,7 @@ function commCallback(request, sucCallback, errorCallback, loading = null, shiel
         sucCallback(it.data)
       } else {
         if (!shieldMessage) {
-          msg.error(it.data.msg)
+          message.error(it.data.msg)
         }
         errorCallback(it.data)
       }
@@ -58,7 +58,7 @@ function commCallback(request, sucCallback, errorCallback, loading = null, shiel
     .catch(it => {
       console.log('网络请求崩溃:' + it)
       if (!shieldMessage) {
-        msg.error(it.message)
+        message.error(it.message)
       }
       errorCallback(it)
       __setLoading(loading, false)

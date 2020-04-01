@@ -1,21 +1,21 @@
 <template>
   <div>
-    <vconfig v-if="vconfig"/>
+    <jdConfigureView v-if="jdConfigureView"/>
   </div>
 </template>
 
 <script>
-  import vconfig from '../config/VConfig'
+  import jdConfigureView from '../configure/JDConfigure'
 
   export default {
     name: "FrameContent",
     data() {
       return {
-        vconfig: true
+        jdConfigureView: true
       }
     },
     components: {
-      'vconfig': vconfig
+      'jdConfigureView': jdConfigureView
     }
   }
 </script>

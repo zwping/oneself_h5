@@ -3,10 +3,11 @@
     <div>JD Cookie <a target="_blank"
                       href="https://quan.jd.com/user_quan.action?tab=&couponType=-1&sort=3&page=1">优惠卷页面</a>
       <div>
-        <a-textarea
+        <a-input
           style="width: 80%;float:left"
           v-model="cookie"
           placeholder="请前往jd获取网络请求的Cookie"
+          allowClear
         />
         <a-button type="primary" :loading="editLoading.loading" class="box_1" @click="c1">修改</a-button>
         <a-button type="danger" :loading="testLoading.loading" class="box_1" @click="c2">测试</a-button>
@@ -18,8 +19,7 @@
 <script>
   import {post, get, LOADING} from '../../libs/HTTP'
   import {setJdCookie, jdCookie, testJdCookie} from '../../config'
-  import {Button, Input} from 'ant-design-vue'
-  import {msg} from '../../libs/Antdv'
+  import {Button, Input, message} from 'ant-design-vue'
 
   export default {
     name: "Config",
@@ -32,13 +32,14 @@
     },
     components: {
       [Button.name]: Button,
-      [Input.TextArea.name]: Input.TextArea
+      [Input.TextArea.name]: Input.TextArea,
+      [Input.name]: Input
     },
     methods: {
       c1() {
         post(setJdCookie,
           suc => {
-            msg.success('修改成功')
+            message.success('修改成功')
           },
           this.editLoading,
           {'cookie': this.cookie}
@@ -47,9 +48,17 @@
       c2() {
         get(testJdCookie,
           suc => {
-            msg.success(suc.result)
+            message.success(suc.result)
           },
           this.testLoading)
+      },
+      jd_cookie_paste() {
+      },
+      onCopy() {
+        console.log(111)
+      },
+      onError() {
+        console.log(222)
       }
     },
     created() {
