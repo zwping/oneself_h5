@@ -3,9 +3,9 @@
     <div>
       <div class="">
         <lgbg v-if="nullToken">登录窗口</lgbg>
-        <frameLayout v-if="tokenVerifySuc">登录成功</frameLayout>
+        <frameLayout v-show="!tokenVerifyIng" v-if="tokenVerifySuc">登录成功</frameLayout>
         <loading v-if="tokenVerifyIng">校验token</loading>
-<!--        <rate-progress></rate-progress>-->
+        <!--        <rate-progress></rate-progress>-->
       </div>
     </div>
   </div>

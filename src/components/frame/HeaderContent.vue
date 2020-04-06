@@ -43,7 +43,7 @@
       signOut() {
         Cookies.remove('token')
         message.success('成功登出 !')
-        this.$store.dispatch('tokenx/verifyToken')
+        this.$store.dispatch('tokenx/logout')
       }
     }
   }

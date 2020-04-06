@@ -10,7 +10,7 @@
     </a-button>
     <a-popover placement="bottom" trigger="click" style="float:right;margin-top: 10px">
       <template slot="content">
-        <p>{{conn_txt}}</p>
+        {{conn_txt}}
       </template>
       <a-button type="link" style="padding: 0">联系管理员</a-button>
     </a-popover>
@@ -19,11 +19,11 @@
 
 <script>
   import Cookies from 'js-cookie'
-  import {login} from '../../config'
-  import {LOADING, post} from '../../libs/HTTP'
+  import {LOADING} from '../../libs/HTTP'
   import {mapState} from 'vuex'
   import {isEmpty} from '../../libs/Empty'
-  import {Button, Input, Popover, message} from 'ant-design-vue'
+  import {Button, Input, message, Popover} from 'ant-design-vue'
+  import md5 from 'js-md5'
 
   export default {
     data() {
@@ -45,17 +45,27 @@
     },
     methods: {
       login() {
-        post(login,
-          r => {
+        this.$http('/account/login')
+          ._data('account', this.account)
+          ._data('pwd', md5(this.pwd))
+          ._loading(this.httpState)
+          ._sucLis(r => {
             message.success('欢迎回来 ' + r.result.nickname)
             Cookies.set('token', r.result.token)
             this.$store.state.tokenx.token = r.result.token
-          },
-          this.httpState,
-          {'account': this.account, 'pwd': this.pwd},
-          it => {
-            message.error(isEmpty(it.msg) ? 'Network Error' : it.msg)
-          }, true)
+          })
+          ._execute()
+        // post(login,
+        //   r => {
+        //     message.success('欢迎回来 ' + r.result.nickname)
+        //     Cookies.set('token', r.result.token)
+        //     this.$store.state.tokenx.token = r.result.token
+        //   },
+        //   this.httpState,
+        //   {'account': this.account, 'pwd': this.pwd},
+        //   it => {
+        //     message.error(isEmpty(it.msg) ? 'Network Error' : it.msg)
+        //   }, true)
       },
       login_key() {
         if (isEmpty(this.account)) {
@@ -77,7 +87,6 @@
       })
     },
     created() {
-      // console.log(Input.Password.name)
     }
   }
 </script>

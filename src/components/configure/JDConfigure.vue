@@ -17,9 +17,10 @@
 </template>
 
 <script>
-  import {post, get, LOADING} from '../../libs/HTTP'
+  import {LOADING} from '../../libs/HTTP'
   import {setJdCookie, jdCookie, testJdCookie} from '../../config'
   import {Button, Input, message} from 'ant-design-vue'
+  import Cookies from 'js-cookie'
 
   export default {
     name: "Config",
@@ -37,37 +38,31 @@
     },
     methods: {
       c1() {
-        post(setJdCookie,
-          suc => {
+        this.$http('/set_jd_cookie')
+          ._data('cookie', this.cookie)
+          ._sucLis(r => {
             message.success('修改成功')
-          },
-          this.editLoading,
-          {'cookie': this.cookie}
-        )
+          })
+          ._loading(this.editLoading)
+          ._execute()
       },
       c2() {
-        get(testJdCookie,
-          suc => {
-            message.success(suc.result)
-          },
-          this.testLoading)
-      },
-      jd_cookie_paste() {
-      },
-      onCopy() {
-        console.log(111)
-      },
-      onError() {
-        console.log(222)
+        this.$http('/test_jd_youhuijuan')
+          ._loading(this.testLoading)
+          ._sucLis(r => {
+            message.success(r.result)
+          })
+          ._execute()
       }
     },
     created() {
-      post(jdCookie,
-        suc => {
+      this.$http('/jd_cookie')
+        ._sucLis(r => {
           this.$nextTick(function () {
-            this.cookie = suc.result
+            this.cookie = r.result
           })
         })
+        ._execute()
     }
   }
 </script>
