@@ -1,7 +1,8 @@
 import {vtoken} from '../../config'
-import {post} from '../../libs/HTTP'
 import Cookies from 'js-cookie'
-import {isEmpty} from "../../libs/Empty";
+import {isEmpty} from '../../libs/Empty'
+import {message} from 'ant-design-vue'
+import {http} from '../../libs/HTTP'
 
 const state = {
   token: '', // token值
@@ -22,6 +23,10 @@ const mutations = {
   setTokenVerifySuc(state) {
     state.token_verify_ing = false
     state.token_verify_suc = true
+  },
+  setTokenVerifyError(state) {
+    state.token_verify_ing = false
+    state.token_verify_suc = false
   }
 }
 
@@ -29,14 +34,27 @@ const actions = {
   // 逻辑bug 如果token失效？
   verifyToken({commit}) {
     commit('setTokenVerifyIng')
-    if (state.token_verify_suc || isEmpty(state.token)) return
-    post(vtoken, it => {
+    // if (state.token_verify_suc || isEmpty(state.token)) {
+    //   commit('setTokenVerifyError')
+    //   return
+    // }
+    http('/account/vtoken')
+      ._commonData('token', Cookies.get('token'))
+      ._shieldErrMessage()
+      ._sucLis(r => {
         commit('setTokenVerifySuc')
-      }, it => {
-      }, {'token': Cookies.get('token')},
-      it => {
+      })
+      ._errLis(r => {
+        if (!isEmpty(state.token)) {
+          message.warning('登录已过期')
+        }
         commit('emptyToken')
       })
+      ._execute()
+  },
+  logout({commit}) {
+    Cookies.remove('token')
+    commit('emptyToken')
   }
 }
 

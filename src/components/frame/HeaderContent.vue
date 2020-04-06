@@ -1,6 +1,9 @@
 <template>
   <div id="root">
-    <span class="title">Oneself - 管理系统</span>
+    <div class="left_group">
+      <span class="title">管理系统</span> <!-- Oneself - 管理系统-->
+      <span class="tab"><a>控制台</a></span>
+    </div>
     <div class="right_group">
       <div class="portrait">
         <a-avatar shape="square" icon="user"/>
@@ -43,7 +46,7 @@
       signOut() {
         Cookies.remove('token')
         message.success('成功登出 !')
-        this.$store.dispatch('tokenx/verifyToken')
+        this.$store.dispatch('tokenx/logout')
       }
     }
   }
@@ -61,6 +64,7 @@
     font-size: 18px;
     font-weight: bold;
     font-family: "Arial Black";
+    margin-right: 100px;
   }
 
   .right_group {
@@ -84,6 +88,26 @@
     color: #666666;
     spin: true;
     font-size: 18px;
+  }
+
+  .left_group {
+  }
+
+  .tab {
+  }
+
+  .tab a{
+    color: white;
+    font-size: 16px;
+    background-color: #1890ff;
+    display: inline-block;
+    height: 100%;
+    padding: 0 20px;
+  }
+  .tab a:hover {
+    font-size: 16px;
+    color: #bcd7f1;
+    /*font-weight: bold;*/
   }
 
 </style>

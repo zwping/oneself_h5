@@ -1,77 +1,138 @@
 import axios from 'axios'
 import qs from 'Qs'
-import Cookies from 'js-cookie'
+import {BaseAPI} from '../config'
 import {message} from "ant-design-vue"
+import Vue from 'vue'
 
-let axiosInstance = axios.create({
-  timeout: 5000
-})
+const TIMEOUT = 5000
+const COMMON_HEADERS = {
+  'content-type': 'application/x-www-form-urlencoded'
+}
+const COMMON_DATA = {}
+const COMMON_PARAMS = {}
 
-axiosInstance.interceptors.request.use(
-  config => {
-    let token = Cookies.get('token')
-    if (token) {
-      // console.log(configure.data)
-      // configure.data = {'token': token}
+function http(url, method = 'post') {
+  return new Builder(url, method)
+}
+
+class Builder {
+  constructor(url, method) {
+    this.url = url
+    this.method = method
+    this.auth = {}
+    this.headers = COMMON_HEADERS
+    this.params = COMMON_PARAMS
+    this.data = COMMON_DATA
+    this.loadingState = null
+    this.timeout = TIMEOUT
+    this.baseurl = BaseAPI
+    this.sucLis = (it) => {
     }
-    return config
-  },
-  error => {
-    return Promise.reject(error)
+    this.errLis = (it) => {
+    }
+    this.shieldErrMessage = false // 是否屏蔽错误消息
   }
-)
 
-axiosInstance.interceptors.response.use(
-  response => {
-    return response
-  },
-  error => {
-    return Promise.reject((error))
+  _auth(key, value) {
+    this.auth[key] = value
+    return this
   }
-)
 
-function CommCallback(it) {
-}
+  _header(key, value) {
+    this.headers[key] = value
+    return this
+  }
 
-/**
- * 网络请求通用回执处理
- * @param request 请求
- * @param sucCallback 成功回执
- * @param errorCallback 错误回执
- * @param loading 请求中的状态值
- * @param shieldMessage 屏蔽底层消息通知
- */
-function commCallback(request, sucCallback, errorCallback, loading = null, shieldMessage = false) {
-  __setLoading(loading, true)
-  request
-    .then(it => {
-      if (it.data.code === 200) {
-        sucCallback(it.data)
-      } else {
-        if (!shieldMessage) {
-          message.error(it.data.msg)
+  _param(key, value) {
+    this.params[key] = value
+    return this
+  }
+
+  _data(key, value) {
+    this.data[key] = value
+    return this
+  }
+
+  _commonData(key, value) {
+    // COMMON_DATA[key] = value
+    this.data[key] = value
+    return this
+  }
+
+  _commonParams(key, value) {
+    COMMON_PARAMS[key] = value
+    this.params[key] = value
+    return this
+  }
+
+  // 是否需要控制控件的加载状态
+  _loading(loading) {
+    this.loadingState = loading
+    return this
+  }
+
+  _timeout(t) {
+    this.timeout = t
+    return this
+  }
+
+  _baseUrl(url) {
+    this.baseurl = url
+    return this
+  }
+
+  _sucLis(lis) {
+    this.sucLis = lis
+    return this
+  }
+
+  _errLis(lis) {
+    this.errLis = lis
+    return this
+  }
+
+  _shieldErrMessage(shield = true) {
+    this.shieldErrMessage = shield
+    return this
+  }
+
+  _execute() {
+    __setLoading(this.loadingState, true)
+    return axios.request(
+      {
+        baseURL: this.baseurl,
+        url: this.url,
+        method: this.method,
+        headers: this.headers,
+        params: this.params,
+        data: qs.stringify(this.data),
+        timeout: this.timeout,
+        auth: this.auth
+      }
+    )
+      .then(it => {
+        if (it.data.code === 200) {
+          this.sucLis(it.data)
+        } else {
+          if (!this.shieldErrMessage) {
+            message.error(it.data.msg)
+          }
+          this.errLis(it.data)
         }
-        errorCallback(it.data)
-      }
-      __setLoading(loading, false)
-    })
-    .catch(it => {
-      console.log('网络请求崩溃:' + it)
-      if (!shieldMessage) {
-        message.error(it.message)
-      }
-      errorCallback(it)
-      __setLoading(loading, false)
-    })
+
+        __setLoading(this.loadingState, false)
+      })
+      .catch(it => {
+        if (!this.shieldErrMessage) {
+          message.error(it.message)
+        }
+        this.errLis(it)
+        __setLoading(this.loadingState, false)
+      })
+  }
 }
 
-function post(url, success, loading = LOADING, params = {}, error = CommCallback, shieldMessage = false) {
-  commCallback(axiosInstance.post(url, qs.stringify(params)), success, error, loading, shieldMessage)
-}
-
-function get(url, success, loading = LOADING, params = {}, error = CommCallback, shieldMessage = false) {
-  commCallback(axiosInstance.get(url), success, error, loading, shieldMessage)
-}
+Vue.prototype.$http = http
 
 function __setLoading(loading, value) {
   if (loading === null) return
@@ -88,4 +149,4 @@ function LOADING() {
   this.loading = false
 }
 
-export {post, get, LOADING}
+export {LOADING, http}
