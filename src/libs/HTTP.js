@@ -54,7 +54,7 @@ class Builder {
   }
 
   _commonData(key, value) {
-    COMMON_DATA[key] = value
+    // COMMON_DATA[key] = value
     this.data[key] = value
     return this
   }
