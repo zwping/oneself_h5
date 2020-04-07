@@ -14,7 +14,7 @@
           <a-sub-menu key="1">
             <span slot="title"><a-icon type="user"/>思泓</span>
             <a-menu-item key="1">昌南自动学习</a-menu-item>
-            <a-menu-item key="1">昌南自动学习</a-menu-item>
+            <a-menu-item key="1">新余建设培训-题库</a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="2">
             <span slot="title"><a-icon type="user"/>第三方</span>
@@ -29,6 +29,12 @@
             <span slot="title"><a-icon type="notification"/>日志</span>
             <a-menu-item key="9">登录日志</a-menu-item>
             <a-menu-item key="9">错误日志</a-menu-item>
+          </a-sub-menu>
+          <a-sub-menu key="5">
+            <span slot="title"><a-icon type="notification"/>设置</span>
+            <a-menu-item key="6">自动脚本</a-menu-item>
+            <a-menu-item key="6">类别分类</a-menu-item>
+            <a-menu-item key="6">文件管理</a-menu-item>
           </a-sub-menu>
         </a-menu>
       </a-layout-sider>

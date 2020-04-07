@@ -20,9 +20,9 @@ class Builder {
     this.url = url
     this.method = method
     this.auth = {}
-    this.headers = COMMON_HEADERS
-    this.params = COMMON_PARAMS
-    this.data = COMMON_DATA
+    this.headers = {}
+    this.params = {}
+    this.data = {}
     this.loadingState = null
     this.timeout = TIMEOUT
     this.baseurl = BaseAPI
@@ -54,14 +54,14 @@ class Builder {
   }
 
   _commonData(key, value) {
-    // COMMON_DATA[key] = value
-    this.data[key] = value
+    COMMON_DATA[key] = value
+    this._data(key, value)
     return this
   }
 
   _commonParams(key, value) {
     COMMON_PARAMS[key] = value
-    this.params[key] = value
+    this._param(key, value)
     return this
   }
 
@@ -98,6 +98,7 @@ class Builder {
 
   _execute() {
     __setLoading(this.loadingState, true)
+    __interceptors()
     return axios.request(
       {
         baseURL: this.baseurl,
@@ -132,7 +133,28 @@ class Builder {
   }
 }
 
-Vue.prototype.$http = http
+/**
+ * 拦截器
+ * @private
+ */
+function __interceptors() {
+  axios.interceptors.request.use((config) => {
+      config.headers = {...COMMON_HEADERS, ...config.headers}
+      if (config.method === 'post') {
+        config.data = qs.stringify({
+          ...COMMON_DATA,
+          ...qs.parse(config.data)
+        })
+        // config.data = qs.stringify(...config.data)
+      } else if (config.method === 'get') {
+        config.params = {...COMMON_PARAMS, ...config.params}
+      }
+      return config
+    },
+    (error) => {
+      return Promise.reject(error)
+    })
+}
 
 function __setLoading(loading, value) {
   if (loading === null) return
@@ -148,5 +170,7 @@ function __setLoading(loading, value) {
 function LOADING() {
   this.loading = false
 }
+
+Vue.prototype.$http = http
 
 export {LOADING, http}
