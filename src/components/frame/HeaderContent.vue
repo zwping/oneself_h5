@@ -2,13 +2,12 @@
   <div id="root">
     <div class="left_group">
       <span class="title">管理系统</span> <!-- Oneself - 管理系统-->
-      <span class="tab"><a>控制台</a></span>
+      <span class="tab" @click="onTabClick"><a>控制台</a></span>
     </div>
     <div class="right_group">
-      <div class="portrait">
+      <div class="portrait" @click="onPortraitClick">
         <a-avatar shape="square" icon="user"/>
       </div>
-
       <div @mouseover="setting_anim" class="setting">
         <a @click="signOut" style="color:white">Sign out</a>
       </div>
@@ -19,6 +18,8 @@
 <script>
   import Cookies from 'js-cookie'
   import {Badge, Avatar, Icon, Dropdown, Menu, message} from 'ant-design-vue'
+  import {emit} from "../../libs/Bus"
+  import user_info from "../user/user_info"
 
   export default {
     name: "TopContent",
@@ -28,7 +29,8 @@
       [Icon.name]: Icon,
       [Dropdown.name]: Dropdown,
       [Menu.name]: Menu,
-      [Menu.Item.name]: Menu.Item
+      [Menu.Item.name]: Menu.Item,
+      user_info
     },
     data() {
       return {
@@ -47,6 +49,12 @@
         Cookies.remove('token')
         message.success('成功登出 !')
         this.$store.dispatch('tokenx/logout')
+      },
+      onPortraitClick() {
+        emit('fc_tabs', {title: '基本信息', content: this.user_info, key: '基本信息', clo: true})
+      },
+      onTabClick() {
+        emit('fc_tabs', {title: '控制台', content: '', key: '控制台', clo: true})
       }
     }
   }
@@ -96,7 +104,7 @@
   .tab {
   }
 
-  .tab a{
+  .tab a {
     color: white;
     font-size: 16px;
     background-color: #1890ff;
@@ -104,6 +112,7 @@
     height: 100%;
     padding: 0 20px;
   }
+
   .tab a:hover {
     font-size: 16px;
     color: #bcd7f1;
