@@ -64,7 +64,7 @@
     font-size: 18px;
     font-weight: bold;
     font-family: "Arial Black";
-    margin-right: 100px;
+    margin-right: 98px;
   }
 
   .right_group {
