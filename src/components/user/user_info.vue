@@ -37,13 +37,11 @@
         <span>头像</span>
       </a-col>
       <a-col :span="6">
-        <a-upload
-          listType="picture-card"
-          :showUploadList="false"
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-          :beforeUpload="beforeUpload"
-        >
-        <a-icon type="plus"/>
+        <a-upload listType="picture-card" :showUploadList="false" :beforeUpload="beforeUpload">
+          <div>
+            <a-icon type="plus" />
+            <div class="ant-upload-text">Upload</div>
+          </div>
         </a-upload>
       </a-col>
     </a-row>
@@ -60,7 +58,7 @@
 </template>
 
 <script>
-import { Row, Col, Button, Input, Upload,Icon } from "ant-design-vue";
+import { Row, Col, Button, Input, Upload, Icon } from "ant-design-vue";
 
 export default {
   name: "user_info",
