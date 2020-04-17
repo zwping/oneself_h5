@@ -1,16 +1,15 @@
 <template>
-  <a-layout id="components-layout-demo-top-side-2">
+  <a-layout>
     <a-layout-header class="header">
       <hcontnet/>
     </a-layout-header>
     <a-layout>
-      <a-layout-sider width="200" style="background: #fff">
+      <a-layout-sider :style="{ overflow: 'auto', height: 'calc(100vh - 64px)', left: 0,background: '#fff'}">
         <a-menu
           mode="inline"
         >
           <a-sub-menu key="1">
             <span slot="title" class="submenu-title-wrapper"><a-icon type="user"/>思泓</span>
-            <!--            <p-a-menu-item>123</p-a-menu-item>-->
             <a-menu-item key="1-1" @click="fc_tabs">昌南自动学习</a-menu-item>
             <a-menu-item key="1-2" @click="fc_tabs">新余建设培训-题库</a-menu-item>
           </a-sub-menu>
@@ -37,7 +36,7 @@
           </a-sub-menu>
         </a-menu>
       </a-layout-sider>
-      <a-layout style="padding: 0 24px 24px">
+      <a-layout style="padding-left: 10px">
         <a-layout-content
           :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
         >

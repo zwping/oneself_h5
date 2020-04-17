@@ -51,11 +51,14 @@
         this.$store.dispatch('tokenx/logout')
       },
       onPortraitClick() {
-        emit('fc_tabs', {title: '基本信息', content: this.user_info, key: '基本信息', clo: true})
+        emit('fc_tabs', {title: '基本信息', content: user_info, key: '基本信息', clo: true})
       },
       onTabClick() {
         emit('fc_tabs', {title: '控制台', content: '', key: '控制台', clo: true})
       }
+    },
+    mounted() {
+      emit('fc_tabs', {title: '基本信息', content: user_info, key: '基本信息', clo: true})
     }
   }
 </script>
@@ -72,7 +75,7 @@
     font-size: 18px;
     font-weight: bold;
     font-family: "Arial Black";
-    margin-right: 98px;
+    margin-right: 84px;
   }
 
   .right_group {
@@ -81,7 +84,7 @@
   }
 
   .portrait {
-
+    cursor: pointer;
   }
 
   .setting {

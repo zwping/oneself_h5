@@ -55,17 +55,6 @@
             this.$store.state.tokenx.token = r.result.token
           })
           ._execute()
-        // post(login,
-        //   r => {
-        //     message.success('欢迎回来 ' + r.result.nickname)
-        //     Cookies.set('token', r.result.token)
-        //     this.$store.state.tokenx.token = r.result.token
-        //   },
-        //   this.httpState,
-        //   {'account': this.account, 'pwd': this.pwd},
-        //   it => {
-        //     message.error(isEmpty(it.msg) ? 'Network Error' : it.msg)
-        //   }, true)
       },
       login_key() {
         if (isEmpty(this.account)) {
