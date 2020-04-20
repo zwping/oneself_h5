@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'Qs'
-import {BaseAPI} from '../config'
-import {message} from "ant-design-vue"
+import { BaseAPI } from '../config'
+import { message } from 'ant-design-vue'
 import Vue from 'vue'
 
 const TIMEOUT = 5000
@@ -22,14 +22,12 @@ class Builder {
     this.auth = {}
     this.headers = {}
     this.params = {}
-    this.data = {}
+    this.data = new FormData()
     this.loadingState = null
     this.timeout = TIMEOUT
     this.baseurl = BaseAPI
-    this.sucLis = (it) => {
-    }
-    this.errLis = (it) => {
-    }
+    this.sucLis = it => {}
+    this.errLis = it => {}
     this.shieldErrMessage = false // 是否屏蔽错误消息
   }
 
@@ -50,6 +48,7 @@ class Builder {
 
   _data(key, value) {
     this.data[key] = value
+    // this.data.append(key, value)
     return this
   }
 
@@ -99,18 +98,17 @@ class Builder {
   _execute() {
     __setLoading(this.loadingState, true)
     __interceptors()
-    return axios.request(
-      {
+    return axios
+      .request({
         baseURL: this.baseurl,
         url: this.url,
         method: this.method,
         headers: this.headers,
         params: this.params,
-        data: qs.stringify(this.data),
+        data: this.data,
         timeout: this.timeout,
         auth: this.auth
-      }
-    )
+      })
       .then(it => {
         if (it.data.code === 200) {
           this.sucLis(it.data)
@@ -138,22 +136,23 @@ class Builder {
  * @private
  */
 function __interceptors() {
-  axios.interceptors.request.use((config) => {
-      config.headers = {...COMMON_HEADERS, ...config.headers}
+  axios.interceptors.request.use(
+    config => {
+      config.headers = { ...COMMON_HEADERS, ...config.headers }
       if (config.method === 'post') {
         config.data = qs.stringify({
           ...COMMON_DATA,
           ...qs.parse(config.data)
         })
-        // config.data = qs.stringify(...config.data)
       } else if (config.method === 'get') {
-        config.params = {...COMMON_PARAMS, ...config.params}
+        config.params = { ...COMMON_PARAMS, ...config.params }
       }
       return config
     },
-    (error) => {
+    error => {
       return Promise.reject(error)
-    })
+    }
+  )
 }
 
 function __setLoading(loading, value) {
@@ -173,4 +172,4 @@ function LOADING() {
 
 Vue.prototype.$http = http
 
-export {LOADING, http}
+export { LOADING, http }

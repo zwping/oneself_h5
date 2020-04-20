@@ -37,7 +37,12 @@
         <span>头像</span>
       </a-col>
       <a-col :span="6">
-        <a-upload listType="picture-card" :showUploadList="false" :beforeUpload="beforeUpload">
+        <a-upload
+          listType="picture-card"
+          :showUploadList="false"
+          :beforeUpload="beforeUpload"
+          :customRequest="fileUpload"
+        >
           <div>
             <a-icon type="plus" />
             <div class="ant-upload-text">Upload</div>
@@ -58,15 +63,16 @@
 </template>
 
 <script>
-import { Row, Col, Button, Input, Upload, Icon } from "ant-design-vue";
+import { Row, Col, Button, Input, Upload, Icon, message } from 'ant-design-vue'
+import { isImg } from '../../libs/ImageUtil'
 
 export default {
-  name: "user_info",
+  name: 'user_info',
   data() {
     return {
       editState: false,
       userData: null
-    };
+    }
   },
   components: {
     [Row.name]: Row,
@@ -76,15 +82,37 @@ export default {
     [Icon.name]: Icon,
     [Button.name]: Button
   },
+  methods: {
+    beforeUpload(file) {
+      let img = isImg(file)
+      if (!img) {
+        message.error('请上传图片类型的文件')
+      }
+      let size = file.size / 1024 / 1024 < 2
+      if (!size) {
+        message.error('请上传小于2M的图片')
+      }
+      return img && size
+    },
+    fileUpload(file) {
+      let f = file.file
+      console.log(f instanceof File)
+      this.$http('/files/upload')
+        ._baseUrl('http://121.41.116.91:5000')
+        ._data('files', f)
+        ._execute()
+      console.log(file.file)
+    }
+  },
   beforeCreate() {
-    this.$http("/get_userinfo")
+    this.$http('/get_userinfo')
       ._sucLis(it => {
-        console.log(it["result"]);
-        this.userData = it["result"];
+        // console.log(it['result'])
+        this.userData = it['result']
       })
-      ._execute();
+      ._execute()
   }
-};
+}
 </script>
 
 <style scoped>
