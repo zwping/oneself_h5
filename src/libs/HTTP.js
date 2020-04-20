@@ -37,34 +37,36 @@ class Builder {
   }
 
   _auth(key, value) {
-    this.auth.append(key,value)
+    this.auth.append(key, value)
     return this
   }
 
   _header(key, value) {
-    this.headers.append(key,value)
+    this.headers.append(key, value)
     return this
   }
 
   _param(key, value) {
-    this.params.append(key,value)
+    this.params.append(key, value)
     return this
   }
 
   _data(key, value) {
-    this.data.append(key, value)
+    // this.data.append(key, value)
+    this.data[key] = value
+    console.log(this.data)
     return this
   }
 
   _commonData(key, value) {
-    COMMON_DATA.append(key,value)
-    this._data.append(key,value)
+    COMMON_DATA.append(key, value)
+    this._data.append(key, value)
     return this
   }
 
   _commonParams(key, value) {
     COMMON_PARAMS.append(key, value)
-    this._param.append(key,value)
+    this._param.append(key, value)
     return this
   }
 
@@ -147,16 +149,15 @@ function __interceptors() {
         ...config.headers
       }
       if (config.method === 'post') {
-        console.log(config.data)
-        console.log(COMMON_DATA)
+        config.data = config.data
         // config.data = qs.stringify({
         // ...COMMON_DATA,
         // ...qs.parse(config.data)
         // })
-        config.data = {
-          ...COMMON_DATA,
-          ...config.data
-        }
+        // config.data = {
+        //   ...COMMON_DATA,
+        //   ...config.data
+        // }
       } else if (config.method === 'get') {
         config.params = {
           ...COMMON_PARAMS,
