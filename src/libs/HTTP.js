@@ -1,14 +1,19 @@
 import axios from 'axios'
 import qs from 'Qs'
-import { BaseAPI } from '../config'
-import { message } from 'ant-design-vue'
+import {
+  BaseAPI
+} from '../config'
+import {
+  message
+} from 'ant-design-vue'
 import Vue from 'vue'
 
 const TIMEOUT = 5000
 const COMMON_HEADERS = {
-  'content-type': 'application/x-www-form-urlencoded'
+  // 'content-type': 'application/x-www-form-urlencoded'
+  'content-type': 'multipart/form-data'
 }
-const COMMON_DATA = {}
+const COMMON_DATA = new FormData()
 const COMMON_PARAMS = {}
 
 function http(url, method = 'post') {
@@ -32,35 +37,34 @@ class Builder {
   }
 
   _auth(key, value) {
-    this.auth[key] = value
+    this.auth.append(key,value)
     return this
   }
 
   _header(key, value) {
-    this.headers[key] = value
+    this.headers.append(key,value)
     return this
   }
 
   _param(key, value) {
-    this.params[key] = value
+    this.params.append(key,value)
     return this
   }
 
   _data(key, value) {
-    this.data[key] = value
-    // this.data.append(key, value)
+    this.data.append(key, value)
     return this
   }
 
   _commonData(key, value) {
-    COMMON_DATA[key] = value
-    this._data(key, value)
+    COMMON_DATA.append(key,value)
+    this._data.append(key,value)
     return this
   }
 
   _commonParams(key, value) {
-    COMMON_PARAMS[key] = value
-    this._param(key, value)
+    COMMON_PARAMS.append(key, value)
+    this._param.append(key,value)
     return this
   }
 
@@ -138,14 +142,26 @@ class Builder {
 function __interceptors() {
   axios.interceptors.request.use(
     config => {
-      config.headers = { ...COMMON_HEADERS, ...config.headers }
+      config.headers = {
+        ...COMMON_HEADERS,
+        ...config.headers
+      }
       if (config.method === 'post') {
-        config.data = qs.stringify({
+        console.log(config.data)
+        console.log(COMMON_DATA)
+        // config.data = qs.stringify({
+        // ...COMMON_DATA,
+        // ...qs.parse(config.data)
+        // })
+        config.data = {
           ...COMMON_DATA,
-          ...qs.parse(config.data)
-        })
+          ...config.data
+        }
       } else if (config.method === 'get') {
-        config.params = { ...COMMON_PARAMS, ...config.params }
+        config.params = {
+          ...COMMON_PARAMS,
+          ...config.params
+        }
       }
       return config
     },
@@ -172,4 +188,7 @@ function LOADING() {
 
 Vue.prototype.$http = http
 
-export { LOADING, http }
+export {
+  LOADING,
+  http
+}

@@ -63,16 +63,17 @@
 </template>
 
 <script>
-import { Row, Col, Button, Input, Upload, Icon, message } from 'ant-design-vue'
-import { isImg } from '../../libs/ImageUtil'
+import { Row, Col, Button, Input, Upload, Icon, message } from "ant-design-vue";
+import { isImg } from "../../libs/ImageUtil";
+import axios from 'axios'
 
 export default {
-  name: 'user_info',
-  data() {
+  name: "user_info",
+  data () {
     return {
       editState: false,
       userData: null
-    }
+    };
   },
   components: {
     [Row.name]: Row,
@@ -83,36 +84,46 @@ export default {
     [Button.name]: Button
   },
   methods: {
-    beforeUpload(file) {
-      let img = isImg(file)
+    beforeUpload (file) {
+      let img = isImg(file);
       if (!img) {
-        message.error('请上传图片类型的文件')
+        message.error("请选择图片类型的文件");
       }
-      let size = file.size / 1024 / 1024 < 2
+      let size = file.size / 1024 / 1024 < 2;
       if (!size) {
-        message.error('请上传小于2M的图片')
+        message.error("请选择小于2M的图片");
       }
-      return img && size
+      return img && size;
     },
-    fileUpload(file) {
-      let f = file.file
-      console.log(f instanceof File)
-      this.$http('/files/upload')
-        ._baseUrl('http://121.41.116.91:5000')
-        ._data('files', f)
-        ._execute()
-      console.log(file.file)
+    fileUpload (file) {
+      let f = file.file;
+      let d = new FormData()
+      d.append('files', f)
+      console.log(f)
+      console.log(d.get('files'))
+      axios.post('http://121.41.116.91:5000/files/upload', d, { headers: { 'content-type': 'multipart/form-data' } })
+        .then(it => {
+          console.log(it)
+        }).catch(it => {
+          console.log('ee')
+        })
+      // console.log(f instanceof File);
+      // this.$http("/files/upload")
+      //   ._baseUrl("http://121.41.116.91:5000")
+      //   ._data("files", f)
+      //   ._execute();
+      // console.log(file.file);
     }
   },
-  beforeCreate() {
-    this.$http('/get_userinfo')
+  beforeCreate () {
+    this.$http("/get_userinfo")
       ._sucLis(it => {
         // console.log(it['result'])
-        this.userData = it['result']
+        this.userData = it["result"];
       })
-      ._execute()
+      ._execute();
   }
-}
+};
 </script>
 
 <style scoped>
