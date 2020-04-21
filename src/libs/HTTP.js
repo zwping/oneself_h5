@@ -1,17 +1,12 @@
 import axios from 'axios'
-import qs from 'Qs'
-import {
-  BaseAPI
-} from '../config'
-import {
-  message
-} from 'ant-design-vue'
+import { BaseAPI } from '../config'
+import { message } from 'ant-design-vue'
 import Vue from 'vue'
 
 const TIMEOUT = 5000
 const COMMON_HEADERS = {
   // 'content-type': 'application/x-www-form-urlencoded'
-  'content-type': 'multipart/form-data'
+  // 'content-type': 'multipart/form-data'
 }
 const COMMON_DATA = new FormData()
 const COMMON_PARAMS = {}
@@ -52,21 +47,19 @@ class Builder {
   }
 
   _data(key, value) {
-    // this.data.append(key, value)
-    this.data[key] = value
-    console.log(this.data)
+    this.data.append(key, value)
     return this
   }
 
   _commonData(key, value) {
     COMMON_DATA.append(key, value)
-    this._data.append(key, value)
+    this._data(key, value)
     return this
   }
 
   _commonParams(key, value) {
     COMMON_PARAMS.append(key, value)
-    this._param.append(key, value)
+    this._param(key, value)
     return this
   }
 
@@ -149,15 +142,9 @@ function __interceptors() {
         ...config.headers
       }
       if (config.method === 'post') {
-        config.data = config.data
-        // config.data = qs.stringify({
-        // ...COMMON_DATA,
-        // ...qs.parse(config.data)
-        // })
-        // config.data = {
-        //   ...COMMON_DATA,
-        //   ...config.data
-        // }
+        for (let d of COMMON_DATA) {
+          config.data.set(d[0], d[1])
+        }
       } else if (config.method === 'get') {
         config.params = {
           ...COMMON_PARAMS,
@@ -189,7 +176,4 @@ function LOADING() {
 
 Vue.prototype.$http = http
 
-export {
-  LOADING,
-  http
-}
+export { LOADING, http }

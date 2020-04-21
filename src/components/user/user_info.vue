@@ -10,18 +10,18 @@
     </a-row>
     <a-row class="row1">
       <a-col :span="3" class="title">
-        <span>昵称</span>
+        <span>手机号</span>
       </a-col>
       <a-col :span="6">
-        <a-input :disabled="!editState" :value="userData ? userData['nickname'] : ''" />
+        <a-input disabled :value="userData['phone']" />
       </a-col>
     </a-row>
     <a-row class="row1">
       <a-col :span="3" class="title">
-        <span>手机号</span>
+        <span>昵称</span>
       </a-col>
       <a-col :span="6">
-        <a-input :disabled="!editState" :value="userData ? userData['phone'] : ''" />
+        <a-input :disabled="!editState" v-model="userData['nickname']" />
       </a-col>
     </a-row>
     <a-row class="row1">
@@ -29,19 +29,27 @@
         <span>邮箱</span>
       </a-col>
       <a-col :span="6">
-        <a-input :disabled="!editState" :value="userData ? userData['mail'] : ''" />
+        <a-input :disabled="!editState" v-model="userData['mail']" />
       </a-col>
     </a-row>
     <a-row class="row1">
       <a-col :span="3" class="title">
         <span>头像</span>
       </a-col>
-      <a-col :span="6">
+      <a-col :span="6" class="portrait_ly">
+        <a-avatar
+          style="margin-right:10px"
+          shape="square"
+          :size="104"
+          :src="portrait ? portrait :userData['portrait']"
+        />
         <a-upload
+          v-show="editState"
           listType="picture-card"
           :showUploadList="false"
           :beforeUpload="beforeUpload"
           :customRequest="fileUpload"
+          :multiple="true"
         >
           <div>
             <a-icon type="plus" />
@@ -55,7 +63,7 @@
         <a-button v-show="!editState" type="primary" @click="editState = true">修改资料</a-button>
         <div v-show="editState">
           <a-button type @click="editState = false">取消</a-button>
-          <a-button style="margin-left: 10px" type="primary">确认</a-button>
+          <a-button style="margin-left: 10px" type="primary" @click="submit">确认</a-button>
         </div>
       </a-col>
     </a-row>
@@ -63,17 +71,27 @@
 </template>
 
 <script>
-import { Row, Col, Button, Input, Upload, Icon, message } from "ant-design-vue";
-import { isImg } from "../../libs/ImageUtil";
-import axios from 'axios'
+import {
+  Row,
+  Col,
+  Button,
+  Input,
+  Upload,
+  Icon,
+  message,
+  Avatar
+} from 'ant-design-vue'
+import { isImg } from '../../libs/ImageUtil'
+import { realType } from '../../libs/ObjectUtil'
 
 export default {
-  name: "user_info",
-  data () {
+  name: 'user_info',
+  data() {
     return {
       editState: false,
-      userData: null
-    };
+      userData: {},
+      portrait: null
+    }
   },
   components: {
     [Row.name]: Row,
@@ -81,49 +99,55 @@ export default {
     [Input.name]: Input,
     [Upload.name]: Upload,
     [Icon.name]: Icon,
+    [Avatar.name]: Avatar,
     [Button.name]: Button
   },
   methods: {
-    beforeUpload (file) {
-      let img = isImg(file);
+    beforeUpload(file) {
+      let img = isImg(file)
       if (!img) {
-        message.error("请选择图片类型的文件");
+        message.error('请选择图片类型的文件')
       }
-      let size = file.size / 1024 / 1024 < 2;
+      let size = file.size / 1024 / 1024 < 2
       if (!size) {
-        message.error("请选择小于2M的图片");
+        message.error('请选择小于2M的图片')
       }
-      return img && size;
+      return img && size
     },
-    fileUpload (file) {
-      let f = file.file;
-      let d = new FormData()
-      d.append('files', f)
-      console.log(f)
-      console.log(d.get('files'))
-      axios.post('http://121.41.116.91:5000/files/upload', d, { headers: { 'content-type': 'multipart/form-data' } })
-        .then(it => {
-          console.log(it)
-        }).catch(it => {
-          console.log('ee')
+    fileUpload(file) {
+      this.$http('/files/upload')
+        ._baseUrl('http://121.41.116.91:5000')
+        ._data('files', file.file)
+        ._data('dir', 'oneself/user/portrait')
+        ._sucLis(it => {
+          this.portrait = it.result.file_list[0]
         })
-      // console.log(f instanceof File);
-      // this.$http("/files/upload")
-      //   ._baseUrl("http://121.41.116.91:5000")
-      //   ._data("files", f)
-      //   ._execute();
-      // console.log(file.file);
+        ._execute()
+    },
+    submit() {
+      let avatar = this.portrait ? this.portrait : this.userData['portrait']
+      this.$http('account/m_userinfo')
+        ._data('nickname', this.userData['nickname'])
+        ._data('mail', this.userData['mail'])
+        ._data('portrait', avatar)
+        ._sucLis(it => {
+          message.success('保存成功')
+          this.editState = false
+          this.userData['portrait'] = avatar
+          this.$store.commit('tokenx/applyUserData', it.result)
+        })
+        ._execute()
     }
   },
-  beforeCreate () {
-    this.$http("/get_userinfo")
+  beforeCreate() {
+    this.$http('/get_userinfo')
       ._sucLis(it => {
-        // console.log(it['result'])
-        this.userData = it["result"];
+        this.userData = it.result
+        this.$store.commit('tokenx/applyUserData', it.result)
       })
-      ._execute();
+      ._execute()
   }
-};
+}
 </script>
 
 <style scoped>
@@ -134,10 +158,14 @@ export default {
 }
 
 .row1 {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .row_submit {
   margin-top: 12px;
+}
+.portrait_ly {
+  display: flex;
+  display: -webkit-flex;
 }
 </style>

@@ -1,10 +1,15 @@
 function isEmpty(o) {
-  let type = typeof o
-  if (type === 'undefined') {
+  if (o === null || o === 'undefined') {
     return true
-  } else if (type === 'string') {
+  }
+  let type = typeof o
+  if (type === 'string') {
     return o === true || o === '' || o === null
   } else return false
 }
 
-export {isEmpty}
+function isNotEmpty(o) {
+  return !isEmpty(o)
+}
+
+export { isEmpty, isNotEmpty }

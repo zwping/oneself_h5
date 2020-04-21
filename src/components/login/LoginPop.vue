@@ -44,7 +44,7 @@ import md5 from 'js-md5'
 import axios from 'axios'
 
 export default {
-  data () {
+  data() {
     return {
       type: 'password',
       w: 600,
@@ -62,31 +62,24 @@ export default {
     [Popover.name]: Popover
   },
   methods: {
-    login () {
-      // let p = new FormData()
-      // p.append('account', this.account)
-      // p.append('pwd', md5(this.pwd))
-      // axios.post('http://192.168.1.150:5001/account/login', p, { headers: { 'content-type': 'multipart/form-data' } })
-      // .then(it => {
-      //   console.log(it)
-      // })
-
+    login() {
       this.$http('/account/login')
         ._data('account', this.account)
         ._data('pwd', md5(this.pwd))
         ._loading(this.httpState)
         ._sucLis(r => {
+          this.$store.commit('tokenx/applyUserData', r.result)
           message.success('欢迎回来 ' + r.result.nickname)
           Cookies.set('token', r.result.token)
           this.$store.state.tokenx.token = r.result.token
         })
         ._execute()
     },
-    login_key () {
+    login_key() {
       if (isEmpty(this.account)) {
         message.warning('请输入账号')
       } else if (isEmpty(this.pwd)) {
-        message.warning("请输入密码")
+        message.warning('请输入密码')
       } else {
         this.login()
       }
@@ -94,15 +87,14 @@ export default {
   },
   watch: {},
   computed: {
-    dis () {
+    dis() {
       return this.account !== '' && this.pwd !== ''
     },
     ...mapState({
       token: state => state.token.token
     })
   },
-  created () {
-  }
+  created() {}
 }
 </script>
 

@@ -1,10 +1,11 @@
-import {vtoken} from '../../config'
+import { vtoken } from '../../config'
 import Cookies from 'js-cookie'
-import {isEmpty} from '../../libs/Empty'
-import {message} from 'ant-design-vue'
-import {http} from '../../libs/HTTP'
+import { isEmpty, isNotEmpty } from '../../libs/Empty'
+import { message } from 'ant-design-vue'
+import { http } from '../../libs/HTTP'
 
 const state = {
+  data: null, // 登录返回的用户数据
   token: '', // token值
   token_verify_ing: false, // token校验中
   token_verify_suc: false // token校验成功
@@ -27,12 +28,21 @@ const mutations = {
   setTokenVerifyError(state) {
     state.token_verify_ing = false
     state.token_verify_suc = false
+  },
+  applyUserData(state, data) {
+    if (isEmpty(state.data)) {
+      state.data = data
+      return
+    }
+    for (let d in data) {
+      state.data[d] = data[d]
+    }
   }
 }
 
 const actions = {
   // 逻辑bug 如果token失效？
-  verifyToken({commit}) {
+  verifyToken({ commit }) {
     commit('setTokenVerifyIng')
     // if (state.token_verify_suc || isEmpty(state.token)) {
     //   commit('setTokenVerifyError')
@@ -52,7 +62,7 @@ const actions = {
       })
       ._execute()
   },
-  logout({commit}) {
+  logout({ commit }) {
     Cookies.remove('token')
     commit('emptyToken')
   }
@@ -67,6 +77,9 @@ const getters = {
   },
   token_verify_suc: state => {
     return state.token_verify_suc
+  },
+  data: state => {
+    return state.data
   }
 }
 
