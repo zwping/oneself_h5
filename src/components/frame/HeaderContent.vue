@@ -75,14 +75,6 @@ export default {
         clo: true
       })
     }
-  },
-  mounted() {
-    emit('fc_tabs', {
-      title: '基本信息',
-      content: user_info,
-      key: '基本信息',
-      clo: true
-    })
   }
 }
 </script>

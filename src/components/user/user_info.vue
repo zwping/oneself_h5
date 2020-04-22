@@ -38,7 +38,7 @@
       </a-col>
       <a-col :span="6" class="portrait_ly">
         <a-avatar
-          style="margin-right:10px"
+          style="margin-right:10px;margin-bottom:10px"
           shape="square"
           :size="104"
           :src="portrait ? portrait :userData['portrait']"
