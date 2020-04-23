@@ -1,4 +1,4 @@
-function isEmpty(o) {
+export function isEmpty(o) {
   if (o === null || o === 'undefined') {
     return true
   }
@@ -8,8 +8,6 @@ function isEmpty(o) {
   } else return false
 }
 
-function isNotEmpty(o) {
+export function isNotEmpty(o) {
   return !isEmpty(o)
 }
-
-export { isEmpty, isNotEmpty }
