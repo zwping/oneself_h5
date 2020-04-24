@@ -21,7 +21,7 @@
         <span>昵称</span>
       </a-col>
       <a-col :span="6">
-        <a-input :disabled="!editState" v-model="userData['nickname']" />
+        <a-input :readOnly="!editState" v-model="userData['nickname']" />
       </a-col>
     </a-row>
     <a-row class="row1">
@@ -29,7 +29,7 @@
         <span>邮箱</span>
       </a-col>
       <a-col :span="6">
-        <a-input :disabled="!editState" v-model="userData['mail']" />
+        <a-input :readOnly="!editState"  v-model="userData['mail']" />
       </a-col>
     </a-row>
     <a-row class="row1">
