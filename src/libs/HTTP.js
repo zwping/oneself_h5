@@ -121,6 +121,7 @@ class Builder {
         __setLoading(this.loadingState, false)
       })
       .catch(it => {
+        console.log(it)
         if (!this.shieldErrMessage) {
           message.error(it.message)
         }
