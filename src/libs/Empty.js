@@ -20,3 +20,52 @@ export function isEmpty(o) {
 export function isNotEmpty(o) {
   return !isEmpty(o)
 }
+
+
+/**
+ * 对象集中是否都为空
+ * @param arguments 可变对象
+ * @returns {boolean}
+ */
+export function isEmptys() {
+  for (let d of arguments) {
+    if (isNotEmpty(d)) return false
+  }
+  return true
+}
+
+/**
+ * 对象集中是否都不为空
+ * @param arguments 可变对象
+ * @returns {boolean}
+ */
+export function isNotEmptys() {
+  for (let d of arguments) {
+    if (isEmpty(d)) return false
+  }
+  return true
+}
+
+/**
+ * 对象集中是否有一个对象为空
+ * @param arguments 可变对象
+ * @returns {boolean}
+ */
+export function isEmptyII() {
+  for (let d of arguments) {
+    if (isEmpty(d)) return true
+  }
+  return false
+}
+
+/**
+ * 对象集中是否有一个对象不为空
+ * @param arguments 可变对象
+ * @returns {boolean}
+ */
+export function isNotEmptyII() {
+  for (let d of arguments) {
+    if (isNotEmpty(d)) return true
+  }
+  return false
+}

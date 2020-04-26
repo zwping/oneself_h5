@@ -6,7 +6,7 @@
     </a-button>
     <br/>
     <br/>
-    <a-tree defaultExpandAll :key="keys" :treeData="data">
+    <a-tree v-if="data.length" defaultExpandAll :key="keys" :treeData="data">
       <a-icon #switcherIcon type="down"/>
       <template #custom="item">
         <a-tooltip trigger="click">
@@ -59,11 +59,8 @@
     },
     methods: {
       add_type() {
-        if (isEmpty(this.data) || isNotEmpty(this.data[0].id)) {
-          this.data.unshift({
-            scopedSlots: {title: 'custom'},
-            edit: true
-          })
+        if (isEmpty(this.data) || this.data[this.data.length - 1].hasOwnProperty('id')) {
+          this.data.push(__get_base_bean())
         } else {
           message.warning('请先保存新增的分类')
         }
@@ -82,20 +79,14 @@
         // this.$forceUpdate()
       },
       onAddChild(it) {
-        if (isNotEmpty(it.children) && isEmpty(it.children[0].id)) {
-          message.warning('请先保存新增的分类')
-          return
-        }
         this.keys++
         if (isEmpty(it.children)) {
-          it.children = []
+          it.children = [__get_base_bean(it.id)]
+        } else if (it.children[it.children.length - 1].hasOwnProperty('id')) {
+          it.children.push(__get_base_bean(it.id))
+        } else {
+          message.warning('请先保存新增的分类')
         }
-        it.children.unshift({
-          scopedSlots: {title: 'custom'},
-          edit: true,
-          pid: it.id,
-          priority: 9
-        })
       }
     },
     beforeCreate() {
@@ -153,6 +144,16 @@
       }
     }
   }
+
+  function __get_base_bean(pid = null) {
+    return {
+      scopedSlots: {title: 'custom'},
+      edit: true,
+      pid: pid,
+      priority: 9
+    }
+  }
+
 </script>
 
 <style scoped>
