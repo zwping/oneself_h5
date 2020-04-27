@@ -72,10 +72,10 @@
       onEdit(it) {
         console.log(it)
         if (it.edit) {
-          if (isEmpty(it.id)) {
+          if (isEmpty(it.pid)) {
             this.$http('/types/add_types')
               ._data('title', it.title)
-              ._data('id', it.id)
+              ._data('pid', it.pid)
               ._data('pid_list', it.pid_list)
               ._data('depth', it.depth)
               ._loading(it.loading)
