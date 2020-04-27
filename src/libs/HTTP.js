@@ -34,34 +34,46 @@ class Builder {
   }
 
   _auth(key, value) {
-    this.auth.append(key, value)
+    if (value !== undefined || value !== 'undefined') {
+      this.auth.append(key, value)
+    }
     return this
   }
 
   _header(key, value) {
-    this.headers.append(key, value)
+    if (value !== undefined || value !== 'undefined') {
+      this.headers.append(key, value)
+    }
     return this
   }
 
   _param(key, value) {
-    this.params.append(key, value)
+    if (value !== undefined || value !== 'undefined') {
+      this.params.append(key, value)
+    }
     return this
   }
 
   _data(key, value) {
-    this.data.append(key, value)
+    if (value !== undefined || value !== 'undefined') {
+      this.data.append(key, value)
+    }
     return this
   }
 
   _commonData(key, value) {
-    COMMON_DATA.append(key, value)
-    this._data(key, value)
+    if (value !== undefined || value !== 'undefined') {
+      COMMON_DATA.append(key, value)
+      this._data(key, value)
+    }
     return this
   }
 
   _commonParams(key, value) {
-    COMMON_PARAMS.append(key, value)
-    this._param(key, value)
+    if (value !== undefined || value !== 'undefined') {
+      COMMON_PARAMS.append(key, value)
+      this._param(key, value)
+    }
     return this
   }
 
