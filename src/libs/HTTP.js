@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { BaseAPI } from '../config'
-import { message } from 'ant-design-vue'
+import {BaseAPI} from '../config'
+import {message} from 'ant-design-vue'
 import Vue from 'vue'
 
 const TIMEOUT = 5000
@@ -26,8 +26,10 @@ class Builder {
     this.loadingState = null
     this.timeout = TIMEOUT
     this.baseurl = BaseAPI
-    this.sucLis = it => {}
-    this.errLis = it => {}
+    this.sucLis = it => {
+    }
+    this.errLis = it => {
+    }
     this.shieldErrMessage = false // 是否屏蔽错误消息
   }
 
@@ -163,7 +165,7 @@ function __interceptors() {
 function __setLoading(loading, value) {
   if (loading === null) return
   if (loading instanceof LOADING) {
-    loading.loading = value
+    loading.state = value
   }
 }
 
@@ -172,9 +174,9 @@ function __setLoading(loading, value) {
  * @constructor loading
  */
 function LOADING() {
-  this.loading = false
+  this.state = false
 }
 
 Vue.prototype.$http = http
 
-export { LOADING, http }
+export {LOADING, http}

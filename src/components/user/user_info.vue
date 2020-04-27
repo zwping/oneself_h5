@@ -41,6 +41,7 @@
           style="margin-right:10px;margin-bottom:10px"
           shape="square"
           :size="104"
+          icon="user"
           :src="portrait ? portrait :userData['portrait']"
         />
         <a-upload
@@ -63,7 +64,7 @@
         <a-button v-show="!editState" type="primary" @click="editState = true">修改资料</a-button>
         <div v-show="editState">
           <a-button type @click="editState = false">取消</a-button>
-          <a-button style="margin-left: 10px" type="primary" @click="submit">确认</a-button>
+          <a-button style="margin-left: 10px" :loading="loading.state" type="primary" @click="submit">确认</a-button>
         </div>
       </a-col>
     </a-row>
@@ -83,6 +84,7 @@ import {
 } from 'ant-design-vue'
 import { isImg } from '../../libs/ImageUtil'
 import { realType } from '../../libs/ObjectUtil'
+import {LOADING} from "../../libs/HTTP"
 
 export default {
   name: 'user_info',
@@ -90,7 +92,8 @@ export default {
     return {
       editState: false,
       userData: {},
-      portrait: null
+      portrait: null,
+      loading: new LOADING()
     }
   },
   components: {
@@ -116,7 +119,7 @@ export default {
     },
     fileUpload(file) {
       this.$http('/files/upload')
-        ._baseUrl('http://121.41.116.91:5000')
+        ._baseUrl('https://api.tool.zwping.com')
         ._data('files', file.file)
         ._data('dir', 'oneself/user/portrait')
         ._sucLis(it => {
@@ -130,6 +133,7 @@ export default {
         ._data('nickname', this.userData['nickname'])
         ._data('mail', this.userData['mail'])
         ._data('portrait', avatar)
+        ._loading(this.loading)
         ._sucLis(it => {
           message.success('保存成功')
           this.editState = false

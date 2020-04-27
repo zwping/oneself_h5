@@ -24,7 +24,7 @@
       class="top2"
       type="primary"
       block
-      :loading="httpState.loading"
+      :loading="httpState.state"
       :disabled="!dis"
     >登录</a-button>
     <a-popover placement="bottom" trigger="click" style="float:right;margin-top: 10px">

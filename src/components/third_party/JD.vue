@@ -9,8 +9,8 @@
           placeholder="请前往jd获取网络请求的Cookie"
           allowClear
         />
-        <a-button type="primary" :loading="editLoading.loading" class="box_1" @click="c1">修改</a-button>
-        <a-button type="danger" :loading="testLoading.loading" class="box_1" @click="c2">测试</a-button>
+        <a-button type="primary" :loading="editLoading.state" class="box_1" @click="c1">修改</a-button>
+        <a-button type="danger" :loading="testLoading.state" class="box_1" @click="c2">测试</a-button>
       </div>
     </div>
   </div>
