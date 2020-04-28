@@ -55,7 +55,7 @@ class Builder {
   }
 
   _data(key, value) {
-    if (value !== undefined || value !== 'undefined') {
+    if (value !== undefined || typeof value !== 'undefined') {
       this.data.append(key, value)
     }
     return this

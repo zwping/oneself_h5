@@ -6,16 +6,17 @@
     </a-button>
     <br/>
     <br/>
-    <a-tree v-if="data.length" defaultExpandAll :key="keys" :treeData="data">
+    <a-tree v-if="data.length" :key="keys" defaultExpandAll :treeData="data">
       <a-icon #switcherIcon type="down"/>
       <template #custom="item">
         <a-tooltip trigger="click">
           <template #title>
             id:{{item.id}} des:{{item.des}}
           </template>
-          <span class="title_w" :style="item.enabled === 1 ? 'color:#000' : 'color:#ccc'" v-show="!item.edit">{{item.title}}-{{item.enabled}}</span>
+          <span class="title_w" :style="item.enabled === 1 ? 'color:#000' : 'color:#ccc'" v-show="!item.edit">{{item.title}}</span>
           <a-input class="title_w" v-model="item.title" size="small" v-show="item.edit"
                    placeholder="请输入分类名"
+                   @keyup.enter.native="onEdit(item)"
                    :style="item.enabled === 1 ? 'color:#000' : 'color:#ccc'"
           />
         </a-tooltip>
@@ -30,7 +31,7 @@
           {{item.edit ? '保存' : '编辑'}}
         </a-button>
         <a-button type="dashed" size="small" v-show="item.edit" @click="onCancelEdit(item)">取消</a-button>
-        <a-button v-show="item.id" type="link" size="small" @click="onEnable(item)">
+        <a-button v-show="item.id" type="link" size="small" @click="onEnable(item)" :loading="item.enabledLoad.state">
           {{item.enabled === 1 ? '禁用' : '启用'}}
         </a-button>
         <a-button v-show="item.id" type="link" size="small" @click="onAddChild(item)">增加下级</a-button>
@@ -43,14 +44,14 @@
   import {Tree, Icon, Input, InputNumber, Button, message, Tooltip} from 'ant-design-vue'
   import {realType} from '../../libs/ObjectUtil'
   import {isEmpty, isNotEmpty} from "../../libs/Empty"
-  import {LOADING} from "../../libs/HTTP";
+  import {LOADING} from "../../libs/HTTP"
 
   export default {
     name: 'types',
     data() {
       return {
         data: [],
-        keys: 1
+        keys: 0
       }
     },
     components: {
@@ -70,9 +71,8 @@
         }
       },
       onEdit(it) {
-        console.log(it)
         if (it.edit) {
-          if (isEmpty(it.pid)) {
+          if (isEmpty(it.id)) {
             this.$http('/types/add_types')
               ._data('title', it.title)
               ._data('pid', it.pid)
@@ -111,14 +111,13 @@
           ._execute()
       },
       onCancelEdit(it) {
-        this.keys++
-        it.edit = false
+        this.$set(it, 'edit', false)
         __del(this.data, it.pid)
       },
       onAddChild(it) {
         this.keys++
         if (isEmpty(it.children)) {
-          it.children = [__getBaseBean(it.id)]
+          this.$set(it, 'children', [__getBaseBean(it.id)])
         } else if (it.children[it.children.length - 1].hasOwnProperty('id')) {
           it.children.push(__getBaseBean(it.id))
         } else {
@@ -138,6 +137,7 @@
 
   function __addAttr(data) {
     for (let d of data) {
+      d.key = d.id
       d.scopedSlots = {title: 'custom'}
       d.edit = false
       d.loading = new LOADING()
@@ -149,6 +149,7 @@
   function __addAttr1(data, d) {
     if (isNotEmpty(d.children)) {
       for (let d1 of d.children) {
+        d1.key = d1.id
         d1.scopedSlots = {title: 'custom'}
         d1.edit = false
         d1.loading = new LOADING()
@@ -159,7 +160,6 @@
   }
 
   function __del(data, pid) {
-    // data = data.filter()
     for (let i in data) {
       if (data.hasOwnProperty(i)) {
         if (isEmpty(data[i].id) && isEmpty(pid)) {
@@ -188,12 +188,12 @@
 
   function __getBaseBean(pid = null) {
     return {
-      'title': '1',
       scopedSlots: {title: 'custom'},
       edit: true,
-      pid: pid,
+      pid: isNotEmpty(pid) ? pid : '',
       priority: 9,
       enabled: 1,
+      key: Date(),
       loading: new LOADING(),
       enabledLoad: new LOADING()
     }
