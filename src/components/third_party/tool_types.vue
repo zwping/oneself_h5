@@ -42,13 +42,13 @@
 
 <script type="text/jsx">
   import {Tree, Icon, Input, InputNumber, Button, message, Tooltip} from 'ant-design-vue'
-  import {realType, tempEditOb, tempEditObOfSuc} from '../../libs/ObjectUtil'
+  import {realType} from '../../libs/ObjectUtil'
   import {isEmpty, isNotEmpty} from "../../libs/Empty"
   import {LOADING} from "../../libs/HTTP"
+  import {TBaseAPI} from "../../config"
 
   export default {
     name: 'types',
-    props: ['API'],
     data() {
       return {
         data: [],
@@ -72,11 +72,10 @@
         }
       },
       onEdit(it) {
-        tempEditOb(it, true, 'title', 'priority')
         if (it.edit) {
           if (isEmpty(it.id)) {
             this.$http('/types/add_types')
-              ._baseUrl(this.API)
+              ._baseUrl(TBaseAPI)
               ._data('title', it.title)
               ._data('pid', it.pid)
               ._data('pid_list', it.pid_list)
@@ -89,14 +88,13 @@
               ._execute()
           } else {
             this.$http('/types/m_types')
-              ._baseUrl(this.API)
+              ._baseUrl(TBaseAPI)
               ._data('id', it.id)
               ._data('title', it.title)
               ._data('priority', it.priority)
               ._loading(it.loading)
               ._sucLis(r => {
                 it.edit = false
-                tempEditObOfSuc(it, 'title', 'priority')
               })
               ._execute()
           }
@@ -107,7 +105,7 @@
       onEnable(it) {
         it.edit = false
         this.$http('/types/m_types')
-          ._baseUrl(this.API)
+          ._baseUrl(TBaseAPI)
           ._data('id', it.id)
           ._data('enabled', it.enabled === 1 ? 0 : 1)
           ._loading(it.enabledLoad)
@@ -117,7 +115,6 @@
           ._execute()
       },
       onCancelEdit(it) {
-        tempEditOb(it, false, 'title', 'priority')
         this.$set(it, 'edit', false)
         __del(this.data, it.pid)
       },
@@ -132,9 +129,9 @@
         }
       }
     },
-    created() {
+    beforeCreate() {
       this.$http('/types/get_types')
-        ._baseUrl(this.API)
+        ._baseUrl(TBaseAPI)
         ._sucLis(it => {
           __addAttr(it.result.types)
           this.data = it.result.types

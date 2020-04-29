@@ -1,17 +1,17 @@
-export function isEmpty(o) {
-  if (o === null || o === '' || o === undefined) {
+export function isEmpty(ob) {
+  if (ob === null || ob === '' || ob === undefined) {
     return true
   }
-  let type = Object.prototype.toString.call(o).slice(8, -1).toLowerCase()
+  let type = Object.prototype.toString.call(ob).slice(8, -1).toLowerCase()
   switch (type) {
     case 'undefined':
       return true
     case 'string':
-      return String(o).trim() === '' || o === null
+      return String(ob).trim() === '' || ob === null
     case 'object':
-      return Object.keys(o).length === 0
+      return Object.keys(ob).length === 0
     case 'array':
-      return o.length === 0
+      return ob.length === 0
     default:
       return false
   }

@@ -3,7 +3,7 @@
     <a-tabs hide-add size="small" type="editable-card" v-model="activeKey" default-active-key="控制台" @edit="onTabsEdit"
             @tabClick="onTabClick">
       <a-tab-pane v-for="pane in panes" :tab="pane.title" :key="pane.key" :closable="pane.key !== '控制台'">
-        <component v-bind:is="pane.content"/>
+        <component v-bind:is="pane.content" :API="pane.api"/>
       </a-tab-pane>
     </a-tabs>
   </div>

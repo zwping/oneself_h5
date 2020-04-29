@@ -5,7 +5,7 @@
         <span>用户角色</span>
       </a-col>
       <a-col :span="6">
-        <a-input disabled value="超级管理员" />
+        <a-input disabled value="超级管理员"/>
       </a-col>
     </a-row>
     <a-row class="row1">
@@ -13,7 +13,7 @@
         <span>手机号</span>
       </a-col>
       <a-col :span="6">
-        <a-input disabled :value="userData['phone']" />
+        <a-input disabled :value="userData['phone']"/>
       </a-col>
     </a-row>
     <a-row class="row1">
@@ -21,7 +21,7 @@
         <span>昵称</span>
       </a-col>
       <a-col :span="6">
-        <a-input :readOnly="!editState" v-model="userData['nickname']" />
+        <a-input :readOnly="!editState" v-model="userData['nickname']"/>
       </a-col>
     </a-row>
     <a-row class="row1">
@@ -29,7 +29,7 @@
         <span>邮箱</span>
       </a-col>
       <a-col :span="6">
-        <a-input :readOnly="!editState"  v-model="userData['mail']" />
+        <a-input :readOnly="!editState" v-model="userData['mail']"/>
       </a-col>
     </a-row>
     <a-row class="row1">
@@ -42,7 +42,7 @@
           shape="square"
           :size="104"
           icon="user"
-          :src="portrait ? portrait :userData['portrait']"
+          :src="userData['portrait']"
         />
         <a-upload
           v-show="editState"
@@ -53,8 +53,11 @@
           :multiple="true"
         >
           <div>
-            <a-icon type="plus" />
-            <div class="ant-upload-text">Upload</div>
+            <a-icon v-if="fileLoading.state" type="loading"/>
+            <div v-if="!fileLoading.state">
+              <a-icon type="plus"/>
+              <div class="ant-upload-text">Upload</div>
+            </div>
           </div>
         </a-upload>
       </a-col>
@@ -72,104 +75,110 @@
 </template>
 
 <script>
-import {
-  Row,
-  Col,
-  Button,
-  Input,
-  Upload,
-  Icon,
-  message,
-  Avatar
-} from 'ant-design-vue'
-import { isImg } from '../../libs/ImageUtil'
-import { realType } from '../../libs/ObjectUtil'
-import {LOADING} from "../../libs/HTTP"
+  import {
+    Row,
+    Col,
+    Button,
+    Input,
+    Upload,
+    Icon,
+    message,
+    Avatar
+  } from 'ant-design-vue'
+  import {isImg} from '../../libs/ImageUtil'
+  import {realType, tempEditOb, tempEditObOfSuc} from '../../libs/ObjectUtil'
+  import {LOADING} from "../../libs/HTTP"
 
-export default {
-  name: 'user_info',
-  data() {
-    return {
-      editState: false,
-      userData: {},
-      portrait: null,
-      loading: new LOADING()
-    }
-  },
-  components: {
-    [Row.name]: Row,
-    [Col.name]: Col,
-    [Input.name]: Input,
-    [Upload.name]: Upload,
-    [Icon.name]: Icon,
-    [Avatar.name]: Avatar,
-    [Button.name]: Button
-  },
-  methods: {
-    beforeUpload(file) {
-      let img = isImg(file)
-      if (!img) {
-        message.error('请选择图片类型的文件')
+  export default {
+    name: 'user_info',
+    data() {
+      return {
+        editState: false,
+        userData: {},
+        loading: new LOADING(),
+        fileLoading: new LOADING()
       }
-      let size = file.size / 1024 / 1024 < 2
-      if (!size) {
-        message.error('请选择小于2M的图片')
+    },
+    components: {
+      [Row.name]: Row,
+      [Col.name]: Col,
+      [Input.name]: Input,
+      [Upload.name]: Upload,
+      [Icon.name]: Icon,
+      [Avatar.name]: Avatar,
+      [Button.name]: Button
+    },
+    watch: {
+      editState: function (v) {
+        tempEditOb(this.userData, v, 'nickname', 'mail', 'portrait')
       }
-      return img && size
     },
-    fileUpload(file) {
-      this.$http('/files/upload')
-        ._baseUrl('https://api.tool.zwping.com')
-        ._data('files', file.file)
-        ._data('dir', 'oneself/user/portrait')
-        ._sucLis(it => {
-          this.portrait = it.result.file_list[0]
-        })
-        ._execute()
+    methods: {
+      beforeUpload(file) {
+        let img = isImg(file)
+        if (!img) {
+          message.error('请选择图片类型的文件')
+        }
+        let size = file.size / 1024 / 1024 < 2
+        if (!size) {
+          message.error('请选择小于2M的图片')
+        }
+        return img && size
+      },
+      fileUpload(file) {
+        this.$http('/files/upload')
+          ._baseUrl('https://api.tool.zwping.com')
+          ._data('files', file.file)
+          ._data('dir', 'oneself/user/portrait')
+          ._loading(this.fileLoading)
+          ._sucLis(it => {
+            this.userData.portrait = it.result.file_list[0]
+          })
+          ._execute()
+      },
+      submit() {
+        this.$http('account/m_userinfo')
+          ._data('nickname', this.userData['nickname'])
+          ._data('mail', this.userData['mail'])
+          ._data('portrait', this.userData['portrait'])
+          ._loading(this.loading)
+          ._sucLis(it => {
+            tempEditObOfSuc(this.userData, 'nickname', 'mail', 'portrait')
+            message.success('保存成功')
+            this.editState = false
+            this.$store.commit('tokenx/applyUserData', this.userData)
+          })
+          ._execute()
+      }
     },
-    submit() {
-      let avatar = this.portrait ? this.portrait : this.userData['portrait']
-      this.$http('account/m_userinfo')
-        ._data('nickname', this.userData['nickname'])
-        ._data('mail', this.userData['mail'])
-        ._data('portrait', avatar)
-        ._loading(this.loading)
+    beforeCreate() {
+      this.$http('/get_userinfo')
         ._sucLis(it => {
-          message.success('保存成功')
-          this.editState = false
-          this.userData['portrait'] = avatar
+          this.userData = it.result
           this.$store.commit('tokenx/applyUserData', it.result)
         })
         ._execute()
     }
-  },
-  beforeCreate() {
-    this.$http('/get_userinfo')
-      ._sucLis(it => {
-        this.userData = it.result
-        this.$store.commit('tokenx/applyUserData', it.result)
-      })
-      ._execute()
   }
-}
 </script>
 
 <style scoped>
-.title span {
-  float: right;
-  margin-right: 20px;
-  line-height: 32px;
-}
+  .title span {
+    float: right;
+    margin-right: 20px;
+    line-height: 32px;
+  }
 
-.row1 {
-  margin-bottom: 10px;
-}
+  .row1 {
+    margin-bottom: 10px;
+  }
 
-.row_submit {
-  margin-top: 12px;
-}
-.portrait_ly {
-  display: flex;
-  display: -webkit-flex;
-}
+  .row_submit {
+    margin-top: 12px;
+  }
+
+  .portrait_ly {
+    display: flex;
+    display: -webkit-flex;
+  }
 </style>
