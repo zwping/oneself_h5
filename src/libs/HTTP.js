@@ -30,6 +30,7 @@ class Builder {
     }
     this.errLis = it => {
     }
+    this.isExecute = true // 是否执行网络请求
     this.shieldErrMessage = false // 是否屏蔽错误消息
   }
 
@@ -108,7 +109,15 @@ class Builder {
     return this
   }
 
+  _executeFilter(filter) {
+    this.isExecute = filter()
+    return this
+  }
+
   _execute() {
+    if (this.isExecute === false) {
+      return null
+    }
     __setLoading(this.loadingState, true)
     __interceptors()
     return axios
@@ -131,7 +140,6 @@ class Builder {
           }
           this.errLis(it.data)
         }
-
         __setLoading(this.loadingState, false)
       })
       .catch(it => {

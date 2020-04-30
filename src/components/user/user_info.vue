@@ -86,7 +86,7 @@
     Avatar
   } from 'ant-design-vue'
   import {isImg} from '../../libs/ImageUtil'
-  import {realType, tempEditOb, tempEditObOfSuc} from '../../libs/ObjectUtil'
+  import {realType, tempEditOb, tempEditObOfConfirm, tempEditObOfSuc} from '../../libs/ObjectUtil'
   import {LOADING} from "../../libs/HTTP"
 
   export default {
@@ -127,7 +127,8 @@
       },
       fileUpload(file) {
         this.$http('/files/upload')
-          ._baseUrl('https://api.tool.zwping.com')
+          // ._baseUrl('https://api.tool.zwping.com')
+          ._baseUrl('http://localhost:5000')
           ._data('files', file.file)
           ._data('dir', 'oneself/user/portrait')
           ._loading(this.fileLoading)
@@ -147,6 +148,13 @@
             message.success('保存成功')
             this.editState = false
             this.$store.commit('tokenx/applyUserData', this.userData)
+          })
+          ._executeFilter(() => {
+            let r = tempEditObOfConfirm(this.userData, 'nickname', 'mail', 'portrait')
+            if (!r) {
+              this.editState = false
+            }
+            return r
           })
           ._execute()
       }

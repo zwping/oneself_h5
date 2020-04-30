@@ -10,7 +10,7 @@ export function realType(ob) {
 /**
  * 临时修改对象，自带回滚机制
  * @param ob 待修改对象
- * @param editState 修改状态 true->存对象 false->释放对象(如果old*的值为空即表明修改成功)
+ * @param editState 修改状态 true->存对象 false->释放对象(如果old*的值为空即表明修改成功{@link tempEditObOfSuc})
  * @param arguments 对象内待修改的key
  */
 export function tempEditOb(ob, editState) {
@@ -27,6 +27,24 @@ export function tempEditOb(ob, editState) {
       }
     }
   }
+}
+
+/**
+ * 临时修改对象，确认内容是否有过修改
+ * @param ob 待修改对象
+ * @param arguments 对象内待修改的key
+ * @return boolean true->需要api存储
+ */
+export function tempEditObOfConfirm(ob) {
+  let args = [...arguments]
+  args.shift()
+  for (let d of args) {
+    let old = 'old' + d
+    if (ob[old] !== ob[d]) {
+      return true
+    }
+  }
+  return false
 }
 
 /**

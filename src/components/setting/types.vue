@@ -42,7 +42,7 @@
 
 <script type="text/jsx">
   import {Tree, Icon, Input, InputNumber, Button, message, Tooltip} from 'ant-design-vue'
-  import {realType, tempEditOb, tempEditObOfSuc} from '../../libs/ObjectUtil'
+  import {realType, tempEditOb, tempEditObOfConfirm, tempEditObOfSuc} from '../../libs/ObjectUtil'
   import {isEmpty, isNotEmpty} from "../../libs/Empty"
   import {LOADING} from "../../libs/HTTP"
 
@@ -72,7 +72,6 @@
         }
       },
       onEdit(it) {
-        tempEditOb(it, true, 'title', 'priority')
         if (it.edit) {
           if (isEmpty(it.id)) {
             this.$http('/types/add_types')
@@ -98,9 +97,17 @@
                 it.edit = false
                 tempEditObOfSuc(it, 'title', 'priority')
               })
+              ._executeFilter(() => {
+                let r = tempEditObOfConfirm(it, 'title', 'priority')
+                if (!r) {
+                  it.edit = false
+                }
+                return r
+              })
               ._execute()
           }
         } else {
+          tempEditOb(it, true, 'title', 'priority')
           it.edit = true
         }
       },
