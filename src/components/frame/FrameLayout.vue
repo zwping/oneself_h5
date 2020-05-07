@@ -179,18 +179,10 @@
     },
     mounted() {
       emit('fc_tabs', {
-        title: 'Tool分类',
-        content: types,
-        key: 'Tool分类',
-        clo: true,
-        api: TBaseAPI
-      })
-      emit('fc_tabs', {
-        title: '类别分类',
-        content: types,
-        key: '类别分类',
-        clo: true,
-        api: BaseAPI
+        title: '登录日志',
+        content: login_log,
+        key: '登录日志',
+        clo: true
       })
     }
   }
