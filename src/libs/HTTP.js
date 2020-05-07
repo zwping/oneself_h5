@@ -4,6 +4,8 @@ import {message} from 'ant-design-vue'
 import Vue from 'vue'
 
 const TIMEOUT = 5000
+const MAX_RETRIES = 3
+const RETRY_INTERVAL = 1000
 const COMMON_HEADERS = {
   // 'content-type': 'application/x-www-form-urlencoded'
   // 'content-type': 'multipart/form-data'
@@ -25,6 +27,8 @@ class Builder {
     this.data = new FormData()
     this.loadingState = null
     this.timeout = TIMEOUT
+    this.max_retries = MAX_RETRIES
+    this.retry_interval = RETRY_INTERVAL
     this.baseurl = BaseAPI
     this.sucLis = it => {
     }
@@ -32,6 +36,26 @@ class Builder {
     }
     this.isExecute = true // 是否执行网络请求
     this.shieldErrMessage = false // 是否屏蔽错误消息
+  }
+
+  _post() {
+    this.method = 'post'
+    return this
+  }
+
+  _delete() {
+    this.method = 'delete'
+    return this
+  }
+
+  _put() {
+    this.method = 'put'
+    return this
+  }
+
+  _get() {
+    this.method = 'get'
+    return this
   }
 
   _auth(key, value) {
@@ -50,7 +74,7 @@ class Builder {
 
   _param(key, value) {
     if (value !== undefined || value !== 'undefined') {
-      this.params.append(key, value)
+      this.params[key] = value
     }
     return this
   }
@@ -72,7 +96,7 @@ class Builder {
 
   _commonParams(key, value) {
     if (value !== undefined || value !== 'undefined') {
-      COMMON_PARAMS.append(key, value)
+      COMMON_PARAMS[key] = value
       this._param(key, value)
     }
     return this
@@ -89,6 +113,16 @@ class Builder {
     return this
   }
 
+  _maxRetries(retries, interval) {
+    this.max_retries = retries
+    this.retry_interval = interval
+  }
+
+  /**
+   * baseUrl
+   * @param url
+   * @deprecated 可直接在http(url*)中编写决定路径
+   */
   _baseUrl(url) {
     this.baseurl = url
     return this
@@ -129,6 +163,8 @@ class Builder {
         params: this.params,
         data: this.data,
         timeout: this.timeout,
+        maxRetries: this.max_retries,
+        retryInterval: this.retry_interval,
         auth: this.auth
       })
       .then(it => {
@@ -164,11 +200,12 @@ function __interceptors() {
         ...COMMON_HEADERS,
         ...config.headers
       }
-      if (config.method === 'post') {
+      let method = config.method
+      if (method === 'post' || method === 'put' || method === 'delete') {
         for (let d of COMMON_DATA) {
           config.data.set(d[0], d[1])
         }
-      } else if (config.method === 'get') {
+      } else if (method === 'get') {
         config.params = {
           ...COMMON_PARAMS,
           ...config.params
@@ -180,6 +217,26 @@ function __interceptors() {
       return Promise.reject(error)
     }
   )
+  axios.interceptors.response.use(
+    res => {
+      return res
+    }, function axiosRetryInterceptor(res) {
+      let config = res.config
+      if (!config || !config.maxRetries) return Promise.reject(res)
+      config.retryCount = config.retryCount || 0
+      if (config.retryCount >= config.maxRetries) {
+        return Promise.reject(res)
+      }
+      config.retryCount += 1
+      let back = new Promise(function (resolve) {
+        setTimeout(function () {
+          resolve()
+        }, config.retryInterval || 1)
+      })
+      return back.then(function () {
+        return axios(config)
+      })
+    })
 }
 
 function __setLoading(loading, value) {

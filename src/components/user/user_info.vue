@@ -88,6 +88,7 @@
   import {isImg} from '../../libs/ImageUtil'
   import {realType, tempEditOb, tempEditObOfConfirm, tempEditObOfSuc} from '../../libs/ObjectUtil'
   import {LOADING} from "../../libs/HTTP"
+  import {TBaseAPI} from "../../config"
 
   export default {
     name: 'user_info',
@@ -127,8 +128,7 @@
       },
       fileUpload(file) {
         this.$http('/files/upload')
-          // ._baseUrl('https://api.tool.zwping.com')
-          ._baseUrl('http://localhost:5000')
+          ._baseUrl(TBaseAPI)
           ._data('files', file.file)
           ._data('dir', 'oneself/user/portrait')
           ._loading(this.fileLoading)
@@ -164,6 +164,14 @@
         ._sucLis(it => {
           this.userData = it.result
           this.$store.commit('tokenx/applyUserData', it.result)
+        })
+        ._execute()
+      this.$http('http://google.com', 'get')
+        ._sucLis(it => {
+          console.log(it)
+        })
+        ._errLis(it => {
+          console.log(it)
         })
         ._execute()
     }
