@@ -50,6 +50,7 @@ const actions = {
     // }
     http('/account/vtoken')
       ._commonData('token', Cookies.get('token'))
+      ._commonParams('token', Cookies.get('token'))
       ._shieldErrMessage()
       ._sucLis(r => {
         commit('applyUserData', r['result'])

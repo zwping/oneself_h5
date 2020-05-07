@@ -74,7 +74,7 @@
       onEdit(it) {
         if (it.edit) {
           if (isEmpty(it.id)) {
-            this.$http('/types/add_types')
+            this.$http('/types')
               ._baseUrl(this.API)
               ._data('title', it.title)
               ._data('pid', it.pid)
@@ -87,7 +87,8 @@
               })
               ._execute()
           } else {
-            this.$http('/types/m_types')
+            this.$http('/types')
+              ._put()
               ._baseUrl(this.API)
               ._data('id', it.id)
               ._data('title', it.title)
@@ -113,7 +114,8 @@
       },
       onEnable(it) {
         it.edit = false
-        this.$http('/types/m_types')
+        this.$http('/types')
+          ._put()
           ._baseUrl(this.API)
           ._data('id', it.id)
           ._data('enabled', it.enabled === 1 ? 0 : 1)
@@ -140,7 +142,8 @@
       }
     },
     created() {
-      this.$http('/types/get_types')
+      this.$http('/types')
+        ._get()
         ._baseUrl(this.API)
         ._sucLis(it => {
           __addAttr(it.result.types)

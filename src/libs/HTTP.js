@@ -74,7 +74,7 @@ class Builder {
 
   _param(key, value) {
     if (value !== undefined || value !== 'undefined') {
-      this.params.append(key, value)
+      this.params[key] = value
     }
     return this
   }
@@ -96,7 +96,7 @@ class Builder {
 
   _commonParams(key, value) {
     if (value !== undefined || value !== 'undefined') {
-      COMMON_PARAMS.append(key, value)
+      COMMON_PARAMS[key] = value
       this._param(key, value)
     }
     return this
@@ -200,11 +200,12 @@ function __interceptors() {
         ...COMMON_HEADERS,
         ...config.headers
       }
-      if (config.method === 'post') {
+      let method = config.method
+      if (method === 'post' || method === 'put' || method === 'delete') {
         for (let d of COMMON_DATA) {
           config.data.set(d[0], d[1])
         }
-      } else if (config.method === 'get') {
+      } else if (method === 'get') {
         config.params = {
           ...COMMON_PARAMS,
           ...config.params
