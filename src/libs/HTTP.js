@@ -89,7 +89,7 @@ class Builder {
   _commonData(key, value) {
     if (value !== undefined || value !== 'undefined') {
       COMMON_DATA.append(key, value)
-      this._data(key, value)
+      // this._data(key, value)
     }
     return this
   }
@@ -97,7 +97,14 @@ class Builder {
   _commonParams(key, value) {
     if (value !== undefined || value !== 'undefined') {
       COMMON_PARAMS[key] = value
-      this._param(key, value)
+      // this._param(key, value)
+    }
+    return this
+  }
+
+  _commonHeader(key, value) {
+    if (value !== undefined || value !== 'undefined') {
+      COMMON_HEADERS[key] = value
     }
     return this
   }

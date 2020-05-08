@@ -39,7 +39,7 @@
               <a-icon type="notification"/>日志
             </span>
             <a-menu-item key="4-1" @click="fc_tabs">登录日志</a-menu-item>
-            <a-menu-item key="4-2" @click="fc_tabs">错误日志</a-menu-item>
+            <a-menu-item key="4-2" @click="fc_tabs">全部日志</a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="5">
             <span slot="title">
@@ -74,7 +74,7 @@
   import back_user from '../user/back_user'
   import fore_user from '../user/fore_user'
   import login_log from '../log/login_log'
-  import error_log from '../log/error_log'
+  import allLog from '../log/all_log'
   import auto_task from '../setting/auto_task'
   import types from '../setting/types'
   import dir_files from '../setting/dir_files'
@@ -97,7 +97,7 @@
       back_user,
       fore_user,
       login_log,
-      error_log,
+      allLog,
       auto_task,
       types,
       dir_files,
@@ -157,8 +157,8 @@
             comp = login_log
             break
           case '4-2':
-            n = '错误日志'
-            comp = error_log
+            n = '全部日志'
+            comp = allLog
             break
           case '5-1':
             n = '自动脚本'
@@ -178,6 +178,44 @@
       }
     },
     mounted() {
+      emit('fc_tabs', {
+        title: '日志',
+        content: tool_log,
+        key: '日志',
+        clo: true
+      })
+      emit('fc_tabs', {
+        title: 'Tool日志',
+        content: tool_log,
+        key: 'Tool日志',
+        clo: true
+      })
+      emit('fc_tabs', {
+        title: 'Tool分类',
+        content: types,
+        key: 'Tool分类',
+        clo: true,
+        api: TBaseAPI
+      })
+      emit('fc_tabs', {
+        title: '类别分类',
+        content: types,
+        key: '类别分类',
+        clo: true,
+        api: BaseAPI
+      })
+      emit('fc_tabs', {
+        title: '京东',
+        content: jd,
+        key: '京东',
+        clo: true,
+      })
+      emit('fc_tabs', {
+        title: '全部日志',
+        content: allLog,
+        key: '全部日志',
+        clo: true
+      })
       emit('fc_tabs', {
         title: '登录日志',
         content: login_log,

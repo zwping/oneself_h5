@@ -166,14 +166,6 @@
           this.$store.commit('tokenx/applyUserData', it.result)
         })
         ._execute()
-      this.$http('http://google.com', 'get')
-        ._sucLis(it => {
-          console.log(it)
-        })
-        ._errLis(it => {
-          console.log(it)
-        })
-        ._execute()
     }
   }
 </script>
