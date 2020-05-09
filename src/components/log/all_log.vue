@@ -1,36 +1,14 @@
 <template>
   <div>
-    <a-table
-      :columns="columns" :data-source="lists"
-      :loading="loading.state"
-      :pagination="pagination"
-      :scroll="{y: tableHeight}"
-      :rowKey="r => r.id"
-      @change="handleTableChange"
-    >
-      <template #time="time">
-        <span>{{stime(time)}}</span>
-      </template>
-      <template #oldValue="it">
-        <span style="width: 200px">
-          {{it}}
-        </span>
-      </template>
-      <template #newValue="it">
-        <span style="word-break:break-all">
-          {{it}}
-        </span>
-      </template>
-    </a-table>
+    <table2 ref="t2" :cus-columns="columns" :get_list="get_list">
+    </table2>
   </div>
 
 </template>
 
 <script>
-  import {TBaseAPI} from "../../config"
-  import {Table} from 'ant-design-vue'
-  import {LOADING} from "../../libs/HTTP"
-  import {stime} from '../../libs/TimeUtil'
+  import {TBaseAPI} from '../../config'
+  import Table2 from '../cus_template/Table2.vue'
 
   export default {
     data() {
@@ -55,10 +33,6 @@
           },
           {dataIndex: '_ip', title: 'IP', width: 150},
         ],
-        lists: [],
-        loading: new LOADING(),
-        pagination: {},
-        tableHeight: 0
       }
     },
     methods: {
@@ -67,39 +41,20 @@
           ._get()
           ._param('page', page)
           ._param('perpage', perpage)
-          ._loading(this.loading)
+          ._loading(this.$refs.t2.loading)
           ._sucLis(it => {
-            this.lists = it.result.lists
-            this.pagination = {
+            this.$refs.t2.lists = it.result.lists
+            this.$refs.t2.pagination = {
               current: it.result.page,
               pageSize: it.result.perpage,
               total: it.result.totalNum,
-              showQuickJumper: true,
-              showSizeChanger: true
             }
           })
           ._execute()
       },
-      getTableHeight() {
-        this.tableHeight = window.innerHeight - 290
-      },
-      handleTableChange(pagination, filters, sorter) {
-        this.get_list(pagination.current, pagination.pageSize)
-      },
-      stime(second) {
-        return stime(second)
-      },
-    },
-    created() {
-      window.addEventListener('resize', this.getTableHeight)
-      this.getTableHeight()
-      this.get_list()
-    },
-    destroyed() {
-      window.removeEventListener('resize', this.getTableHeight)
     },
     components: {
-      [Table.name]: Table
+      'table2': Table2,
     }
   }
 </script>

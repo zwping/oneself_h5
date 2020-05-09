@@ -2,6 +2,7 @@ import axios from 'axios'
 import {BaseAPI} from '../config'
 import {message} from 'ant-design-vue'
 import Vue from 'vue'
+import {isNotEmpty} from "./Empty";
 
 const TIMEOUT = 5000
 const MAX_RETRIES = 3
@@ -111,7 +112,9 @@ class Builder {
 
   // 是否需要控制控件的加载状态
   _loading(loading) {
-    this.loadingState = loading
+    if (isNotEmpty(loading)) {
+      this.loadingState = loading
+    }
     return this
   }
 
