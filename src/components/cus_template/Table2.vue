@@ -53,6 +53,7 @@
           showSizeChanger: true
         },
         loading: new LOADING(),
+        params: {},
       }
     },
     methods: {
@@ -67,9 +68,6 @@
       },
     },
     watch: {
-      ss: function (val) {
-        console.log(this.ss)
-      }
     },
     components: {
       [Table.name]: Table

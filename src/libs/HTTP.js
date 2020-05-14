@@ -26,7 +26,7 @@ class Builder {
     this.headers = {}
     this.params = {}
     this.data = new FormData()
-    this.loadingState = null
+    this.loadingStates = []
     this.timeout = TIMEOUT
     this.max_retries = MAX_RETRIES
     this.retry_interval = RETRY_INTERVAL
@@ -80,6 +80,14 @@ class Builder {
     return this
   }
 
+  _params(dict = {}) {
+    console.log(dict)
+    for (let k in dict) {
+      this._param(k, dict[k])
+    }
+    return this
+  }
+
   _data(key, value) {
     if (value !== undefined || typeof value !== 'undefined') {
       this.data.append(key, value)
@@ -112,8 +120,10 @@ class Builder {
 
   // 是否需要控制控件的加载状态
   _loading(loading) {
-    if (isNotEmpty(loading)) {
-      this.loadingState = loading
+    for (let d of arguments) {
+      if (isNotEmpty(d) && d instanceof LOADING) {
+        this.loadingStates.push(d)
+      }
     }
     return this
   }
@@ -162,7 +172,7 @@ class Builder {
     if (this.isExecute === false) {
       return null
     }
-    __setLoading(this.loadingState, true)
+    __setLoading(this.loadingStates, true)
     __interceptors()
     return axios
       .request({
@@ -186,7 +196,7 @@ class Builder {
           }
           this.errLis(it.data)
         }
-        __setLoading(this.loadingState, false)
+        __setLoading(this.loadingStates, false)
       })
       .catch(it => {
         console.log(it)
@@ -194,7 +204,7 @@ class Builder {
           message.error(it.message)
         }
         this.errLis(it)
-        __setLoading(this.loadingState, false)
+        __setLoading(this.loadingStates, false)
       })
   }
 }
@@ -249,10 +259,11 @@ function __interceptors() {
     })
 }
 
-function __setLoading(loading, value) {
-  if (loading === null) return
-  if (loading instanceof LOADING) {
-    loading.state = value
+function __setLoading(loadings, value) {
+  for (let d of loadings) {
+    if (d instanceof LOADING) {
+      d.state = value
+    }
   }
 }
 
