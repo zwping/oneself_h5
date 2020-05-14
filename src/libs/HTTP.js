@@ -2,7 +2,7 @@ import axios from 'axios'
 import {BaseAPI} from '../config'
 import {message} from 'ant-design-vue'
 import Vue from 'vue'
-import {isNotEmpty} from "./Empty";
+import {isNotEmpty} from './Empty'
 
 const TIMEOUT = 5000
 const MAX_RETRIES = 3
