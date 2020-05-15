@@ -10,7 +10,24 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      "/sh_changnan": {
+        target: 'http://px.jxbyjg.com',
+        //secure: false, // 如果是https接口，需要配置这个参数
+        changeOrigin: true,//如果是跨域访问，需要配置这个参数
+        pathRewrite: {
+          '^/sh_changnan': '/'
+        }
+      },
+      "/jd_cookie": {
+        target: 'https://quan.jd.com/user_quan.action?tab=&couponType=-1&sort=3&page=1',
+        secure: false, // 如果是https接口，需要配置这个参数
+        changeOrigin: true,//如果是跨域访问，需要配置这个参数
+        pathRewrite: {
+          '^/jd_cookie': '/'
+        }
+      },
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

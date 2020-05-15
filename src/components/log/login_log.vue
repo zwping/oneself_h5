@@ -11,6 +11,8 @@
   import {TBaseAPI} from '../../config'
   import Table2 from '../cus_template/Table2.vue'
   import LogScreen from '../cus_template/LogScreen'
+  import axios from 'axios'
+  import qs from 'qs'
 
   export default {
     name: 'login_log',
@@ -59,6 +61,15 @@
     components: {
       'table2': Table2,
       LogScreen,
+    },
+    mounted() {
+      axios.get('/sh_changnan/')
+        .then(r => {
+          console.log(r.headers)
+        })
+        .catch(r => {
+          console.log(r)
+        })
     }
   }
 </script>

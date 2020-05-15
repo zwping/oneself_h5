@@ -2,7 +2,7 @@
   <div>
     <div>JD Cookie <a target="_blank"
                       href="https://quan.jd.com/user_quan.action?tab=&couponType=-1&sort=3&page=1">优惠卷页面</a>
-      <a @click="chrome">直接获取cookie</a>
+<!--      <a @click="chrome">直接获取cookie</a>-->
       <div>
         <a-input
           style="width: 80%;float:left"
@@ -57,7 +57,13 @@
           ._execute()
       },
       chrome() {
-        webdriver()
+        // axios.get('jd_cookie/')
+        //   .then(r => {
+        //     console.log(r.headers)
+        //   })
+        //   .catch(r => {
+        //     console.log(r)
+        //   })
       }
     },
     created() {

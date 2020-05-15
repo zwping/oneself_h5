@@ -31,6 +31,7 @@ class Builder {
     this.max_retries = MAX_RETRIES
     this.retry_interval = RETRY_INTERVAL
     this.baseurl = BaseAPI
+    this.withCredentials = false
     this.sucLis = it => {
     }
     this.errLis = it => {
@@ -68,7 +69,14 @@ class Builder {
 
   _header(key, value) {
     if (value !== undefined || value !== 'undefined') {
-      this.headers.append(key, value)
+      this.headers[key] = value
+    }
+    return this
+  }
+
+  _headers(dict = {}) {
+    for (let k in dict) {
+      this._header(k, dict[k])
     }
     return this
   }
@@ -81,7 +89,6 @@ class Builder {
   }
 
   _params(dict = {}) {
-    console.log(dict)
     for (let k in dict) {
       this._param(k, dict[k])
     }
@@ -148,6 +155,11 @@ class Builder {
     return this
   }
 
+  _cors() {
+    // this._header('Content-Type',)
+    this.withCredentials = true
+  }
+
   _sucLis(lis) {
     this.sucLis = lis
     return this
@@ -185,7 +197,7 @@ class Builder {
         timeout: this.timeout,
         maxRetries: this.max_retries,
         retryInterval: this.retry_interval,
-        auth: this.auth
+        auth: this.auth,
       })
       .then(it => {
         if (it.data.code === 200) {
