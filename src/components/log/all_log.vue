@@ -24,7 +24,7 @@
           {dataIndex: 'operType', title: '操作类型', width: 160},
           {dataIndex: 'oldValue', title: '旧值', width: 200, scopedSlots: {customRender: 'oldValue'}},
           {dataIndex: 'newValue', title: '新值', scopedSlots: {customRender: 'newValue'}},
-          {dataIndex: 'remark', title: '备注', width: 200},
+          {dataIndex: 'remark', title: '备注', width: 200, scopedSlots: {customRender: 'remark'}},
           {
             dataIndex: 'final_time',
             title: '时间',

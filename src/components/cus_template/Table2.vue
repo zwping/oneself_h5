@@ -21,8 +21,8 @@
         </span>
     </template>
     <template #newValue="it">
-        <span style="word-break:break-all">
-          {{it}}
+        <span style="word-break:break-all" :title="it">
+          {{cov_title(it)}}
         </span>
     </template>
   </a-table>
@@ -32,6 +32,7 @@
   import {Table} from 'ant-design-vue'
   import {stime} from '../../libs/TimeUtil'
   import {LOADING} from '../../libs/HTTP'
+  import {isEmpty} from "../../libs/Empty";
 
   export default {
     name: 'Table2',
@@ -66,9 +67,11 @@
       stime(second) {
         return stime(second)
       },
+      cov_title(title) {
+        return isEmpty(title) ? '-' : title.length > 50 ? title.substring(0, 50) + ' ...' : title
+      }
     },
-    watch: {
-    },
+    watch: {},
     components: {
       [Table.name]: Table
     },
