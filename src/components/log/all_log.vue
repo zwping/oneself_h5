@@ -14,7 +14,8 @@
     data() {
       return {
         columns: [
-          {dataIndex: 'id', title: 'ID', align: 'center', width: 100},
+          {title: '序号', width: 80, align: 'center', customRender: (text, record, index) => `${index + 1}`},
+          // {dataIndex: 'id', title: 'ID', align: 'center', width: 100},
           {dataIndex: 'client', title: '客户端', width: 120},
           {dataIndex: 'logType', title: '日志类型', width: 150},
           {dataIndex: 'operId', title: '操作人Id', width: 100},

@@ -12,14 +12,14 @@
   import Table2 from '../cus_template/Table2.vue'
   import LogScreen from '../cus_template/LogScreen'
   import axios from 'axios'
-  import qs from 'qs'
 
   export default {
     name: 'login_log',
     data() {
       return {
         columns: [
-          {dataIndex: 'id', title: '日志ID', align: 'center', width: 100},
+          {title: '序号', width: 80, align: 'center', customRender: (text, record, index) => `${index + 1}`},
+          // {dataIndex: 'id', title: '日志ID', align: 'center', width: 100},
           {dataIndex: 'client', title: '客户端', width: 120},
           {dataIndex: 'operId', title: '登录人Id', width: 100, align: 'center'},
           {dataIndex: 'operNickName', title: '登录人昵称', width: 150, align: 'center'},

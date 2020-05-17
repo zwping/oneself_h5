@@ -25,14 +25,22 @@
           {{cov_title(it)}}
         </span>
     </template>
+    <template #portrait="it">
+      <span><a-avatar shape="square" :size="30" :src="it"></a-avatar></span>
+    </template>
+    <template #progress="it">
+      <span :title="it">
+        <a-progress :status="it[0]===it[1] ? 'success' : 'active'" :percent="it[0]/it[1]*100" :show-info="false"/>
+      </span>
+    </template>
   </a-table>
 </template>
 
 <script>
-  import {Table} from 'ant-design-vue'
+  import {Table, Avatar, Progress} from 'ant-design-vue'
   import {stime} from '../../libs/TimeUtil'
   import {LOADING} from '../../libs/HTTP'
-  import {isEmpty} from "../../libs/Empty";
+  import {isEmpty} from '../../libs/Empty'
 
   export default {
     name: 'Table2',
@@ -69,11 +77,13 @@
       },
       cov_title(title) {
         return isEmpty(title) ? '-' : title.length > 50 ? title.substring(0, 50) + ' ...' : title
-      }
+      },
     },
     watch: {},
     components: {
-      [Table.name]: Table
+      [Table.name]: Table,
+      [Avatar.name]: Avatar,
+      [Progress.name]: Progress,
     },
     created() {
       window.addEventListener('resize', this.getTableInnerHeight)

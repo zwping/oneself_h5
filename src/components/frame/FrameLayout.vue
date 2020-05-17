@@ -78,7 +78,8 @@
   import auto_task from '../setting/auto_task'
   import types from '../setting/types'
   import dir_files from '../setting/dir_files'
-  import {BaseAPI, TBaseAPI} from "../../config"
+  import {BaseAPI, TBaseAPI} from '../../config'
+  import auto_kaozhengtong from '../sh/auto_kaozhengtong'
 
   export default {
     data() {
@@ -101,6 +102,7 @@
       auto_task,
       types,
       dir_files,
+      auto_kaozhengtong,
       [Layout.name]: Layout,
       [Layout.Header.name]: Layout.Header,
       [Layout.Sider.name]: Layout.Sider,
@@ -126,6 +128,10 @@
           case '1-2':
             n = '新余建设培训-题库'
             comp = xinyu_js
+            break
+          case '1-3':
+            n = '考证通-自动学习'
+            comp = auto_kaozhengtong
             break
           case '2-1':
             n = 'Github'
@@ -220,6 +226,12 @@
         title: '登录日志',
         content: login_log,
         key: '登录日志',
+        clo: true
+      })
+      emit('fc_tabs', {
+        title: '考证通-自动学习',
+        content: auto_kaozhengtong,
+        key: '考证通-自动学习',
         clo: true
       })
     }
