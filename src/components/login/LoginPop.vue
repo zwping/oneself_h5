@@ -49,8 +49,8 @@ export default {
       type: 'password',
       w: 600,
       h: 400,
-      account: 'zwp',
-      pwd: '123',
+      account: '',
+      pwd: '',
       conn_txt: '1101558280@qq.com',
       httpState: new LOADING()
     }
