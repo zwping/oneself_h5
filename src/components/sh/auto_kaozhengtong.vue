@@ -14,18 +14,24 @@
       @cancel="modalVis=false"
       @ok="ok"
     >
-      <a-textarea :v-model="data" placeholder="身份证号:密码
-身份证号2:密码" :rows="5"></a-textarea>
+      <a-textarea v-model="data" :placeholder="hint" :rows="5" @keyup.ctrl.enter.native="ok"
+      ></a-textarea>
       <a-divider/>
-      <a-button @click="fileUpload" :loading="addFileLoading.state">文件上传</a-button>
+      <div style="display: flex;display: -webkit-flex">
+        <a-upload :showUploadList="false">
+          <a-button @click="fileUpload" :loading="addFileLoading.state">文件上传</a-button>
+        </a-upload>
+        <a style="margin-left: 10px;margin-top: 8px">模板下载</a>
+      </div>
     </a-modal>
   </div>
 </template>
 
 <script>
   import Table2 from '../cus_template/Table2'
-  import {Avatar, Button, Modal, Input, Divider} from 'ant-design-vue'
+  import {Avatar, Button, Modal, Input, Divider, message, Alert, Upload} from 'ant-design-vue'
   import {LOADING} from '../../libs/HTTP'
+  import {isEmpty, isNotEmpty} from '../../libs/Empty'
 
   export default {
     name: 'auto_kaozhengtong',
@@ -53,6 +59,7 @@
             width: 160
           },
         ],
+        hint: '身份证号1:密码(密码不填默认123456)\n身份证号2:密码(密码不填默认123456)',
         modalVis: false,
         addLoading: new LOADING(),
         addFileLoading: new LOADING(),
@@ -81,7 +88,41 @@
           ._execute()
       },
       ok() {
-        console.log(this.data)
+        if (isEmpty(this.data)) {
+          this.modalVis = false
+        } else {
+          let acs = []
+          let pwds = []
+          for (let d of this.data.toString().trim().split(/[\n]/)) {
+            if (d.indexOf(':') === -1) {
+              acs.push(d.trim())
+              pwds.push('123456')
+            } else {
+              let w = d.split(':')
+              acs.push(w[0].trim())
+              pwds.push(w[1].trim())
+            }
+          }
+          console.log(acs)
+          console.log(pwds)
+          this.$http('/sh/kzt')
+            ._loading(this.addLoading)
+            ._data('idcards', acs)
+            ._data('pwds', pwds)
+            ._sucLis(it => {
+              this.data = ''
+            })
+            ._errLis(it => {
+              if (isNotEmpty(it.result.error_data)) {
+                let errorData = ''
+                for (let d of it.result.error_data) {
+                  errorData += d.toString() + '\n'
+                }
+                this.data = errorData
+              }
+            })
+            ._execute()
+        }
       },
       fileUpload() {
       },
@@ -92,7 +133,10 @@
       [Button.name]: Button,
       [Modal.name]: Modal,
       [Divider.name]: Divider,
+      [Alert.name]: Alert,
+      [Upload.name]: Upload,
       [Input.TextArea.name]: Input.TextArea,
+      message,
     }
   }
 </script>
