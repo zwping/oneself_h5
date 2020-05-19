@@ -18,8 +18,10 @@
       ></a-textarea>
       <a-divider/>
       <div style="display: flex;display: -webkit-flex">
-        <a-upload :showUploadList="false">
-          <a-button @click="fileUpload" :loading="addFileLoading.state">文件上传</a-button>
+        <a-upload
+          :showUploadList="false"
+          :customRequest="fileUpload">
+          <a-button :loading="addFileLoading.state">文件上传</a-button>
         </a-upload>
         <a style="margin-left: 10px;margin-top: 8px">模板下载</a>
       </div>
@@ -32,6 +34,7 @@
   import {Avatar, Button, Modal, Input, Divider, message, Alert, Upload} from 'ant-design-vue'
   import {LOADING} from '../../libs/HTTP'
   import {isEmpty, isNotEmpty} from '../../libs/Empty'
+  import {TBaseAPI} from "../../config";
 
   export default {
     name: 'auto_kaozhengtong',
@@ -103,8 +106,6 @@
               pwds.push(w[1].trim())
             }
           }
-          console.log(acs)
-          console.log(pwds)
           this.$http('/sh/kzt')
             ._loading(this.addLoading)
             ._data('idcards', acs)
@@ -124,7 +125,16 @@
             ._execute()
         }
       },
-      fileUpload() {
+      fileUpload(file) {
+        this.$http(TBaseAPI + '/files')
+          ._data('files', file.file)
+          ._data('dir', 'oneself/auto_study')
+          ._data('default_name', 1)
+          ._loading(this.addFileLoading)
+          ._sucLis(it => {
+            console.log(it)
+          })
+          ._execute()
       },
     },
     components: {
