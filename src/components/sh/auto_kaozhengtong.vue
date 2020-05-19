@@ -14,8 +14,11 @@
       @cancel="modalVis=false"
       @ok="ok"
     >
+      <a-input placeholder="学员信息来源人" v-model="origin" @keyup.ctrl.enter.native="ok"></a-input>
       <a-textarea v-model="data" :placeholder="hint" :rows="5" @keyup.ctrl.enter.native="ok"
+                  style="margin-top: 5px"
       ></a-textarea>
+      <span style="color:#999999">{{data_num}}</span>
       <a-divider/>
       <div style="display: flex;display: -webkit-flex">
         <a-upload
@@ -34,7 +37,8 @@
   import {Avatar, Button, Modal, Input, Divider, message, Alert, Upload} from 'ant-design-vue'
   import {LOADING} from '../../libs/HTTP'
   import {isEmpty, isNotEmpty} from '../../libs/Empty'
-  import {TBaseAPI} from "../../config";
+  import {TBaseAPI} from '../../config'
+  import _ from 'lodash'
 
   export default {
     name: 'auto_kaozhengtong',
@@ -62,10 +66,11 @@
             width: 160
           },
         ],
-        hint: '身份证号1:密码(密码不填默认123456)\n身份证号2:密码(密码不填默认123456)',
+        hint: '身份证号和密码\nEg：\n身份证号1:密码(密码不填默认123456)\n身份证号2:密码(密码不填默认123456)',
         modalVis: false,
         addLoading: new LOADING(),
         addFileLoading: new LOADING(),
+        origin: '',
         data: '',
       }
     },
@@ -108,13 +113,18 @@
           }
           this.$http('/sh/kzt')
             ._loading(this.addLoading)
+            ._data('origin', this.origin)
             ._data('idcards', acs)
             ._data('pwds', pwds)
             ._sucLis(it => {
+              message.success('学员信息增加成功')
+              this.modalVis = false
               this.data = ''
+              this.origin = ''
+              this.get_list()
             })
             ._errLis(it => {
-              if (isNotEmpty(it.result.error_data)) {
+              if (isNotEmpty(_.get(it, 'result.error_data'))) {
                 let errorData = ''
                 for (let d of it.result.error_data) {
                   errorData += d.toString() + '\n'
@@ -132,10 +142,41 @@
           ._data('default_name', 1)
           ._loading(this.addFileLoading)
           ._sucLis(it => {
-            console.log(it)
+            this.excel(it.result.file_list[0])
           })
           ._execute()
       },
+      excel(url) {
+        this.$http('/excel/read_cols', 'get')
+          ._param('url', url)
+          ._param('cols', '身份证号码,密码')
+          ._loading(this.addFileLoading)
+          ._sucLis(it => {
+            let idcards = []
+            let pwds = []
+            for (let d of it.result) {
+              if (d.col === '身份证号码') {
+                idcards = d.data
+              } else if (d.col === '密码') {
+                pwds = d.data
+              }
+            }
+            for (let i in [...Array(idcards.length - pwds.length).keys()]) {
+              pwds.push('123456')
+            }
+            for (let i in idcards) {
+              this.data += idcards[i] + ':' + pwds[i] + '\n'
+            }
+          })
+          ._execute()
+      }
+    },
+    computed: {
+      data_num() {
+        return '当前学员数:' + _.filter(this.data.split('\n'), it => {
+          return isNotEmpty(it)
+        }).length
+      }
     },
     components: {
       'table2': Table2,
@@ -145,6 +186,7 @@
       [Divider.name]: Divider,
       [Alert.name]: Alert,
       [Upload.name]: Upload,
+      [Input.name]: Input,
       [Input.TextArea.name]: Input.TextArea,
       message,
     }

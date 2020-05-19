@@ -200,6 +200,7 @@ class Builder {
         auth: this.auth,
       })
       .then(it => {
+        __setLoading(this.loadingStates, false)
         if (it.data.code === 200) {
           this.sucLis(it.data)
         } else {
@@ -208,15 +209,14 @@ class Builder {
           }
           this.errLis(it.data)
         }
-        __setLoading(this.loadingStates, false)
       })
       .catch(it => {
+        __setLoading(this.loadingStates, false)
         console.log(it)
         if (!this.shieldErrMessage) {
           message.error(it.message)
         }
         this.errLis(it)
-        __setLoading(this.loadingStates, false)
       })
   }
 }

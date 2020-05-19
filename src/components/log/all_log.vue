@@ -23,8 +23,8 @@
           {dataIndex: 'operTable', title: '操作表名', width: 150},
           {dataIndex: 'operDataId', title: '被操作Id', width: 100},
           {dataIndex: 'operType', title: '操作类型', width: 160},
-          {dataIndex: 'oldValue', title: '旧值', width: 200, scopedSlots: {customRender: 'oldValue'}},
-          {dataIndex: 'newValue', title: '新值', scopedSlots: {customRender: 'newValue'}},
+          {dataIndex: 'oldValue', title: '旧值', scopedSlots: {customRender: 'oldValue'}},
+          {dataIndex: 'newValue', title: '新值', width: 200, scopedSlots: {customRender: 'newValue'}},
           {dataIndex: 'remark', title: '备注', width: 200, scopedSlots: {customRender: 'remark'}},
           {
             dataIndex: 'final_time',
