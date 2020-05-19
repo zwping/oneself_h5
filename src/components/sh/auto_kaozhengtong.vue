@@ -50,7 +50,7 @@
           {dataIndex: 'idcard', title: '身份证号', align: 'center', width: 200},
           {dataIndex: 'pwd', title: '密码', align: 'center', width: 100},
           {dataIndex: 'name', title: '姓名', align: 'left', width: 80},
-          {dataIndex: 'phone', title: '手机号', align: 'center', width: 180},
+          // {dataIndex: 'phone', title: '手机号', align: 'center', width: 180},
           {dataIndex: 'company', title: '公司名'},
           {dataIndex: 'major', title: '专业', align: 'left', width: 150},
           // {dataIndex: 'uid', title: 'uid', width: 100},
