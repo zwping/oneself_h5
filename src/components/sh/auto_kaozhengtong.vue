@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div>
+    <div style="display: flex;display: -webkit-flex;justify-content: space-between;align-items: center; ">
       <a-button type="primary" @click="modalVis=true">添加学员</a-button>
+      <auto-kzt-screen ref="s2" :search="search"/>
     </div>
     <table2 ref="t2" :outside_fix_height="340" :cus-columns="columns" :get_list="get_list">
     </table2>
@@ -14,10 +15,10 @@
       @cancel="modalVis=false"
       @ok="ok"
     >
-      <a-input placeholder="学员信息来源人" v-model="origin" @keyup.ctrl.enter.native="ok"></a-input>
+      <a-input placeholder="学员信息来源人" v-model="origin" @keyup.ctrl.enter.native="ok"/>
       <a-textarea v-model="data" :placeholder="hint" :rows="5" @keyup.ctrl.enter.native="ok"
                   style="margin-top: 5px"
-      ></a-textarea>
+      />
       <span style="color:#999999">{{data_num}}</span>
       <a-divider/>
       <div style="display: flex;display: -webkit-flex">
@@ -34,10 +35,11 @@
 
 <script>
   import Table2 from '../cus_template/Table2'
-  import {Avatar, Button, Modal, Input, Divider, message, Alert, Upload} from 'ant-design-vue'
+  import {Alert, Avatar, Button, Divider, Input, message, Modal, Upload} from 'ant-design-vue'
   import {LOADING} from '../../libs/HTTP'
   import {isEmpty, isNotEmpty} from '../../libs/Empty'
   import {TBaseAPI} from '../../config'
+  import AutoKztScreen from '../cus_template/AutoKztScreen'
   import _ from 'lodash'
 
   export default {
@@ -55,32 +57,44 @@
           {dataIndex: 'major', title: '专业', align: 'left', width: 150},
           // {dataIndex: 'uid', title: 'uid', width: 100},
           {dataIndex: 'progress', title: '进度', width: 100, align: 'center', scopedSlots: {customRender: 'progress'}},
-          {dataIndex: 'last_step', title: '正在学习课程', align: 'center', width: 100},
+          {dataIndex: 'last_step', title: '当前进度', align: 'center', width: 100},
           {dataIndex: 'video_size', title: '总课程', align: 'center', width: 100},
+          {dataIndex: 'origin', title: '来源', width: 100},
+          {dataIndex: 'batch_no', title: '批次号', align: 'center', width: 80},
           {dataIndex: 'next_play_time', title: '下次学习时间', align: 'center', width: 160},
           {
-            dataIndex: 'final_time',
+            dataIndex: 'ctime',
             title: '创建时间',
             align: 'center',
             scopedSlots: {customRender: 'time'},
             width: 160
-          },
+          }
         ],
         hint: '身份证号和密码\nEg：\n身份证号1:密码(密码不填默认123456)\n身份证号2:密码(密码不填默认123456)',
         modalVis: false,
         addLoading: new LOADING(),
         addFileLoading: new LOADING(),
         origin: '',
-        data: '',
+        data: ''
       }
     },
     methods: {
-      get_list(page = 1, perpage = 20) {
+      getT2(key, dvalue = undefined) {
+        return _.get(this.$refs.t2, key, dvalue)
+      },
+      getS2(key, dvalue = undefined) {
+        return _.get(this.$refs.s2, key, dvalue)
+      },
+      search() {
+        this.get_list()
+      },
+      get_list(page = 1) {
         this.$http('/sh/kzt')
           ._get()
           ._param('page', page)
-          ._param('perpage', perpage)
-          ._loading(this.$refs.t2.loading)
+          ._param('perpage', this.getT2('pagination.pageSize', 20))
+          ._params(this.getS2('params'))
+          ._loading(this.getT2('loading'), this.getS2('loading'))
           ._sucLis(it => {
             for (let d of it.result.lists) {
               let size = d.video_size
@@ -90,7 +104,7 @@
             this.$refs.t2.pagination = {
               current: it.result.page,
               pageSize: it.result.perpage,
-              total: it.result.totalNum,
+              total: it.result.totalNum
             }
           })
           ._execute()
@@ -169,7 +183,7 @@
             }
           })
           ._execute()
-      }
+      },
     },
     computed: {
       data_num() {
@@ -189,6 +203,7 @@
       [Input.name]: Input,
       [Input.TextArea.name]: Input.TextArea,
       message,
+      AutoKztScreen
     }
   }
 </script>

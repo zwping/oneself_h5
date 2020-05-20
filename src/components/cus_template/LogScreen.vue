@@ -9,21 +9,21 @@
         @keyup.enter.native="search"
         style="margin-right: 10px; width: 130px;"
         v-model="s_ip" allowClear :data-source="ip_data" :filter-option="ips_filter"
-        placeholder="ip"></a-auto-complete>
+        placeholder="ip"/>
       <a-range-picker
         v-model="s_time" allowClear
         @keyup.enter.native="search" style="margin-right: 10px;width: 220px;">
       </a-range-picker>
       <a-input v-model="s_nickname" allowClear @keyup.enter.native="search" style="margin-right: 10px; width: 130px;"
-               placeholder="昵称"></a-input>
+               placeholder="昵称"/>
       <a-input v-model="s_id" allowClear @keyup.enter.native="search" style="margin-right: 10px; width: 80px;"
-               placeholder="Id"></a-input>
+               placeholder="Id"/>
     </div>
   </div>
 </template>
 
 <script>
-  import {Button, AutoComplete, DatePicker, Input} from 'ant-design-vue'
+  import {AutoComplete, Button, DatePicker, Input} from 'ant-design-vue'
   import {LOADING} from '../../libs/HTTP'
   import {isNotEmptyII} from '../../libs/Empty'
   import {realType} from '../../libs/ObjectUtil'

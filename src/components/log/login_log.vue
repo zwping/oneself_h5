@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LogScreen ref="s2" :search="search"></LogScreen>
+    <LogScreen ref="s2" :search="search"/>
     <table2 ref="t2" :outside_fix_height="335" :cus-columns="columns" :get_list="get_list">
     </table2>
   </div>

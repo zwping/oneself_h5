@@ -59,7 +59,9 @@
         lists: [],
         pagination: {
           showQuickJumper: true,
-          showSizeChanger: true
+          showSizeChanger: true,
+          pageSize: 20,
+          showTotal: total => `Total ${total} items`
         },
         loading: new LOADING(),
         params: {},
@@ -70,7 +72,8 @@
         this.tableHeight = window.innerHeight - this.outside_fix_height
       },
       handleTableChange(pagination, filters, sorter) {
-        this.get_list(pagination.current, pagination.pageSize)
+        this.pagination.pageSize = pagination.pageSize
+        this.get_list(pagination.current)
       },
       stime(second) {
         return stime(second)
