@@ -14,6 +14,7 @@
             </span>
             <a-menu-item key="1-1" @click="fc_tabs">昌南自动学习</a-menu-item>
             <a-menu-item key="1-2" @click="fc_tabs">新余建设培训-题库</a-menu-item>
+            <a-menu-item key="1-3" @click="fc_tabs">考证通-自动学习</a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="2">
             <span slot="title">
@@ -184,56 +185,56 @@
       }
     },
     mounted() {
-      emit('fc_tabs', {
-        title: '日志',
-        content: tool_log,
-        key: '日志',
-        clo: true
-      })
-      emit('fc_tabs', {
-        title: 'Tool日志',
-        content: tool_log,
-        key: 'Tool日志',
-        clo: true
-      })
-      emit('fc_tabs', {
-        title: 'Tool分类',
-        content: types,
-        key: 'Tool分类',
-        clo: true,
-        api: TBaseAPI
-      })
-      emit('fc_tabs', {
-        title: '类别分类',
-        content: types,
-        key: '类别分类',
-        clo: true,
-        api: BaseAPI
-      })
-      emit('fc_tabs', {
-        title: '京东',
-        content: jd,
-        key: '京东',
-        clo: true,
-      })
-      emit('fc_tabs', {
-        title: '全部日志',
-        content: allLog,
-        key: '全部日志',
-        clo: true
-      })
-      emit('fc_tabs', {
-        title: '登录日志',
-        content: login_log,
-        key: '登录日志',
-        clo: true
-      })
-      emit('fc_tabs', {
-        title: '考证通-自动学习',
-        content: auto_kaozhengtong,
-        key: '考证通-自动学习',
-        clo: true
-      })
+      // emit('fc_tabs', {
+      //   title: '日志',
+      //   content: tool_log,
+      //   key: '日志',
+      //   clo: true
+      // })
+      // emit('fc_tabs', {
+      //   title: 'Tool日志',
+      //   content: tool_log,
+      //   key: 'Tool日志',
+      //   clo: true
+      // })
+      // emit('fc_tabs', {
+      //   title: 'Tool分类',
+      //   content: types,
+      //   key: 'Tool分类',
+      //   clo: true,
+      //   api: TBaseAPI
+      // })
+      // emit('fc_tabs', {
+      //   title: '类别分类',
+      //   content: types,
+      //   key: '类别分类',
+      //   clo: true,
+      //   api: BaseAPI
+      // })
+      // emit('fc_tabs', {
+      //   title: '京东',
+      //   content: jd,
+      //   key: '京东',
+      //   clo: true,
+      // })
+      // emit('fc_tabs', {
+      //   title: '全部日志',
+      //   content: allLog,
+      //   key: '全部日志',
+      //   clo: true
+      // })
+      // emit('fc_tabs', {
+      //   title: '登录日志',
+      //   content: login_log,
+      //   key: '登录日志',
+      //   clo: true
+      // })
+      // emit('fc_tabs', {
+      //   title: '考证通-自动学习',
+      //   content: auto_kaozhengtong,
+      //   key: '考证通-自动学习',
+      //   clo: true
+      // })
     }
   }
 </script>
