@@ -11,12 +11,11 @@
 
 <script>
   import {Tabs} from 'ant-design-vue'
-  import jdConfigureView from '../third_party/JD'
   import controlIndex from '../control/Index'
-  import {subscribe} from "../../libs/Bus"
+  import {subscribe} from '../../libs/Bus'
 
   export default {
-    name: "FrameContent",
+    name: 'FrameContent',
     data() {
       const panes = [
         {title: '控制台', content: controlIndex, key: '控制台', clo: false}

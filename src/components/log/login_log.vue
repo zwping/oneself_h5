@@ -12,6 +12,7 @@
   import Table2 from '../cus_template/Table2.vue'
   import LogScreen from '../cus_template/LogScreen'
   import axios from 'axios'
+  import _ from 'lodash'
 
   export default {
     name: 'login_log',
@@ -36,14 +37,14 @@
       }
     },
     methods: {
-      get_list(page = 1, perpage = 20, s_loading = null, params = {}) {
+      get_list(page = 1) {
         this.$http(TBaseAPI + '/log')
           ._get()
           ._param('logType', 133)
           ._param('page', page)
-          ._param('perpage', perpage)
-          ._params(params)
-          ._loading(this.$refs.t2.loading, s_loading)
+          ._param('perpage', _.get(this.$refs.t2, 'pagination.pageSize', 20))
+          ._params(_.get(this.$refs.s2, 'params'))
+          ._loading(this.$refs.t2.loading, _.get(this.$refs.s2, 'loading'))
           ._sucLis(it => {
             this.$refs.t2.lists = it.result.lists
             this.$refs.t2.pagination = {
