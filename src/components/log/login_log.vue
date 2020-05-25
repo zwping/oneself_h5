@@ -64,13 +64,6 @@
       LogScreen,
     },
     mounted() {
-      axios.get('/sh_changnan/')
-        .then(r => {
-          console.log(r.headers)
-        })
-        .catch(r => {
-          console.log(r)
-        })
     }
   }
 </script>
