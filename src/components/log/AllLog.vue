@@ -1,14 +1,16 @@
 <template>
   <div>
-    <table2 ref="t2" :cus-columns="columns" :get_list="get_list">
+    <all-log-filter ref="filter"/>
+    <table2 ref="t2" :outside_fix_height="335" :cus-columns="columns" :get_list="get_list">
     </table2>
   </div>
 
 </template>
 
-<script>
+<script type="text/jsx">
   import {TBaseAPI} from '../../config'
   import Table2 from '../cus_template/Table2.vue'
+  import AllLogFilter from './AllLogFilter'
   import _ from 'lodash'
 
   export default {
@@ -33,7 +35,14 @@
             scopedSlots: {customRender: 'time'},
             width: 200
           },
-          {dataIndex: '_ip', title: 'IP', width: 150},
+          {
+            dataIndex: '_ip',
+            title: 'IP',
+            width: 150,
+            customRender: (text, r, index) => {
+              return <span title={r.ip_isp}>{r.ip_addr ? r.ip_addr : r._ip}</span>
+            }
+          },
         ],
       }
     },
@@ -41,6 +50,7 @@
       get_list(page = 1) {
         this.$http(TBaseAPI + '/log')
           ._get()
+          ._param('client', 128)
           ._param('page', page)
           ._param('perpage', _.get(this.$refs.t2, 'pagination.pageSize', 20))
           ._params(_.get(this.$refs.s2, 'params'))
@@ -58,6 +68,7 @@
     },
     components: {
       'table2': Table2,
+      'allLogFilter': AllLogFilter,
     }
   }
 </script>

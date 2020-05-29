@@ -33,6 +33,7 @@
         <a-progress :status="it[0]===it[1] ? 'success' : 'active'" :percent="it[0]/it[1]*100" :show-info="false"/>
       </span>
     </template>
+    <solt name="cus_solt"></solt>
   </a-table>
 </template>
 

@@ -1,17 +1,16 @@
 <template>
   <div>
-    <LogScreen ref="s2" :search="search"/>
+    <login-log-filter ref="s2" :search="search"/>
     <table2 ref="t2" :outside_fix_height="335" :cus-columns="columns" :get_list="get_list">
     </table2>
   </div>
 
 </template>
 
-<script>
+<script type="text/jsx">
   import {TBaseAPI} from '../../config'
   import Table2 from '../cus_template/Table2.vue'
-  import LogScreen from '../cus_template/LogScreen'
-  import axios from 'axios'
+  import LoginLogFilter from './LoginLogFilter'
   import _ from 'lodash'
 
   export default {
@@ -32,7 +31,12 @@
             width: 200,
             align: 'center'
           },
-          {dataIndex: '_ip', title: '登录IP', width: 200, align: 'center'},
+          {
+            dataIndex: '_ip', title: '登录IP', width: 200, align: 'center',
+            customRender: (text, r, index) => {
+              return <span title={r.ip_isp}>{r.ip_addr ? r.ip_addr : r._ip}</span>
+            }
+          },
         ],
       }
     },
@@ -61,7 +65,7 @@
     },
     components: {
       'table2': Table2,
-      LogScreen,
+      LoginLogFilter,
     },
     mounted() {
     }

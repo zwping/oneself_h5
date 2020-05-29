@@ -74,8 +74,8 @@
   import tool_log from '../third_party/tool_log'
   import back_user from '../user/back_user'
   import fore_user from '../user/fore_user'
-  import login_log from '../log/login_log'
-  import allLog from '../log/all_log'
+  import LoginLog from '../log/LoginLog'
+  import AllLog from '../log/AllLog'
   import auto_task from '../setting/auto_task'
   import types from '../setting/types'
   import dir_files from '../setting/dir_files'
@@ -98,8 +98,8 @@
       tool_log,
       back_user,
       fore_user,
-      login_log,
-      allLog,
+      LoginLog,
+      AllLog,
       auto_task,
       types,
       dir_files,
@@ -217,12 +217,12 @@
       //   key: '京东',
       //   clo: true,
       // })
-      // emit('fc_tabs', {
-      //   title: '全部日志',
-      //   content: allLog,
-      //   key: '全部日志',
-      //   clo: true
-      // })
+      emit('fc_tabs', {
+        title: '全部日志',
+        content: allLog,
+        key: '全部日志',
+        clo: true
+      })
       // emit('fc_tabs', {
       //   title: '登录日志',
       //   content: login_log,

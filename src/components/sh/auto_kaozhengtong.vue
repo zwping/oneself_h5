@@ -2,7 +2,7 @@
   <div>
     <div style="display: flex;display: -webkit-flex;justify-content: space-between;align-items: center; ">
       <a-button type="primary" @click="modalVis=true">添加学员</a-button>
-      <auto-kzt-screen ref="s2" :search="search"/>
+      <auto-kzt-filter ref="s2" :search="search"/>
     </div>
     <table2 ref="t2" :outside_fix_height="340" :cus-columns="columns" :get_list="get_list">
     </table2>
@@ -39,7 +39,7 @@
   import {LOADING} from '../../libs/HTTP'
   import {isEmpty, isNotEmpty} from '../../libs/Empty'
   import {TBaseAPI} from '../../config'
-  import AutoKztScreen from '../cus_template/AutoKztScreen'
+  import AutoKztFilter from '../cus_template/AutoKztFilter'
   import _ from 'lodash'
 
   export default {
@@ -203,7 +203,7 @@
       [Input.name]: Input,
       [Input.TextArea.name]: Input.TextArea,
       message,
-      AutoKztScreen
+      AutoKztFilter
     }
   }
 </script>

@@ -41,7 +41,7 @@
   import {realType} from '../../libs/ObjectUtil'
 
   export default {
-    name: 'LogScreen',
+    name: 'AutoKztScreen',
     props: {
       'search': {},
     },

@@ -7,7 +7,7 @@
       <a-button @click="reset" type="default" style="margin-right: 10px;">重置</a-button>
       <a-auto-complete
         @keyup.enter.native="search"
-        style="margin-right: 10px; width: 130px;"
+        style="margin-right: 10px; width: 150px;"
         v-model="s_ip" allowClear :data-source="ip_data" :filter-option="ips_filter"
         placeholder="ip"/>
       <a-range-picker
@@ -30,7 +30,7 @@
   import {TBaseAPI} from '../../config'
 
   export default {
-    name: 'LogScreen',
+    name: 'AllLogFilter',
     props: {
       'search': {},
     },
@@ -83,6 +83,7 @@
     beforeCreate() {
       this.$http(TBaseAPI + '/log/ips')
         ._get()
+        ._param('client', 128)
         ._sucLis(it => {
           this.ip_data = it.result
         })
