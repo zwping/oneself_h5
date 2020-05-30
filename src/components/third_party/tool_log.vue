@@ -43,7 +43,7 @@
           ._param('page', page)
           ._param('perpage', _.get(this.$refs.t2, 'pagination.pageSize', 20))
           ._params(_.get(this.$refs.s2, 'params'))
-          ._loading(this.$refs.t2.loading, _.get(this.$refs.s2, 'loading'))
+          ._loading(_.get(this.$refs.t2, 'loading'), _.get(this.$refs.s2, 'loading'))
           ._sucLis(it => {
             this.$refs.t2.lists = it.result.lists
             this.$refs.t2.pagination = {

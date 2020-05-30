@@ -1,6 +1,6 @@
 <template>
   <div>
-    <all-log-filter ref="filter"/>
+    <all-log-filter ref="filter" :search="get_list"/>
     <table2 ref="t2" :outside_fix_height="335" :cus-columns="columns" :get_list="get_list">
     </table2>
   </div>
@@ -54,7 +54,7 @@
           ._param('page', page)
           ._param('perpage', _.get(this.$refs.t2, 'pagination.pageSize', 20))
           ._params(_.get(this.$refs.s2, 'params'))
-          ._loading(this.$refs.t2.loading, _.get(this.$refs.s2, 'loading'))
+          ._loading(_.get(this.$refs.t2, 'loading'), _.get(this.$refs.s2, 'loading'))
           ._sucLis(it => {
             this.$refs.t2.lists = it.result.lists
             this.$refs.t2.pagination = {

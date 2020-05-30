@@ -92,9 +92,9 @@
     created() {
       window.addEventListener('resize', this.getTableInnerHeight)
       this.getTableInnerHeight()
+      this.get_list() // 调用组件内的对象，需要等待挂载成功
     },
     mounted() {
-      this.get_list() // 调用组件内的对象，需要等待挂载成功
     },
     destroyed() {
       window.removeEventListener('resize', this.getTableInnerHeight)

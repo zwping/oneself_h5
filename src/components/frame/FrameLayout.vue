@@ -161,11 +161,11 @@
             break
           case '4-1':
             n = '登录日志'
-            comp = login_log
+            comp = LoginLog
             break
           case '4-2':
             n = '全部日志'
-            comp = allLog
+            comp = AllLog
             break
           case '5-1':
             n = '自动脚本'
@@ -219,7 +219,7 @@
       // })
       emit('fc_tabs', {
         title: '全部日志',
-        content: allLog,
+        content: AllLog,
         key: '全部日志',
         clo: true
       })
