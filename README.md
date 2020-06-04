@@ -30,15 +30,17 @@ npm run test:unit
 npm run lint
 ```
 
-# scp 上传文件
+### scp 上传文件
 
+```
 scp -r dist root@47.110.68.119:/home/oneself_ms
+```
 
-#
-
+```
 nginx -s reload
+```
 
-# 本地运行 dist
+### 本地运行 dist
 
 ### Customize configuration
 

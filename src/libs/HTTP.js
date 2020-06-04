@@ -283,8 +283,10 @@ function __setLoading(loadings, value) {
  * 加载状态 对象
  * @constructor loading
  */
-function LOADING() {
-    this.state = false
+class LOADING {
+    constructor() {
+        this.state = false
+    }
 }
 
 Vue.prototype.$http = http
