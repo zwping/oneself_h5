@@ -1,17 +1,16 @@
-import {isNotEmpty} from './Empty'
-
+import { isNotEmpty } from './Empty'
 /**
  * 获取对象真实数据类型
  */
 export function realType(ob) {
-    return Object.prototype.toString
-        .apply(ob)
-        .slice(8, -1)
-        .toLowerCase()
+  return Object.prototype.toString
+    .apply(ob)
+    .slice(8, -1)
+    .toLowerCase()
 }
 
 export function hasOwnProperty(ob, key) {
-    return Object.prototype.hasOwnProperty.call(ob, key)
+  return Object.prototype.hasOwnProperty.call(ob, key)
 }
 
 /**
@@ -21,19 +20,19 @@ export function hasOwnProperty(ob, key) {
  * @param arguments 对象内待修改的key
  */
 export function tempEditOb(ob, editState) {
-    let args = [...arguments]
-    args.shift()
-    args.shift()
-    for (let d of args) {
-        let old = 'old' + d
-        if (editState) {
-            ob[old] = ob[d]
-        } else {
-            if (isNotEmpty(ob[old])) {
-                ob[d] = ob[old]
-            }
-        }
+  let args = [...arguments]
+  args.shift()
+  args.shift()
+  for (let d of args) {
+    let old = 'old' + d
+    if (editState) {
+      ob[old] = ob[d]
+    } else {
+      if (isNotEmpty(ob[old])) {
+        ob[d] = ob[old]
+      }
     }
+  }
 }
 
 /**
@@ -43,15 +42,15 @@ export function tempEditOb(ob, editState) {
  * @return boolean true->需要api存储
  */
 export function tempEditObOfConfirm(ob) {
-    let args = [...arguments]
-    args.shift()
-    for (let d of args) {
-        let old = 'old' + d
-        if (ob[old] !== ob[d]) {
-            return true
-        }
+  let args = [...arguments]
+  args.shift()
+  for (let d of args) {
+    let old = 'old' + d
+    if (ob[old] !== ob[d]) {
+      return true
     }
-    return false
+  }
+  return false
 }
 
 /**
@@ -60,10 +59,10 @@ export function tempEditObOfConfirm(ob) {
  * @param arguments 对象内待修改的key
  */
 export function tempEditObOfSuc(ob) {
-    let args = [...arguments]
-    args.shift()
-    for (let d of args) {
-        let old = 'old' + d
-        ob[old] = ''
-    }
+  let args = [...arguments]
+  args.shift()
+  for (let d of args) {
+    let old = 'old' + d
+    ob[old] = ''
+  }
 }
