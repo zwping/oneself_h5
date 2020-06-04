@@ -1,18 +1,10 @@
 <template>
-  <div id="app">
-<!--        <img src="./assets/logo.png">-->
-    <router-view/>
-  </div>
+    <div id="app">
+        <router-view />
+    </div>
 </template>
 
-<script>
-  export default {
-    name: 'App',
-    methods: {}
-  }
-</script>
-
-<style scoped>
-  #app {
-  }
+<style lang="less">
+#app {
+}
 </style>

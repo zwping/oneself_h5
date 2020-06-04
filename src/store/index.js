@@ -6,8 +6,11 @@ import userInfox from './modules/userInfox'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: {
-    tokenx,
-    userInfox
-  }
+    state: {},
+    mutations: {},
+    actions: {},
+    modules: {
+        tokenx,
+        userInfox,
+    },
 })
