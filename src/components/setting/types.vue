@@ -174,12 +174,9 @@ export default {
         onAddChild(it) {
             this.keys++
             if (isEmpty(it.children)) {
-                it.children = [__getBaseBean(it.id)]
-                setRender(this, it)
+                it.children.push(__getBaseBean(it.id))
             } else if (hasOwnProperty(it.children[it.children.length - 1], 'id')) {
                 it.children.push(__getBaseBean(it.id))
-                123sdfasdfasdf
-                setRender(this, it)
             } else {
                 this.$message.warning('请先保存新增的分类')
             }
@@ -218,6 +215,8 @@ function __addAttr1(data, d) {
             d1.enabledLoad = new LOADING()
             __addAttr1(data, d1)
         }
+    } else {
+        d.children = []
     }
 }
 
@@ -257,6 +256,7 @@ function __getBaseBean(pid = null) {
         enabled: 1,
         key: Date(),
         title: '',
+        children: [],
         load: new LOADING(),
         enabledLoad: new LOADING(),
     }

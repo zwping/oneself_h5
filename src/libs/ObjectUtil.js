@@ -112,7 +112,7 @@ export function setRender(
 function __childSetRender(vue, data, item, dataKey, diffKey, childrenKey) {
     for (let i in data) {
         let d = get(data[i], diffKey)
-        if (isNotEmpty(d) && d === get(data[i], diffKey)) {
+        if (isNotEmpty(d) && d === get(item, diffKey)) {
             vue.$set(data, i, item)
             return
         }
