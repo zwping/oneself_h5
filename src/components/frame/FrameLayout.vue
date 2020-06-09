@@ -18,33 +18,33 @@
                             <a-icon type="user" />思泓
                         </span>
                         <a-menu-item key="1-1" @click="fc_tabs"
-                            >昌南自动学习</a-menu-item
-                        >
+                            >昌南自动学习
+                        </a-menu-item>
                         <a-menu-item key="1-2" @click="fc_tabs"
-                            >新余建设培训-题库</a-menu-item
-                        >
+                            >新余建设培训-题库
+                        </a-menu-item>
                         <a-menu-item key="1-3" @click="fc_tabs"
-                            >考证通-自动学习</a-menu-item
-                        >
+                            >考证通-自动学习
+                        </a-menu-item>
                     </a-sub-menu>
                     <a-sub-menu key="2">
                         <span slot="title"> <a-icon type="user" />第三方 </span>
                         <a-menu-item key="2-1" @click="fc_tabs"
-                            >Github</a-menu-item
-                        >
+                            >Github
+                        </a-menu-item>
                         <a-menu-item key="2-2" @click="fc_tabs"
-                            >京东</a-menu-item
-                        >
+                            >京东
+                        </a-menu-item>
                         <a-menu-item-group key="2-3">
                             <template slot="title">
                                 <span>Tool</span>
                             </template>
                             <a-menu-item key="2-3-1" @click="fc_tabs"
-                                >分类</a-menu-item
-                            >
+                                >分类
+                            </a-menu-item>
                             <a-menu-item key="2-3-2" @click="fc_tabs"
-                                >日志</a-menu-item
-                            >
+                                >日志
+                            </a-menu-item>
                         </a-menu-item-group>
                     </a-sub-menu>
                     <a-sub-menu key="3">
@@ -52,36 +52,36 @@
                             <a-icon type="laptop" />用户管理
                         </span>
                         <a-menu-item key="3-1" @click="fc_tabs"
-                            >后台用户</a-menu-item
-                        >
+                            >后台用户
+                        </a-menu-item>
                         <a-menu-item key="3-2" @click="fc_tabs"
-                            >前台用户</a-menu-item
-                        >
+                            >前台用户
+                        </a-menu-item>
                     </a-sub-menu>
                     <a-sub-menu key="4">
                         <span slot="title">
                             <a-icon type="notification" />日志
                         </span>
                         <a-menu-item key="4-1" @click="fc_tabs"
-                            >登录日志</a-menu-item
-                        >
+                            >登录日志
+                        </a-menu-item>
                         <a-menu-item key="4-2" @click="fc_tabs"
-                            >全部日志</a-menu-item
-                        >
+                            >全部日志
+                        </a-menu-item>
                     </a-sub-menu>
                     <a-sub-menu key="5">
                         <span slot="title">
                             <a-icon type="notification" />设置
                         </span>
                         <a-menu-item key="5-1" @click="fc_tabs"
-                            >自动脚本</a-menu-item
-                        >
+                            >自动脚本
+                        </a-menu-item>
                         <a-menu-item key="5-2" @click="fc_tabs"
-                            >类别分类</a-menu-item
-                        >
+                            >类别分类
+                        </a-menu-item>
                         <a-menu-item key="5-3" @click="fc_tabs"
-                            >文件管理</a-menu-item
-                        >
+                            >文件管理
+                        </a-menu-item>
                     </a-sub-menu>
                 </a-menu>
             </a-layout-sider>
@@ -248,25 +248,25 @@ export default {
         //   clo: true,
         //   api: TBaseAPI
         // })
-        // emit('fc_tabs', {
-        //   title: '类别分类',
-        //   content: types,
-        //   key: '类别分类',
-        //   clo: true,
-        //   api: BaseAPI
-        // })
+        emit('fc_tabs', {
+            title: '类别分类',
+            content: types,
+            key: '类别分类',
+            clo: true,
+            api: BaseAPI,
+        })
         // emit('fc_tabs', {
         //   title: '京东',
         //   content: jd,
         //   key: '京东',
         //   clo: true,
         // })
-        emit('fc_tabs', {
-            title: '全部日志',
-            content: AllLog,
-            key: '全部日志',
-            clo: true,
-        })
+        // emit('fc_tabs', {
+        //     title: '全部日志',
+        //     content: AllLog,
+        //     key: '全部日志',
+        //     clo: true,
+        // })
         // emit('fc_tabs', {
         //   title: '登录日志',
         //   content: login_log,
