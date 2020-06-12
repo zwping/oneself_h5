@@ -8,7 +8,7 @@ const bus = new Vue()
  * @param data
  */
 export function emit(tag, data) {
-  bus.$emit(tag, data)
+    bus.$emit(tag, data)
 }
 
 /**
@@ -17,5 +17,5 @@ export function emit(tag, data) {
  * @param callBack
  */
 export function subscribe(tag, callBack) {
-  bus.$on(tag, callBack)
+    bus.$on(tag, callBack)
 }

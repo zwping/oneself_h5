@@ -6,7 +6,6 @@
                 <frameLayout v-show="!tokenVerifyIng" v-if="tokenVerifySuc"
                     >登录成功</frameLayout
                 >
-                <loading v-if="tokenVerifyIng">校验token</loading>
                 <!--        <rate-progress></rate-progress>-->
             </div>
         </div>
@@ -15,7 +14,6 @@
 
 <script>
 import loginBg from './login/LoginBg'
-import loading from './Loading'
 import frameLayout from './frame/FrameLayout'
 import rateProgress from './frame/RateProgress'
 import Cookies from 'js-cookie'
@@ -27,7 +25,6 @@ export default {
     },
     components: {
         lgbg: loginBg,
-        loading: loading,
         frameLayout: frameLayout,
         // rateProgress: rateProgress,
     },

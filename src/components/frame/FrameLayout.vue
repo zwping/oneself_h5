@@ -103,7 +103,6 @@
 <script>
 import fcontent from './FrameContent'
 import hcontnet from './HeaderContent'
-import {Layout, Menu, Breadcrumb, Icon} from 'ant-design-vue'
 import {emit} from '../../libs/Bus'
 import changnan from '../sh/auto_changnan'
 import xinyu_js from '../sh/auto_xinyu_js'
@@ -142,17 +141,6 @@ export default {
         types,
         dir_files,
         auto_kaozhengtong,
-        [Layout.name]: Layout,
-        [Layout.Header.name]: Layout.Header,
-        [Layout.Sider.name]: Layout.Sider,
-        [Layout.Content.name]: Layout.Content,
-        [Menu.name]: Menu,
-        [Menu.SubMenu.name]: Menu.SubMenu,
-        [Menu.Item.name]: Menu.Item,
-        [Breadcrumb.name]: Breadcrumb,
-        [Breadcrumb.Item.name]: Breadcrumb.Item,
-        [Menu.ItemGroup.name]: Menu.ItemGroup,
-        [Icon.name]: Icon,
     },
     methods: {
         fc_tabs(e) {
@@ -248,13 +236,13 @@ export default {
         //   clo: true,
         //   api: TBaseAPI
         // })
-        emit('fc_tabs', {
-            title: '类别分类',
-            content: types,
-            key: '类别分类',
-            clo: true,
-            api: BaseAPI,
-        })
+        // emit('fc_tabs', {
+        //     title: '类别分类',
+        //     content: types,
+        //     key: '类别分类',
+        //     clo: true,
+        //     api: BaseAPI,
+        // })
         // emit('fc_tabs', {
         //   title: '京东',
         //   content: jd,

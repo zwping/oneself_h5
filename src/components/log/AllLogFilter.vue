@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import {AutoComplete, Button, DatePicker, Input} from 'ant-design-vue'
 import {LOADING} from '../../libs/HTTP'
 import {isNotEmptyII} from '../../libs/Empty'
 import {realType} from '../../libs/ObjectUtil'
@@ -117,12 +116,7 @@ export default {
             })
             ._execute()
     },
-    components: {
-        [Button.name]: Button,
-        [AutoComplete.name]: AutoComplete,
-        [DatePicker.RangePicker.name]: DatePicker.RangePicker,
-        [Input.name]: Input,
-    },
+    components: {},
 }
 </script>
 

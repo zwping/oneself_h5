@@ -1,13 +1,11 @@
 <template>
-  <div>后台用户</div>
+    <div>后台用户</div>
 </template>
 
 <script>
-    export default {
-        name: "back_user"
-    }
+export default {
+    name: 'back_user',
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

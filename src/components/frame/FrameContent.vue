@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import {Tabs} from 'ant-design-vue'
 import controlIndex from '../control/Index'
 import {subscribe} from '../../libs/Bus'
 
@@ -41,8 +40,6 @@ export default {
     },
     components: {
         control_index: controlIndex,
-        [Tabs.name]: Tabs,
-        [Tabs.TabPane.name]: Tabs.TabPane,
     },
     methods: {
         onTabClick(key) {

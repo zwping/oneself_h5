@@ -18,6 +18,4 @@ function fileName(file) {
     return String(file.name)
 }
 
-export {
-    isImg
-}
+export {isImg}

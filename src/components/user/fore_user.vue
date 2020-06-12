@@ -3,11 +3,9 @@
 </template>
 
 <script>
-    export default {
-        name: "fore_user"
-    }
+export default {
+    name: 'fore_user',
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

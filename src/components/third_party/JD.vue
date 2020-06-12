@@ -36,7 +36,6 @@
 
 <script>
 import {LOADING} from '../../libs/HTTP'
-import {Button, Input, message} from 'ant-design-vue'
 
 export default {
     name: 'Config',
@@ -47,17 +46,13 @@ export default {
             testLoading: new LOADING(),
         }
     },
-    components: {
-        [Button.name]: Button,
-        [Input.TextArea.name]: Input.TextArea,
-        [Input.name]: Input,
-    },
+    components: {},
     methods: {
         c1() {
             this.$http('/set_jd_cookie')
                 ._data('cookie', this.cookie)
                 ._sucLis(r => {
-                    message.success('修改成功')
+                    this.$message.success('修改成功')
                 })
                 ._loading(this.editLoading)
                 ._execute()
@@ -66,7 +61,7 @@ export default {
             this.$http('/test_jd_youhuijuan')
                 ._loading(this.testLoading)
                 ._sucLis(r => {
-                    message.success(r.result)
+                    this.$message.success(r.result)
                 })
                 ._execute()
         },

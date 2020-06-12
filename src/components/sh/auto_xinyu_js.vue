@@ -3,11 +3,9 @@
 </template>
 
 <script>
-    export default {
-        name: "auto_xinyu_js"
-    }
+export default {
+    name: 'auto_xinyu_js',
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

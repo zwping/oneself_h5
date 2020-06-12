@@ -3,11 +3,9 @@
 </template>
 
 <script>
-    export default {
-        name: "github"
-    }
+export default {
+    name: 'github',
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

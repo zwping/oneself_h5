@@ -71,8 +71,8 @@
                     v-show="!editState"
                     type="primary"
                     @click="editState = true"
-                    >修改资料</a-button
-                >
+                    >修改资料
+                </a-button>
                 <div v-show="editState">
                     <a-button type @click="editState = false">取消</a-button>
                     <a-button
@@ -80,8 +80,8 @@
                         :loading="loading.state"
                         type="primary"
                         @click="submit"
-                        >确认</a-button
-                    >
+                        >确认
+                    </a-button>
                 </div>
             </a-col>
         </a-row>
@@ -89,16 +89,6 @@
 </template>
 
 <script>
-import {
-    Row,
-    Col,
-    Button,
-    Input,
-    Upload,
-    Icon,
-    message,
-    Avatar,
-} from 'ant-design-vue'
 import {isImg} from '../../libs/ImageUtil'
 import {
     realType,
@@ -119,15 +109,7 @@ export default {
             fileLoading: new LOADING(),
         }
     },
-    components: {
-        [Row.name]: Row,
-        [Col.name]: Col,
-        [Input.name]: Input,
-        [Upload.name]: Upload,
-        [Icon.name]: Icon,
-        [Avatar.name]: Avatar,
-        [Button.name]: Button,
-    },
+    components: {},
     watch: {
         editState: function(v) {
             tempEditOb(this.userData, v, 'nickname', 'mail', 'portrait')
@@ -137,11 +119,11 @@ export default {
         beforeUpload(file) {
             let img = isImg(file)
             if (!img) {
-                message.error('请选择图片类型的文件')
+                this.$message.error('请选择图片类型的文件')
             }
             let size = file.size / 1024 / 1024 < 2
             if (!size) {
-                message.error('请选择小于2M的图片')
+                this.$message.error('请选择小于2M的图片')
             }
             return img && size
         },
@@ -169,7 +151,7 @@ export default {
                         'mail',
                         'portrait',
                     )
-                    message.success('保存成功')
+                    this.$message.success('保存成功')
                     this.editState = false
                     this.$store.commit('tokenx/applyUserData', this.userData)
                 })

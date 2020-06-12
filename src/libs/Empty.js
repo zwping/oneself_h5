@@ -1,26 +1,28 @@
 export function isEmpty(ob) {
-  if (ob === null || ob === '' || ob === undefined) {
-    return true
-  }
-  let type = Object.prototype.toString.call(ob).slice(8, -1).toLowerCase()
-  switch (type) {
-    case 'undefined':
-      return true
-    case 'string':
-      return String(ob).trim() === '' || ob === null
-    case 'object':
-      return Object.keys(ob).length === 0
-    case 'array':
-      return ob.length === 0
-    default:
-      return false
-  }
+    if (ob === null || ob === '' || ob === undefined) {
+        return true
+    }
+    let type = Object.prototype.toString
+        .call(ob)
+        .slice(8, -1)
+        .toLowerCase()
+    switch (type) {
+        case 'undefined':
+            return true
+        case 'string':
+            return String(ob).trim() === '' || ob === null
+        case 'object':
+            return Object.keys(ob).length === 0
+        case 'array':
+            return ob.length === 0
+        default:
+            return false
+    }
 }
 
 export function isNotEmpty(o) {
-  return !isEmpty(o)
+    return !isEmpty(o)
 }
-
 
 /**
  * 对象集中是否都为空
@@ -28,10 +30,10 @@ export function isNotEmpty(o) {
  * @returns {boolean}
  */
 export function isEmptys() {
-  for (let d of arguments) {
-    if (isNotEmpty(d)) return false
-  }
-  return true
+    for (let d of arguments) {
+        if (isNotEmpty(d)) return false
+    }
+    return true
 }
 
 /**
@@ -40,10 +42,10 @@ export function isEmptys() {
  * @returns {boolean}
  */
 export function isNotEmptys() {
-  for (let d of arguments) {
-    if (isEmpty(d)) return false
-  }
-  return true
+    for (let d of arguments) {
+        if (isEmpty(d)) return false
+    }
+    return true
 }
 
 /**
@@ -52,10 +54,10 @@ export function isNotEmptys() {
  * @returns {boolean}
  */
 export function isEmptyII() {
-  for (let d of arguments) {
-    if (isEmpty(d)) return true
-  }
-  return false
+    for (let d of arguments) {
+        if (isEmpty(d)) return true
+    }
+    return false
 }
 
 /**
@@ -64,8 +66,8 @@ export function isEmptyII() {
  * @returns {boolean}
  */
 export function isNotEmptyII() {
-  for (let d of arguments) {
-    if (isNotEmpty(d)) return true
-  }
-  return false
+    for (let d of arguments) {
+        if (isNotEmpty(d)) return true
+    }
+    return false
 }
