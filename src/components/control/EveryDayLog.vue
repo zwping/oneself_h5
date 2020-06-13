@@ -1,16 +1,12 @@
 <template>
     <div class="card shadow">
-        <div style="height: 20px;padding: 10px 0 0 15px;">{{ title }}</div>
+        <div style="height: 30px;padding: 10px 0 0 15px;">{{ title }}</div>
         <div class="ecahrts" ref="log_line"></div>
     </div>
 </template>
 
 <script>
 import {TBaseAPI} from '../../config'
-import echarts from 'echarts/lib/echarts'
-import 'echarts/lib/chart/line'
-import 'echarts/lib/component/tooltip'
-import 'echarts/lib/component/title'
 
 export default {
     data() {
@@ -23,7 +19,7 @@ export default {
     methods: {
         initLogLine() {
             if (this.logLine === undefined) {
-                this.logLine = echarts.init(this.$refs.log_line, 'light')
+                this.logLine = this.$echarts.init(this.$refs.log_line)
                 this.logLine.setOption({
                     tooltip: {
                         formatter: function(params) {
@@ -34,7 +30,8 @@ export default {
                     },
                     grid: {
                         right: '5%',
-                        bottom: '10%',
+                        bottom: '15%',
+                        top: '15%',
                     },
                     xAxis: {
                         type: 'category',
@@ -47,6 +44,12 @@ export default {
                             type: 'line',
                             smooth: true,
                             symbol: 'circle',
+                            lineStyle: {
+                                color: '#1890ff',
+                            },
+                            itemStyle: {
+                                color: '#1890ff',
+                            },
                         },
                     ],
                 })
