@@ -53,7 +53,6 @@ export default {
     },
     methods: {
         search() {
-            console.log(this.$refs.s2)
             this.get_list()
         },
         get_list(page = 1) {
@@ -67,7 +66,7 @@ export default {
                 ._params(get(this.$refs.s2, 'params'))
                 ._loading(
                     get(this.$refs.t2, 'loading'),
-                    get(this.$refs.s2, 'loading'),
+                    get(this.$refs.s2.$children[0], 'loading'),
                 )
                 ._sucLis(it => {
                     this.$refs.t2.lists = it.result.lists

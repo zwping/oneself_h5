@@ -26,13 +26,13 @@ import {LOADING} from '../libs/HTTP'
 export default {
     name: 'BaseFilter',
     props: {
-        search: {type: Function}, // 搜索方法，直接在表格页实现
-        reset: {type: Function}, // 搜索条件重置方法，一般放在二级筛选页实现
+        search: {type: Function, require: true}, // 搜索方法，直接在表格页实现
+        reset: {type: Function, require: true}, // 搜索条件重置方法，一般放在二级筛选页实现
         // loading: {type: Object},
     },
     data() {
         return {
-            loading: new LOADING(),
+            loading: new LOADING(), // 搜索按钮状态. _.get(this.$refs.s2.$children[0], 'loading')
         }
     },
 }

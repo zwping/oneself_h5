@@ -1,5 +1,5 @@
 <template>
-    <base-table-filter :reset="reset" v-bind="$attrs" v-on="$listeners">
+    <base-table-filter :reset="reset" v-bind="$attrs">
         <a-input>123</a-input>
     </base-table-filter>
 </template>
