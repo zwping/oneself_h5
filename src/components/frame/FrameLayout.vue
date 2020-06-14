@@ -223,12 +223,12 @@ export default {
         //   key: '日志',
         //   clo: true
         // })
-        // emit('fc_tabs', {
-        //   title: 'Tool日志',
-        //   content: tool_log,
-        //   key: 'Tool日志',
-        //   clo: true
-        // })
+        emit('fc_tabs', {
+            title: 'Tool日志',
+            content: tool_log,
+            key: 'Tool日志',
+            clo: true,
+        })
         // emit('fc_tabs', {
         //   title: 'Tool分类',
         //   content: types,
@@ -256,10 +256,10 @@ export default {
         //     clo: true,
         // })
         // emit('fc_tabs', {
-        //   title: '登录日志',
-        //   content: login_log,
-        //   key: '登录日志',
-        //   clo: true
+        //     title: '登录日志',
+        //     content: LoginLog,
+        //     key: '登录日志',
+        //     clo: true
         // })
         // emit('fc_tabs', {
         //   title: '考证通-自动学习',

@@ -1,13 +1,21 @@
 <template>
     <div>
-        <table2 ref="t2" :cus-columns="columns" :get_list="get_list"> </table2>
+        <tool-log-filter ref="s2" :search="search"></tool-log-filter>
+        <table2
+            ref="t2"
+            :outside_fix_height="355"
+            :cus-columns="columns"
+            :get_list="get_list"
+        ></table2>
     </div>
 </template>
 
 <script>
 import {TBaseAPI} from '../../config'
 import Table2 from '../cus_template/Table2'
-import _ from 'lodash'
+import get from 'lodash/get'
+import ToolLogFilter from './ToolLogFilter'
+import {LOADING} from '../../libs/HTTP'
 
 export default {
     data() {
@@ -44,18 +52,22 @@ export default {
         }
     },
     methods: {
+        search() {
+            console.log(this.$refs.s2)
+            this.get_list()
+        },
         get_list(page = 1) {
             this.$http(TBaseAPI + '/log')
                 ._get()
                 ._param('page', page)
                 ._param(
                     'perpage',
-                    _.get(this.$refs.t2, 'pagination.pageSize', 20),
+                    get(this.$refs.t2, 'pagination.pageSize', 20),
                 )
-                ._params(_.get(this.$refs.s2, 'params'))
+                ._params(get(this.$refs.s2, 'params'))
                 ._loading(
-                    _.get(this.$refs.t2, 'loading'),
-                    _.get(this.$refs.s2, 'loading'),
+                    get(this.$refs.t2, 'loading'),
+                    get(this.$refs.s2, 'loading'),
                 )
                 ._sucLis(it => {
                     this.$refs.t2.lists = it.result.lists
@@ -70,6 +82,7 @@ export default {
     },
     components: {
         table2: Table2,
+        ToolLogFilter,
     },
 }
 </script>

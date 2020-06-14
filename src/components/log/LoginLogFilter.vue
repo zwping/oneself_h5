@@ -1,54 +1,62 @@
 <template>
-    <div class="root_ly">
-        <div
-            style="display: flex;display: -webkit-flex;flex-direction: row-reverse;"
-        >
-            <a-button
-                @keyup.enter.native="search"
-                type="primary"
-                :loading="loading.state"
-                @click="search"
-                style="width: 80px;"
-                >搜索
-            </a-button>
-            <a-button @click="reset" type="default" style="margin-right: 10px;"
-                >重置</a-button
-            >
-            <a-auto-complete
-                @keyup.enter.native="search"
-                style="margin-right: 10px; width: 150px;"
-                v-model="s_ip"
-                allowClear
-                :data-source="ip_data"
-                :filter-option="ips_filter"
-                placeholder="ip"
-            />
-            <a-range-picker
-                v-model="s_time"
-                allowClear
-                @keyup.enter.native="search"
-                style="margin-right: 10px;width: 220px;"
-            >
-            </a-range-picker>
-            <a-input
-                v-model="s_nickname"
-                allowClear
-                @keyup.enter.native="search"
-                style="margin-right: 10px; width: 130px;"
-                placeholder="昵称"
-            />
-            <a-input
-                v-model="s_id"
-                allowClear
-                @keyup.enter.native="search"
-                style="margin-right: 10px; width: 80px;"
-                placeholder="Id"
-            />
-        </div>
+    <div>
+        <base-table-filter>
+            <div>
+                <div
+                    style="display: flex;display: -webkit-flex;flex-direction: row-reverse;"
+                >
+                    <a-button
+                        @keyup.enter.native="search"
+                        type="primary"
+                        :loading="loading.state"
+                        @click="search"
+                        style="width: 80px;"
+                        >搜索
+                    </a-button>
+                    <a-button
+                        @click="reset"
+                        type="default"
+                        style="margin-right: 10px;"
+                        >重置
+                    </a-button>
+                    <a-auto-complete
+                        @keyup.enter.native="search"
+                        style="margin-right: 10px; width: 150px;"
+                        v-model="s_ip"
+                        allowClear
+                        :data-source="ip_data"
+                        :filter-option="ips_filter"
+                        placeholder="ip"
+                    />
+                    <a-range-picker
+                        v-model="s_time"
+                        allowClear
+                        @keyup.enter.native="search"
+                        style="margin-right: 10px;width: 220px;"
+                    >
+                    </a-range-picker>
+                    <a-input
+                        v-model="s_nickname"
+                        allowClear
+                        @keyup.enter.native="search"
+                        style="margin-right: 10px; width: 130px;"
+                        placeholder="昵称"
+                    />
+                    <a-input
+                        v-model="s_id"
+                        allowClear
+                        @keyup.enter.native="search"
+                        style="margin-right: 10px; width: 80px;"
+                        placeholder="Id"
+                    />
+                </div>
+            </div>
+        </base-table-filter>
     </div>
 </template>
 
 <script>
+import BaseTableFilter from '../BaseTableFilter'
 import {LOADING} from '../../libs/HTTP'
 import {isNotEmptyII} from '../../libs/Empty'
 import {realType} from '../../libs/ObjectUtil'
@@ -116,17 +124,10 @@ export default {
             })
             ._execute()
     },
-    components: {},
+    components: {
+        BaseTableFilter,
+    },
 }
 </script>
 
-<style scoped>
-.root_ly {
-    display: flex;
-    display: -webkit-flex;
-    justify-content: flex-end;
-    height: 52px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-</style>
+<style scoped></style>

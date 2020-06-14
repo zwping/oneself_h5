@@ -17,12 +17,12 @@ module.exports = {
             new LodashModuleReplacementPlugin(),
         ],
         resolve: {
-            alias: {
-                '@ant-design/icons/lib/dist$': path.resolve(
-                    __dirname,
-                    './src/icons.js',
-                ),
-            },
+            // alias: {
+            //     '@ant-design/icons/lib/dist$': path.resolve(
+            //         __dirname,
+            //         './src/icons.js',
+            //     ),
+            // },
         },
     },
     chainWebpack: config => {
