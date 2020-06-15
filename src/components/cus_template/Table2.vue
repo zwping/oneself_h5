@@ -26,9 +26,9 @@
             </span>
         </template>
         <template #portrait="it">
-            <span
-                ><a-avatar shape="square" :size="30" :src="it"></a-avatar
-            ></span>
+            <span>
+                <a-avatar shape="square" :size="30" :src="it" />
+            </span>
         </template>
         <template #progress="it">
             <span :title="it">
@@ -38,6 +38,9 @@
                     :show-info="false"
                 />
             </span>
+        </template>
+        <template #ip="it">
+            <span>123{{ it }}</span>
         </template>
         <solt name="cus_solt"></solt>
     </a-table>

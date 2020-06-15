@@ -154,7 +154,6 @@ class Builder {
     }
 
     _cors() {
-        // this._header('Content-Type',)
         this.withCredentials = true
     }
 
