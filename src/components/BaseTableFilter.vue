@@ -11,7 +11,7 @@
                 :loading="loading.state"
                 style="width: 80px;"
             >
-                搜索
+                搜索 {{ reset1 }}
             </a-button>
             <a-button type="default" style="margin-right: 10px;" @click="reset">
                 重置
@@ -26,14 +26,27 @@ import {LOADING} from '../libs/HTTP'
 
 export default {
     name: 'BaseFilter',
+    inject: {
+        reset1: {
+            default: '122',
+        },
+    },
     props: {
         search: {type: Function}, // 搜索方法，直接在表格页实现，需要在筛选页设置v-bind='$attrs'
         reset: {type: Function}, // 搜索条件重置方法，一般放在筛选页实现
+    },
+    watch: {
+        reset1(val) {
+            console.log(val + '----')
+        },
     },
     data() {
         return {
             loading: new LOADING(), // _.get(this.$refs.s2.$children[0], 'loading')
         }
+    },
+    mounted() {
+        console.log('---' + this.reset1)
     },
 }
 </script>

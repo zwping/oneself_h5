@@ -23,6 +23,11 @@ import {TBaseAPI} from '../../config'
 
 export default {
     name: 'ToolLogFilter',
+    provide() {
+        return {
+            reset1: this.clientId,
+        }
+    },
     data() {
         return {
             clientLoading: new LOADING(),
@@ -40,6 +45,11 @@ export default {
             let d = this.$children[0].params
             d['client'] = this.clientId
             return d
+        },
+    },
+    watch: {
+        clientId: function(val) {
+            console.log(val)
         },
     },
     beforeCreate() {
