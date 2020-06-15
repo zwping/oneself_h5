@@ -10,12 +10,13 @@
                 @click="search"
                 :loading="loading.state"
                 style="width: 80px;"
-                >搜索
+            >
+                搜索
             </a-button>
             <a-button type="default" style="margin-right: 10px;" @click="reset">
                 重置
             </a-button>
-            <slot></slot>
+            <slot />
         </div>
     </div>
 </template>
@@ -26,13 +27,12 @@ import {LOADING} from '../libs/HTTP'
 export default {
     name: 'BaseFilter',
     props: {
-        search: {type: Function}, // 搜索方法，直接在表格页实现
-        reset: {type: Function}, // 搜索条件重置方法，一般放在二级筛选页实现
-        // loading: {type: Object},
+        search: {type: Function}, // 搜索方法，直接在表格页实现，需要在筛选页设置v-bind='$attrs'
+        reset: {type: Function}, // 搜索条件重置方法，一般放在筛选页实现
     },
     data() {
         return {
-            loading: new LOADING(),
+            loading: new LOADING(), // _.get(this.$refs.s2.$children[0], 'loading')
         }
     },
 }
@@ -43,8 +43,6 @@ export default {
     display: flex;
     display: -webkit-flex;
     justify-content: flex-end;
-    height: 52px;
-    padding-top: 10px;
     padding-bottom: 10px;
 }
 </style>

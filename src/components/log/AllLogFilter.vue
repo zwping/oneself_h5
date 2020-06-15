@@ -1,77 +1,83 @@
 <template>
-    <div class="root_ly">
-        <div
-            style="display: flex;display: -webkit-flex;flex-direction: row-reverse;"
+    <base-log-filter v-bind="$attrs" :reset="reset">
+        <a-input
+            v-model="nickname"
+            allowClear
+            @keyup.enter.native="search"
+            style="margin-right: 10px; width: 80px;"
+            placeholder="昵称"
+        />
+        <a-input
+            v-model="tid"
+            allowClear
+            @keyup.enter.native="search"
+            style="margin-right: 10px; width: 80px;"
+            placeholder="Id"
+        />
+        <a-input
+            v-model="remark"
+            allowClear
+            @keyup.enter.native="search"
+            style="margin-right: 10px; width: 100px;"
+            placeholder="备注"
+        />
+        <a-input
+            v-model="newValue"
+            allowClear
+            @keyup.enter.native="search"
+            style="margin-right: 10px; width: 100px;"
+            placeholder="新值"
+        />
+        <a-input
+            v-model="tableName"
+            allowClear
+            @keyup.enter.native="search"
+            style="margin-right: 10px; width: 100px;"
+            placeholder="表名"
+        />
+        <a-select
+            @keyup.enter.native="search"
+            style="width: 110px;margin-right: 10px;"
+            :loading="logTypeLoading.state"
+            placeholder="日志类型"
+            v-model="logTypeId"
+            allowClear
         >
-            <a-button
-                @keyup.enter.native="search"
-                type="primary"
-                :loading="loading.state"
-                @click="search"
-                style="width: 80px;"
-                >搜索
-            </a-button>
-            <a-button @click="reset" type="default" style="margin-right: 10px;"
-                >重置</a-button
-            >
-            <a-auto-complete
-                @keyup.enter.native="search"
-                style="margin-right: 10px; width: 150px;"
-                v-model="s_ip"
-                allowClear
-                :data-source="ip_data"
-                :filter-option="ips_filter"
-                placeholder="ip"
-            />
-            <a-range-picker
-                v-model="s_time"
-                allowClear
-                @keyup.enter.native="search"
-                style="margin-right: 10px;width: 220px;"
-            >
-            </a-range-picker>
-            <a-input
-                v-model="s_nickname"
-                allowClear
-                @keyup.enter.native="search"
-                style="margin-right: 10px; width: 130px;"
-                placeholder="昵称"
-            />
-            <a-input
-                v-model="s_id"
-                allowClear
-                @keyup.enter.native="search"
-                style="margin-right: 10px; width: 80px;"
-                placeholder="Id"
-            />
-        </div>
-    </div>
+            <a-select-option v-for="d in logTypes" :value="d.id" :key="d.id">
+                {{ d.title }}
+            </a-select-option>
+        </a-select>
+        <slot />
+    </base-log-filter>
 </template>
 
 <script>
-import {LOADING} from '../../libs/HTTP'
-import {isNotEmptyII} from '../../libs/Empty'
-import {realType} from '../../libs/ObjectUtil'
-import {TBaseAPI} from '../../config'
+import BaseLogFilter from '@/components/third_party/BaseLogFilter'
+import {LOADING} from '@/libs/HTTP'
+import {isNotEmptyII} from '@/libs/Empty'
+import {realType} from '@/libs/ObjectUtil'
+import {TBaseAPI} from '@/config'
+import {isNotEmpty} from '../../libs/Empty'
 
 export default {
     name: 'AllLogFilter',
-    props: {
-        search: {},
-    },
+    props: {},
     data() {
         return {
-            loading: new LOADING(),
-            ip_data: [],
-            s_ip: '',
-            s_time: [],
-            s_stime: '',
-            s_etime: '',
-            s_id: '',
-            s_nickname: '',
+            tid: '',
+            nickname: '',
+            tableName: '',
+            newValue: '',
+            remark: '',
+            logTypeId: undefined,
+            logTypes: [],
+            logTypeLoading: new LOADING(),
         }
     },
     methods: {
+        search() {
+            this.$parent.search()
+        },
         ips_filter(input, option) {
             return (
                 option.componentOptions.children[0].text
@@ -80,23 +86,31 @@ export default {
             )
         },
         reset() {
-            this.s_time = []
-            this.s_ip = ''
-            this.s_id = ''
-            this.s_nickname = ''
+            this.tid = ''
+            this.nickname = ''
+            this.logTypeId = undefined
+            this.remark = ''
+            this.newValue = ''
+            this.tableName = ''
+            this.baseLogDom().reset()
+        },
+        baseLogDom() {
+            return this.$children[0]
         },
     },
     computed: {
-        // is_screen() {
-        //   return isNotEmptyII(this.s_id, this.s_nickname, this.s_stime, this.s_etime, this.s_ip)
-        // }
         params() {
+            const {ip, analyze_time} = this.baseLogDom()
             return {
-                operId: this.s_id,
-                operNickName: this.s_nickname,
-                stime: this.s_stime,
-                etime: this.s_etime,
-                ip: this.s_ip,
+                operId: this.tid,
+                operNickName: this.nickname,
+                stime: analyze_time.stime,
+                etime: analyze_time.etime,
+                ip: ip,
+                logType: this.logTypeId,
+                operTable: this.tableName,
+                newValue: this.newValue,
+                remark: this.remark,
             }
         },
     },
@@ -115,8 +129,22 @@ export default {
                 this.ip_data = it.result
             })
             ._execute()
+        this.$http(TBaseAPI + '/types', 'get')
+            ._param('pid', 132)
+            ._loading(this.logTypeLoading)
+            ._sucLis(it => {
+                for (let d of it.result.types) {
+                    if (isNotEmpty(d.children)) {
+                        for (let d1 of d.children) {
+                            it.result.types.push(d1)
+                        }
+                    }
+                }
+                this.logTypes = it.result.types
+            })
+            ._execute()
     },
-    components: {},
+    components: {BaseLogFilter},
 }
 </script>
 

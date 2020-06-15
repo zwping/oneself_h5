@@ -1,12 +1,12 @@
 <template>
     <div>
-        <tool-log-filter ref="s2" :search="search"></tool-log-filter>
+        <tool-log-filter ref="s2" :search="search" />
         <table2
             ref="t2"
             :outside_fix_height="355"
             :cus-columns="columns"
             :get_list="get_list"
-        ></table2>
+        />
     </div>
 </template>
 
@@ -53,10 +53,10 @@ export default {
     },
     methods: {
         search() {
-            console.log(this.$refs.s2)
             this.get_list()
         },
         get_list(page = 1) {
+            console.log(get(this.$refs.s2, 'params'))
             this.$http(TBaseAPI + '/log')
                 ._get()
                 ._param('page', page)
@@ -67,7 +67,7 @@ export default {
                 ._params(get(this.$refs.s2, 'params'))
                 ._loading(
                     get(this.$refs.t2, 'loading'),
-                    get(this.$refs.s2, 'loading'),
+                    get(this.$refs.s2.$children[0], 'loading'),
                 )
                 ._sucLis(it => {
                     this.$refs.t2.lists = it.result.lists

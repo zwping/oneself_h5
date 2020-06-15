@@ -259,7 +259,7 @@ export default {
         //     title: '登录日志',
         //     content: LoginLog,
         //     key: '登录日志',
-        //     clo: true
+        //     clo: true,
         // })
         // emit('fc_tabs', {
         //   title: '考证通-自动学习',

@@ -126,7 +126,6 @@ class Builder {
     // 是否需要控制控件的加载状态
     _loading(loading) {
         for (let d of arguments) {
-            console.log(d)
             if (isNotEmpty(d) && d instanceof LOADING) {
                 this.loadingStates.push(d)
             }
@@ -155,7 +154,6 @@ class Builder {
     }
 
     _cors() {
-        // this._header('Content-Type',)
         this.withCredentials = true
     }
 
