@@ -1,5 +1,5 @@
 <template>
-    <all-log-filter v-bind="$attrs">
+    <all-log-filter :xkey="xkey">
         <a-select
             @keyup.enter.native="search"
             style="width: 110px;margin-right: 10px;"
@@ -20,14 +20,11 @@ import AllLogFilter from '../log/AllLogFilter'
 import {LOADING} from '../../libs/HTTP'
 import {isNotEmpty} from '../../libs/Empty'
 import {TBaseAPI} from '../../config'
+import {mapGetters} from 'vuex'
 
 export default {
     name: 'ToolLogFilter',
-    provide() {
-        return {
-            reset1: this.clientId,
-        }
-    },
+    props: ['xkey'],
     data() {
         return {
             clientLoading: new LOADING(),
@@ -37,19 +34,26 @@ export default {
     },
     methods: {
         search() {
-            this.$parent.search()
+            this.$store.commit('BaseTableFilterx/searching', this.xkey)
         },
     },
     computed: {
-        params() {
-            let d = this.$children[0].params
-            d['client'] = this.clientId
-            return d
+        params: function() {
+            return {client: this.clientId}
+        },
+        reset: function() {
+            return this.$store.getters['BaseTableFilterx/reset'](this.xkey)
         },
     },
     watch: {
-        clientId: function(val) {
-            console.log(val)
+        params: function(val) {
+            this.$store.commit('BaseTableFilterx/params', {
+                xkey: this.xkey,
+                params: val,
+            })
+        },
+        reset: function() {
+            this.clientId = undefined
         },
     },
     beforeCreate() {

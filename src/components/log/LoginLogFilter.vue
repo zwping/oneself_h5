@@ -1,5 +1,5 @@
 <template>
-    <base-log-filter v-bind="$attrs" :reset="reset">
+    <base-log-filter :xkey="xkey">
         <div>
             <a-input
                 v-model="s_id"
@@ -21,14 +21,11 @@
 
 <script>
 import BaseLogFilter from '../third_party/BaseLogFilter'
-import {isNotEmptyII} from '../../libs/Empty'
-import {realType} from '../../libs/ObjectUtil'
 import {TBaseAPI} from '../../config'
-import get from 'lodash/get'
 
 export default {
     name: 'LogScreen',
-    props: {},
+    props: ['xkey'],
     data() {
         return {
             s_ip: '',

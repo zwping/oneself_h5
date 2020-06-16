@@ -283,8 +283,8 @@ function __setLoading(loadings, value) {
  * @constructor loading
  */
 class LOADING {
-    constructor() {
-        this.state = false
+    constructor(state = false) {
+        this.state = state // 跨组件响应
     }
 }
 

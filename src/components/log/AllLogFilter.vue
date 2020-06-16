@@ -1,5 +1,5 @@
 <template>
-    <base-log-filter v-bind="$attrs" :reset="reset">
+    <base-log-filter :xkey="xkey">
         <a-input
             v-model="nickname"
             allowClear
@@ -58,10 +58,16 @@ import {isNotEmptyII} from '@/libs/Empty'
 import {realType} from '@/libs/ObjectUtil'
 import {TBaseAPI} from '@/config'
 import {isNotEmpty} from '../../libs/Empty'
+import {mapGetters} from 'vuex'
 
 export default {
     name: 'AllLogFilter',
-    props: {},
+    props: {
+        xkey: {
+            default: 'all',
+        },
+    },
+    mounted() {},
     data() {
         return {
             tid: '',
@@ -76,7 +82,7 @@ export default {
     },
     methods: {
         search() {
-            this.$parent.search()
+            this.$store.commit('BaseTableFilterx/searching', this.xkey)
         },
         ips_filter(input, option) {
             return (
@@ -85,40 +91,36 @@ export default {
                     .indexOf(input.toUpperCase()) >= 0
             )
         },
-        reset() {
-            this.tid = ''
-            this.nickname = ''
-            this.logTypeId = undefined
-            this.remark = ''
-            this.newValue = ''
-            this.tableName = ''
-            this.baseLogDom().reset()
-        },
-        baseLogDom() {
-            return this.$children[0]
-        },
     },
     computed: {
         params() {
-            const {ip, analyze_time} = this.baseLogDom()
             return {
                 operId: this.tid,
                 operNickName: this.nickname,
-                stime: analyze_time.stime,
-                etime: analyze_time.etime,
-                ip: ip,
                 logType: this.logTypeId,
                 operTable: this.tableName,
                 newValue: this.newValue,
                 remark: this.remark,
             }
         },
+        reset: function() {
+            return this.$store.getters['BaseTableFilterx/reset'](this.xkey)
+        },
     },
     watch: {
-        s_time: function(v) {
-            let d = isNotEmptyII(v) && realType(v[0]) === 'object'
-            this.s_stime = d ? v[0].format('YYYY-MM-DD') : ''
-            this.s_etime = d ? v[1].format('YYYY-MM-DD') : ''
+        params: function(val) {
+            this.$store.commit('BaseTableFilterx/params', {
+                xkey: this.xkey,
+                params: val,
+            })
+        },
+        reset: function() {
+            this.tid = ''
+            this.nickname = ''
+            this.logTypeId = undefined
+            this.remark = ''
+            this.newValue = ''
+            this.tableName = ''
         },
     },
     beforeCreate() {

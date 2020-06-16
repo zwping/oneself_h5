@@ -1,6 +1,6 @@
 <template>
     <div>
-        <tool-log-filter ref="s2" :search="search" />
+        <tool-log-filter :xkey="xkey" />
         <table2
             ref="t2"
             :outside_fix_height="355"
@@ -15,60 +15,37 @@ import {TBaseAPI} from '../../config'
 import Table2 from '../cus_template/Table2'
 import get from 'lodash/get'
 import ToolLogFilter from './ToolLogFilter'
-import {LOADING} from '../../libs/HTTP'
+import {toolLogColumns} from '@/constant'
+import {mapGetters} from 'vuex'
 
 export default {
     data() {
         return {
-            columns: [
-                {dataIndex: 'id', title: 'ID', align: 'center', width: 100},
-                {dataIndex: 'client', title: '客户端', width: 120},
-                {dataIndex: 'logType', title: '日志类型', width: 150},
-                {dataIndex: 'operId', title: '操作人Id', width: 100},
-                {dataIndex: 'operNickName', title: '操作人昵称', width: 150},
-                {dataIndex: 'operTable', title: '操作表名', width: 150},
-                {dataIndex: 'operDataId', title: '被操作Id', width: 100},
-                {dataIndex: 'operType', title: '操作类型', width: 160},
-                {
-                    dataIndex: 'oldValue',
-                    title: '旧值',
-                    scopedSlots: {customRender: 'oldValue'},
-                },
-                {
-                    dataIndex: 'newValue',
-                    title: '新值',
-                    width: 200,
-                    scopedSlots: {customRender: 'newValue'},
-                },
-                {dataIndex: 'remark', title: '备注', width: 200},
-                {
-                    dataIndex: 'final_time',
-                    title: '时间',
-                    scopedSlots: {customRender: 'time'},
-                    width: 200,
-                },
-                {dataIndex: '_ip', title: 'IP', width: 150},
-            ],
+            xkey: 'tool',
+            columns: toolLogColumns,
         }
     },
-    methods: {
-        search() {
-            this.get_list()
+    computed: {
+        searchState: function() {
+            return this.$store.getters['BaseTableFilterx/search'](this.xkey)
         },
+        params: function() {
+            return this.$store.getters['BaseTableFilterx/params'](this.xkey)
+        },
+    },
+    watch: {
+        searchState: function(val) {
+            if (val) this.get_list()
+        },
+    },
+    methods: {
         get_list(page = 1) {
-            console.log(get(this.$refs.s2, 'params'))
-            this.$http(TBaseAPI + '/log')
-                ._get()
+            let perpage = get(this.$refs.t2, 'pagination.pageSize', 20)
+            this.$http(TBaseAPI + '/log', 'get')
                 ._param('page', page)
-                ._param(
-                    'perpage',
-                    get(this.$refs.t2, 'pagination.pageSize', 20),
-                )
-                ._params(get(this.$refs.s2, 'params'))
-                ._loading(
-                    get(this.$refs.t2, 'loading'),
-                    get(this.$refs.s2.$children[0], 'loading'),
-                )
+                ._param('perpage', perpage)
+                ._params(this.params)
+                ._loading(get(this.$refs.t2, 'loading'))
                 ._sucLis(it => {
                     this.$refs.t2.lists = it.result.lists
                     this.$refs.t2.pagination = {
@@ -76,6 +53,16 @@ export default {
                         pageSize: it.result.perpage,
                         total: it.result.totalNum,
                     }
+                    this.$store.commit(
+                        'BaseTableFilterx/searchFinish',
+                        this.xkey,
+                    )
+                })
+                ._errLis(it => {
+                    this.$store.commit(
+                        'BaseTableFilterx/searchFinish',
+                        this.xkey,
+                    )
                 })
                 ._execute()
         },

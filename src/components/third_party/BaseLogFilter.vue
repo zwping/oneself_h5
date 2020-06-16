@@ -1,5 +1,5 @@
 <template>
-    <base-table-filter v-bind="$attrs">
+    <base-table-filter :xkey="xkey">
         <a-auto-complete
             style="margin-right: 10px;width: 140px;"
             v-model="ip"
@@ -20,12 +20,13 @@
 
 <script>
 import BaseTableFilter from '../BaseTableFilter'
-import {isNotEmptyII} from '../../libs/Empty'
+import {isNotEmpty, isNotEmptyII} from '../../libs/Empty'
 import {realType} from '../../libs/ObjectUtil'
 import {TBaseAPI} from '../../config'
 
 export default {
     name: 'LogIpsChild',
+    props: ['xkey'],
     data() {
         return {
             ip: '',
@@ -41,19 +42,33 @@ export default {
                     .indexOf(input.toUpperCase()) >= 0
             )
         },
-        reset() {
-            this.ip = ''
-            this.time = []
+        search() {
+            this.$store.commit('BaseTableFilterx/searching', this.xkey)
         },
     },
     computed: {
-        analyze_time: function() {
-            let d =
-                isNotEmptyII(this.time) && realType(this.time[0]) === 'object'
+        params: function() {
+            let d = isNotEmpty(this.time) && realType(this.time[0]) === 'object'
             return {
+                ip: this.ip,
                 stime: d ? this.time[0].format('YYYY-MM-DD') : '',
                 etime: d ? this.time[1].format('YYYY-MM-DD') : '',
             }
+        },
+        reset: function() {
+            return this.$store.getters['BaseTableFilterx/reset'](this.xkey)
+        },
+    },
+    watch: {
+        reset: function() {
+            this.ip = ''
+            this.time = []
+        },
+        params: function(val) {
+            this.$store.commit('BaseTableFilterx/params', {
+                xkey: this.xkey,
+                params: val,
+            })
         },
     },
     beforeCreate() {

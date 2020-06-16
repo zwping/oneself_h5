@@ -1,19 +1,23 @@
 <!--针对表格类的展示列表，顶部筛选功能剥离出来-->
 <template>
-    <div class="root_ly" :loading="loading">
+    <div class="root_ly">
         <div
             style="display: flex;display: -webkit-flex;flex-direction: row-reverse;"
         >
             <a-button
-                @keyup.enter.native="search"
+                @keyup.enter.native="searchF"
                 type="primary"
-                @click="search"
-                :loading="loading.state"
+                @click="searchF"
+                :loading="loading"
                 style="width: 80px;"
             >
-                搜索 {{ reset1 }}
+                搜索
             </a-button>
-            <a-button type="default" style="margin-right: 10px;" @click="reset">
+            <a-button
+                type="default"
+                style="margin-right: 10px;"
+                @click="resetF"
+            >
                 重置
             </a-button>
             <slot />
@@ -22,31 +26,31 @@
 </template>
 
 <script>
-import {LOADING} from '../libs/HTTP'
+import {mapGetters} from 'vuex'
 
 export default {
     name: 'BaseFilter',
-    inject: {
-        reset1: {
-            default: '122',
-        },
-    },
     props: {
-        search: {type: Function}, // 搜索方法，直接在表格页实现，需要在筛选页设置v-bind='$attrs'
-        reset: {type: Function}, // 搜索条件重置方法，一般放在筛选页实现
-    },
-    watch: {
-        reset1(val) {
-            console.log(val + '----')
+        xkey: {
+            required: true,
+            validator: function(value) {
+                // xkey必填参数
+                return ['tool', 'all', 'login'].indexOf(value) !== -1
+            },
         },
     },
-    data() {
-        return {
-            loading: new LOADING(), // _.get(this.$refs.s2.$children[0], 'loading')
-        }
+    computed: {
+        loading: function() {
+            return this.$store.getters['BaseTableFilterx/search'](this.xkey)
+        },
     },
-    mounted() {
-        console.log('---' + this.reset1)
+    methods: {
+        searchF() {
+            this.$store.commit('BaseTableFilterx/searching', this.xkey)
+        },
+        resetF() {
+            this.$store.commit('BaseTableFilterx/reset', this.xkey)
+        },
     },
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <all-log-filter ref="s2" :search="search" />
+        <all-log-filter :xkey="xkey" />
         <table2
             ref="t2"
             :outside_fix_height="335"
@@ -16,13 +16,27 @@ import {TBaseAPI} from '../../config'
 import Table2 from '../cus_template/Table2.vue'
 import AllLogFilter from './AllLogFilter'
 import get from 'lodash/get'
-import {AllLogColumns} from '@/constant'
+import {allLogColumns} from '@/constant'
 
 export default {
     data() {
         return {
-            columns: AllLogColumns,
+            xkey: 'all',
+            columns: allLogColumns,
         }
+    },
+    computed: {
+        searchState: function() {
+            return this.$store.getters['BaseTableFilterx/search'](this.xkey)
+        },
+        params: function() {
+            return this.$store.getters['BaseTableFilterx/params'](this.xkey)
+        },
+    },
+    watch: {
+        searchState: function(val) {
+            if (val) this.get_list()
+        },
     },
     methods: {
         search() {
@@ -33,8 +47,8 @@ export default {
                 ._param('client', 128)
                 ._param('page', page)
                 ._param('perpage', get(this.$refs.t2, 'pagination.pageSize', 20))
-                ._params(get(this.$refs.s2, 'params'))
-                ._loading(get(this.$refs.t2, 'loading'), get(this.$refs.s2.$children[0].$children[0], 'loading'))
+                ._params(this.params)
+                ._loading(get(this.$refs.t2, 'loading'))
                 ._sucLis(it => {
                     this.$refs.t2.lists = it.result.lists
                     this.$refs.t2.pagination = {
@@ -42,6 +56,16 @@ export default {
                         pageSize: it.result.perpage,
                         total: it.result.totalNum,
                     }
+                    this.$store.commit(
+                        'BaseTableFilterx/searchFinish',
+                        this.xkey,
+                    )
+                })
+                ._errLis(it => {
+                    this.$store.commit(
+                        'BaseTableFilterx/searchFinish',
+                        this.xkey,
+                    )
                 })
                 ._execute()
         },
