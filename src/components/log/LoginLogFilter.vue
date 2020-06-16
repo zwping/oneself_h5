@@ -4,14 +4,14 @@
             <a-input
                 v-model="s_id"
                 allowClear
-                @keyup.enter.native="$parent.search()"
+                @keyup.enter.native="search"
                 style="margin-right: 10px; width: 80px;"
                 placeholder="Id"
             />
             <a-input
                 v-model="s_nickname"
                 allowClear
-                @keyup.enter.native="$parent.search()"
+                @keyup.enter.native="search"
                 style="margin-right: 10px; width: 130px;"
                 placeholder="昵称"
             />
@@ -22,6 +22,7 @@
 <script>
 import BaseLogFilter from '../third_party/BaseLogFilter'
 import {TBaseAPI} from '../../config'
+import {getReset, synParams, setSearch} from '@/store/modules/BaseTableFilterx'
 
 export default {
     name: 'LogScreen',
@@ -43,25 +44,30 @@ export default {
                     .indexOf(input.toUpperCase()) >= 0
             )
         },
-        reset() {
-            this.s_id = ''
-            this.s_nickname = ''
-            this.$children[0].reset()
+        search() {
+            setSearch(this)
         },
     },
     computed: {
         params() {
-            const {ip, analyze_time} = this.$children[0]
             return {
                 operId: this.s_id,
                 operNickName: this.s_nickname,
-                stime: analyze_time.stime,
-                etime: analyze_time.etime,
-                ip: ip,
             }
         },
+        reset: function() {
+            return getReset(this)
+        },
     },
-    watch: {},
+    watch: {
+        params: function(val) {
+            synParams(this, val)
+        },
+        reset: function() {
+            this.s_id = ''
+            this.s_nickname = ''
+        },
+    },
     beforeCreate() {
         this.$http(TBaseAPI + '/log/ips')
             ._get()

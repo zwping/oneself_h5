@@ -17,6 +17,7 @@ import Table2 from '../cus_template/Table2.vue'
 import AllLogFilter from './AllLogFilter'
 import get from 'lodash/get'
 import {allLogColumns} from '@/constant'
+import {getParams, setSearchFinish, getSearch} from '@/store/modules/BaseTableFilterx'
 
 export default {
     data() {
@@ -27,10 +28,7 @@ export default {
     },
     computed: {
         searchState: function() {
-            return this.$store.getters['BaseTableFilterx/search'](this.xkey)
-        },
-        params: function() {
-            return this.$store.getters['BaseTableFilterx/params'](this.xkey)
+            return getSearch(this)
         },
     },
     watch: {
@@ -47,7 +45,7 @@ export default {
                 ._param('client', 128)
                 ._param('page', page)
                 ._param('perpage', get(this.$refs.t2, 'pagination.pageSize', 20))
-                ._params(this.params)
+                ._params(getParams(this))
                 ._loading(get(this.$refs.t2, 'loading'))
                 ._sucLis(it => {
                     this.$refs.t2.lists = it.result.lists
@@ -56,16 +54,10 @@ export default {
                         pageSize: it.result.perpage,
                         total: it.result.totalNum,
                     }
-                    this.$store.commit(
-                        'BaseTableFilterx/searchFinish',
-                        this.xkey,
-                    )
+                    setSearchFinish(this)
                 })
                 ._errLis(it => {
-                    this.$store.commit(
-                        'BaseTableFilterx/searchFinish',
-                        this.xkey,
-                    )
+                    setSearchFinish(this)
                 })
                 ._execute()
         },

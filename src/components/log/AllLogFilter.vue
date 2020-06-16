@@ -54,11 +54,9 @@
 <script>
 import BaseLogFilter from '@/components/third_party/BaseLogFilter'
 import {LOADING} from '@/libs/HTTP'
-import {isNotEmptyII} from '@/libs/Empty'
-import {realType} from '@/libs/ObjectUtil'
 import {TBaseAPI} from '@/config'
 import {isNotEmpty} from '../../libs/Empty'
-import {mapGetters} from 'vuex'
+import {getReset, synParams, setSearch} from '@/store/modules/BaseTableFilterx'
 
 export default {
     name: 'AllLogFilter',
@@ -82,7 +80,7 @@ export default {
     },
     methods: {
         search() {
-            this.$store.commit('BaseTableFilterx/searching', this.xkey)
+            setSearch(this)
         },
         ips_filter(input, option) {
             return (
@@ -104,15 +102,12 @@ export default {
             }
         },
         reset: function() {
-            return this.$store.getters['BaseTableFilterx/reset'](this.xkey)
+            return getReset(this)
         },
     },
     watch: {
         params: function(val) {
-            this.$store.commit('BaseTableFilterx/params', {
-                xkey: this.xkey,
-                params: val,
-            })
+            synParams(this, val)
         },
         reset: function() {
             this.tid = ''

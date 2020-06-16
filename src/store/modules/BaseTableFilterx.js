@@ -1,5 +1,3 @@
-import Vue from 'vue'
-
 const state = {
     // xkey 外部传入的key, xkey本身只有说明的作用
     searchState: {xkey: false}, // 修改值控制loading, watch值执行搜索
@@ -23,11 +21,12 @@ const mutations = {
         })
     },
     params(state, {xkey, params}) {
-        state.params = Object.assign({}, state.params, {[xkey]: params})
-        // state.params[xkey] = {
-        //     ...state.params[xkey],
-        //     ...params,
-        // }
+        // state.params = Object.assign({}, state.params, {[xkey]: params})
+        state.params[xkey] = {
+            ...state.params[xkey],
+            ...params,
+        }
+        state.params = Object.assign({}, state.params)
     },
 }
 
@@ -50,4 +49,39 @@ export default {
     state,
     mutations,
     getters,
+}
+
+/*** 方法封装，方便调用 ***/
+
+export function setSearch(context, xkey = undefined) {
+    context.$store.commit('BaseTableFilterx/searching', xkey || context.xkey)
+}
+
+export function setSearchFinish(context, xkey = undefined) {
+    context.$store.commit('BaseTableFilterx/searchFinish', xkey || context.xkey)
+}
+
+export function getSearch(context, xkey = undefined) {
+    return context.$store.getters['BaseTableFilterx/search'](
+        xkey || context.xkey,
+    )
+}
+
+export function getReset(context, xkey = undefined) {
+    return context.$store.getters['BaseTableFilterx/reset'](
+        xkey || context.xkey,
+    )
+}
+
+export function synParams(context, val, xkey = undefined) {
+    context.$store.commit('BaseTableFilterx/params', {
+        xkey: xkey || context.xkey,
+        params: val,
+    })
+}
+
+export function getParams(context, xkey = undefined) {
+    return context.$store.getters['BaseTableFilterx/params'](
+        xkey || context.xkey,
+    )
 }

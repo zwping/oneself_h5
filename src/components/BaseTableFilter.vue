@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {getSearch, setSearch} from '@/store/modules/BaseTableFilterx'
 
 export default {
     name: 'BaseFilter',
@@ -41,12 +41,12 @@ export default {
     },
     computed: {
         loading: function() {
-            return this.$store.getters['BaseTableFilterx/search'](this.xkey)
+            return getSearch(this)
         },
     },
     methods: {
         searchF() {
-            this.$store.commit('BaseTableFilterx/searching', this.xkey)
+            setSearch(this)
         },
         resetF() {
             this.$store.commit('BaseTableFilterx/reset', this.xkey)

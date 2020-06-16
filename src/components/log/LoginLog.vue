@@ -1,6 +1,6 @@
 <template>
     <div>
-        <login-log-filter />
+        <login-log-filter :xkey="xkey" />
         <table2
             ref="t2"
             :outside_fix_height="335"
@@ -17,24 +17,23 @@ import Table2 from '../cus_template/Table2.vue'
 import LoginLogFilter from './LoginLogFilter'
 import get from 'lodash/get'
 import {loginColumns} from '../../constant'
+import {getParams, setSearchFinish, getSearch} from '@/store/modules/BaseTableFilterx'
 
 export default {
     name: 'login_log',
     data() {
         return {
+            xkey: 'login',
             columns: loginColumns,
         }
     },
     computed: {
-        searchState: function() {
-            return this.$store.getters['BaseTableFilterx/search'](this.xkey)
-        },
-        params: function() {
-            return this.$store.getters['BaseTableFilterx/params'](this.xkey)
+        searchState: function () {
+            return getSearch(this)
         },
     },
     watch: {
-        searchState: function(val) {
+        searchState: function (val) {
             if (val) this.get_list()
         },
     },
@@ -45,7 +44,7 @@ export default {
                 ._param('logType', 133)
                 ._param('page', page)
                 ._param('perpage', get(this.$refs.t2, 'pagination.pageSize', 20))
-                ._params(this.params)
+                ._params(getParams(this))
                 ._loading(get(this.$refs.t2, 'loading'))
                 ._sucLis(it => {
                     this.$refs.t2.lists = it.result.lists
@@ -54,21 +53,12 @@ export default {
                         pageSize: it.result.perpage,
                         total: it.result.totalNum,
                     }
-                    this.$store.commit(
-                        'BaseTableFilterx/searchFinish',
-                        this.xkey,
-                    )
+                    setSearchFinish(this)
                 })
                 ._errLis(it => {
-                    this.$store.commit(
-                        'BaseTableFilterx/searchFinish',
-                        this.xkey,
-                    )
+                    setSearchFinish(this)
                 })
                 ._execute()
-        },
-        search() {
-            this.get_list(1, this.$refs.t2.pagination.pageSize, this.$refs.s2.loading, this.$refs.s2.params)
         },
     },
     components: {

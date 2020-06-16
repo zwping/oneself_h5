@@ -23,6 +23,7 @@ import BaseTableFilter from '../BaseTableFilter'
 import {isNotEmpty, isNotEmptyII} from '../../libs/Empty'
 import {realType} from '../../libs/ObjectUtil'
 import {TBaseAPI} from '../../config'
+import {setSearch, getReset, synParams} from '@/store/modules/BaseTableFilterx'
 
 export default {
     name: 'LogIpsChild',
@@ -43,7 +44,7 @@ export default {
             )
         },
         search() {
-            this.$store.commit('BaseTableFilterx/searching', this.xkey)
+            setSearch(this)
         },
     },
     computed: {
@@ -56,7 +57,7 @@ export default {
             }
         },
         reset: function() {
-            return this.$store.getters['BaseTableFilterx/reset'](this.xkey)
+            return getReset(this)
         },
     },
     watch: {
@@ -65,10 +66,7 @@ export default {
             this.time = []
         },
         params: function(val) {
-            this.$store.commit('BaseTableFilterx/params', {
-                xkey: this.xkey,
-                params: val,
-            })
+            synParams(this, val)
         },
     },
     beforeCreate() {
