@@ -1,12 +1,14 @@
 <template>
-    <div>
+    <div class="root_ly">
         控制台主页
         <every-day-log />
+        <small-tool />
     </div>
 </template>
 
 <script>
 import EveryDayLog from './EveryDayLog'
+import SmallTool from './SmallTool'
 
 export default {
     name: 'Index',
@@ -19,8 +21,14 @@ export default {
     beforeDestroy() {},
     components: {
         EveryDayLog,
+        SmallTool,
     },
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.root_ly {
+    display: flex;
+    flex-direction: row;
+}
+</style>

@@ -1,19 +1,30 @@
 <template>
-    <div class="card shadow">
-        <div style="height: 30px;padding: 10px 0 0 15px;">{{ title }}</div>
-        <div class="ecahrts" ref="log_line"></div>
+    <div class="card shadow content">
+        <div style="position: relative">
+            <div class="ecahrts" ref="log_line"></div>
+            <div class="title">
+                {{ title }}
+                <a-icon
+                    @click="get_log(true)"
+                    :spin="logLoading.state"
+                    type="sync"
+                />
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import {TBaseAPI} from '../../config'
+import {LOADING} from '../../libs/HTTP'
 
 export default {
     data() {
         return {
+            logLoading: new LOADING(),
             logTimer: '',
             logLine: undefined,
-            title: '每日日志产生数量',
+            title: '日志数量走势图',
         }
     },
     methods: {
@@ -31,7 +42,7 @@ export default {
                     grid: {
                         right: '5%',
                         bottom: '15%',
-                        top: '15%',
+                        top: '20%',
                     },
                     xAxis: {
                         type: 'category',
@@ -55,11 +66,13 @@ export default {
                 })
             }
         },
-        get_log() {
+        get_log(refresh = false) {
+            if (refresh && this.logLoading.state) return
             this.$http(TBaseAPI + '/log/every_day', 'get')
+                ._loading(this.logLoading)
                 ._sucLis(it => {
                     this.logLine.hideLoading()
-                    this.title = '每日日志产生数量(' + it.result.total + ')'
+                    this.title = '日志数量走势图(' + it.result.total + ')'
                     let data = []
                     for (let d of it.result.data) {
                         data.push([d.day, d.num])
@@ -69,6 +82,7 @@ export default {
                             source: data,
                         },
                     })
+                    if (refresh) this.$message.success('刷新成功')
                 })
                 ._execute()
         },
@@ -100,9 +114,19 @@ export default {
     height: 300px;
 }
 
+.content {
+}
+
+.title {
+    height: 30px;
+    padding: 10px 0 0 15px;
+    z-index: 99;
+    position: absolute;
+    top: 0px;
+}
+
 .ecahrts {
     position: relative;
-    margin-top: -20px;
     width: 600px;
     height: 300px;
 }

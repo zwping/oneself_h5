@@ -204,12 +204,12 @@ class Builder {
                     if (!this.shieldErrMessage) {
                         message.error(it.data.msg)
                     }
+                    // todo 406 登录失效，重回登录界面
                     this.errLis(it.data)
                 }
             })
             .catch(it => {
                 __setLoading(this.loadingStates, false)
-                console.log(it)
                 if (!this.shieldErrMessage) {
                     message.error(it.message)
                 }

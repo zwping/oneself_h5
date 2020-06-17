@@ -223,12 +223,12 @@ export default {
         //   key: '日志',
         //   clo: true
         // })
-        emit('fc_tabs', {
-            title: 'Tool日志',
-            content: tool_log,
-            key: 'Tool日志',
-            clo: true,
-        })
+        // emit('fc_tabs', {
+        //     title: 'Tool日志',
+        //     content: tool_log,
+        //     key: 'Tool日志',
+        //     clo: true,
+        // })
         // emit('fc_tabs', {
         //   title: 'Tool分类',
         //   content: types,
