@@ -29,7 +29,6 @@ export default {
     },
     methods: {
         get_jetbrains(refresh = false) {
-            if (refresh && this.jetBrainsLoading.state) return
             this.$http('/jetbrains', 'get')
                 ._loading(this.jetBrainsLoading)
                 ._sucLis(it => {
@@ -38,6 +37,9 @@ export default {
                     }
                     this.jbData = it.result
                     if (refresh) this.$message.success('刷新成功')
+                })
+                ._executeFilter(() => {
+                    return !this.jetBrainsLoading.state
                 })
                 ._execute()
         },

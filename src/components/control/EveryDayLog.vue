@@ -67,7 +67,6 @@ export default {
             }
         },
         get_log(refresh = false) {
-            if (refresh && this.logLoading.state) return
             this.$http(TBaseAPI + '/log/every_day', 'get')
                 ._loading(this.logLoading)
                 ._sucLis(it => {
@@ -83,6 +82,9 @@ export default {
                         },
                     })
                     if (refresh) this.$message.success('刷新成功')
+                })
+                ._executeFilter(() => {
+                    return !this.logLoading.state
                 })
                 ._execute()
         },
