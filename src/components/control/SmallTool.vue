@@ -11,6 +11,16 @@
             <span> {{ d.time }} </span>
             <a :title="d.code" @click="copy(d.code, d.title)">复制</a>
         </div>
+        <span>王子 剩余流量 </span>
+        <a-icon
+            type="sync"
+            @click="get_wangzi(true)"
+            :spin="wangziLoading.state"
+        />
+        <div v-for="d in wangziData" :key="d.id">
+            <span>{{ d.title }}</span>
+            <span> {{ d.des }} </span>
+        </div>
     </div>
 </template>
 
@@ -25,6 +35,8 @@ export default {
         return {
             jetBrainsLoading: new LOADING(),
             jbData: [],
+            wangziLoading: new LOADING(),
+            wangziData: [],
         }
     },
     methods: {
@@ -47,9 +59,22 @@ export default {
             copy(text)
             this.$message.success('复制成功' + name)
         },
+        get_wangzi(refresh = false) {
+            this.$http('/types', 'get')
+                ._loading(this.wangziLoading)
+                ._param('pid', 131)
+                ._sucLis(it => {
+                    this.wangziData = it.result.types
+                })
+                ._executeFilter(() => {
+                    return !this.wangziLoading.state
+                })
+                ._execute()
+        },
     },
     mounted() {
         this.get_jetbrains()
+        this.get_wangzi()
     },
 }
 </script>
