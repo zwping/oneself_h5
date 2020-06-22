@@ -1,6 +1,5 @@
 <template>
     <div class="root_ly">
-        控制台主页
         <every-day-log />
         <small-tool />
     </div>
@@ -30,5 +29,6 @@ export default {
 .root_ly {
     display: flex;
     flex-direction: row;
+    /*float: left;*/
 }
 </style>

@@ -5,9 +5,10 @@ import get from 'lodash/get'
  * 获取对象真实数据类型
  */
 export function realType(ob) {
+    // return Object.prototype.toString.apply(ob).slice(8, -1).toLowerCase()
     return Object.prototype.toString
-        .apply(ob)
-        .slice(8, -1)
+        .call(ob)
+        .match(/\[object (.*?)\]/)[1]
         .toLowerCase()
 }
 

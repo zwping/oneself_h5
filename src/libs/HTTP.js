@@ -282,7 +282,12 @@ function __setLoading(loadings, value) {
  * 加载状态 对象
  * @constructor loading
  */
+// const LOADING = function(state = false) {
+//     'use strict'
+//     this.state = state
+// }
 class LOADING {
+    'use strict'
     constructor(state = false) {
         this.state = state // 跨组件响应
     }
