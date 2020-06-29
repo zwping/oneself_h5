@@ -1,22 +1,12 @@
 export function stime(second) {
-    if (second.toString().length === 10) {
-        second = second * 1000
-    }
+    second = Number(second.toString().padEnd(13, '0'))
     let d = new Date(second)
-    let h = d.getHours().toString()
-    let m = d.getMinutes().toString()
-    let s = d.getSeconds().toString()
-    return (
-        d.getFullYear() +
-        '-' +
-        (d.getMonth() + 1) +
-        '-' +
-        d.getDate() +
-        ' ' +
-        (h.length === 1 ? '0' + h : h) +
-        ':' +
-        (m.length === 1 ? '0' + m : m) +
-        ':' +
-        (s.length === 1 ? '0' + s : s)
-    )
+    return `
+    ${d.getFullYear()}-${__f(d.getMonth() + 1)}-${__f(d.getDate())} 
+    ${__f(d.getHours())}:${__f(d.getMinutes())}:${__f(d.getSeconds())}
+    `.trim()
+}
+
+function __f(d) {
+    return d.toString().padStart(2, '0')
 }

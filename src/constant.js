@@ -80,10 +80,12 @@ export const allLogColumns = [
         title: 'IP',
         width: 150,
         customRender: (text, r, index) => {
+            // let c = r.ip_addr ? r.ip_addr : r._ip
             // return <span>123</span>
             // return <span title={r.ip_isp}>{r.ip_addr} ? {r.ip_addr} : {r._ip}</span>
             // return `<span title=${r.ip_isp}>${r.ip_addr} ? ${r.ip_addr} : ${r._ip}</span>` // todo jsx识别标签 v-html? tab多数据?
-            return r.ip_addr ? r.ip_addr : r._ip
+            // return `${htmlEscape('<span title=${r.ip_isp}>${c}</span>')}`
+            return r.ip_addr || r._ip
         },
     },
 ]

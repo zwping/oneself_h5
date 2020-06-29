@@ -124,7 +124,7 @@ class Builder {
     }
 
     // 是否需要控制控件的加载状态
-    _loading(loading) {
+    _loading(...loading) {
         for (let d of arguments) {
             if (isNotEmpty(d) && d instanceof LOADING) {
                 this.loadingStates.push(d)
@@ -288,6 +288,7 @@ function __setLoading(loadings, value) {
 // }
 class LOADING {
     'use strict'
+
     constructor(state = false) {
         this.state = state // 跨组件响应
     }
