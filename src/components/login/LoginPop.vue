@@ -31,8 +31,8 @@
             block
             :loading="httpState.state"
             :disabled="!dis"
-            >登录</a-button
-        >
+            >登录
+        </a-button>
         <a-popover
             placement="bottom"
             trigger="click"
