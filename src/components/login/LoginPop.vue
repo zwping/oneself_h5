@@ -39,7 +39,7 @@
             style="float:right;margin-top: 10px"
         >
             <template slot="content">{{ conn_txt }}</template>
-            <a-button type="link" style="padding: 0">联系管理员</a-button>
+            <a-button type="link" style="padding: 0">联系管理员13</a-button>
         </a-popover>
     </div>
 </template>
